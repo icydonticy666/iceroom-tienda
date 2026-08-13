@@ -1,0 +1,155 @@
+/* ==========================================================================
+   iceroom — Tema oscuro para Payhip
+   Pegar en: Payhip → Settings → Store Design → Custom CSS
+   Ajusta la variable --acento al color de marca de iceroom.
+   Nota: algunos selectores de Payhip pueden variar; si algo no pinta,
+   inspecciona el elemento en la tienda en vivo y avísame el selector real.
+   ========================================================================== */
+
+:root {
+  --bg:        #0b0b0d;   /* fondo casi negro */
+  --bg-card:   #16161a;   /* tarjetas/producto */
+  --bg-elev:   #1e1e24;   /* hover / elevado */
+  --texto:     #f2f2f5;   /* texto principal */
+  --texto-sec: #a1a1aa;   /* texto secundario */
+  --acento:    #7c5cff;   /* <-- CAMBIA por el color de iceroom */
+  --acento-h:  #6a49f2;   /* acento hover */
+  --borde:     #26262c;
+  --radio:     14px;
+}
+
+/* --- Base --- */
+body,
+.payhip-store,
+.store-body {
+  background: var(--bg) !important;
+  color: var(--texto) !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+}
+
+h1, h2, h3, h4 {
+  color: var(--texto) !important;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+p, span, li, label {
+  color: var(--texto-sec) !important;
+}
+
+a { color: var(--acento) !important; }
+a:hover { color: var(--acento-h) !important; }
+
+/* --- Header / banner --- */
+.store-header,
+.header,
+header {
+  background: linear-gradient(180deg, #0f0f12 0%, var(--bg) 100%) !important;
+  border-bottom: 1px solid var(--borde) !important;
+}
+
+/* --- Tarjetas de producto --- */
+.product,
+.product-card,
+.grid-item,
+.product-listing-item {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--borde) !important;
+  border-radius: var(--radio) !important;
+  overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.product:hover,
+.product-card:hover,
+.grid-item:hover,
+.product-listing-item:hover {
+  transform: translateY(-4px);
+  border-color: var(--acento) !important;
+  box-shadow: 0 12px 32px rgba(0,0,0,.5);
+}
+
+.product img,
+.product-card img {
+  border-bottom: 1px solid var(--borde);
+}
+
+/* --- Precio --- */
+.price,
+.product-price {
+  color: var(--acento) !important;
+  font-weight: 800 !important;
+}
+
+/* --- Botones --- */
+.btn,
+button,
+.button,
+.buy-button,
+input[type="submit"] {
+  background: var(--acento) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 999px !important;
+  padding: 12px 26px !important;
+  font-weight: 700 !important;
+  letter-spacing: .01em;
+  transition: background .15s ease, transform .1s ease;
+}
+
+.btn:hover,
+button:hover,
+.button:hover,
+.buy-button:hover,
+input[type="submit"]:hover {
+  background: var(--acento-h) !important;
+  transform: translateY(-1px);
+}
+
+/* Botón secundario / borde */
+.btn-secondary,
+.btn-outline {
+  background: transparent !important;
+  color: var(--acento) !important;
+  border: 1px solid var(--acento) !important;
+}
+
+/* --- Badges (Nuevo / Más vendido) --- */
+.badge,
+.label,
+.ribbon {
+  background: var(--acento) !important;
+  color: #fff !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* --- Inputs / checkout --- */
+input, select, textarea {
+  background: var(--bg-elev) !important;
+  border: 1px solid var(--borde) !important;
+  color: var(--texto) !important;
+  border-radius: 10px !important;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--acento) !important;
+  outline: none !important;
+}
+
+/* --- Footer --- */
+footer, .store-footer {
+  background: #0f0f12 !important;
+  border-top: 1px solid var(--borde) !important;
+  color: var(--texto-sec) !important;
+}
+
+/* --- Reviews --- */
+.review, .rating {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--borde) !important;
+  border-radius: var(--radio) !important;
+}
+.star, .stars { color: #ffb020 !important; }
