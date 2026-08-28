@@ -213,12 +213,6 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
 <div id="meteors"></div>
 <div class="wrap">
 
-  <!-- TICKER PROMOS — Hasta el domingo -->
-  <a href="#plantillas" class="ticker" id="offer-ticker">
-    <span class="tk-txt"><span class="flame">🎯</span>&nbsp;<b>OFERTAS ACTIVAS</b> · Pritti Full + Pack 25% OFF hasta el domingo</span>
-    <span class="tk-timer">⏳ Termina el domingo <strong id="cd-ticker">--:--:--</strong></span>
-  </a>
-
   <header>
     <a href="#" class="logo">iceroom</a>
     <nav class="hnav">
@@ -244,9 +238,8 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
         <p>Pritti Vocals + Pritti Backroom, y <strong style="color:#fff">cada plugin que lance de aquí en adelante — gratis y de por vida.</strong> Ya sumamos <strong style="color:#fff">Pritti Eco</strong> (delay) — su beta entra gratis aquí antes que en ningún lado. Tu compra financia el desarrollo de lo que viene. Cuando el ecosistema esté completo el precio sube: entra ahora y no pagas la diferencia nunca.</p>
       </div>
       <div class="side">
-        <span class="price">$9.99</span><span class="price-old" style="font-size:1.15rem;margin-left:.45rem">$19.99</span>
-        <div class="save">★ Founder's Edition · Entra ahora</div>
-        <div class="promo-chip" style="margin:0 0 .9rem auto;">🎟️ Código: <strong>Pritti Full</strong></div>
+        <span class="price">$19.99</span>
+        <div class="save">★ Precio fundador · subirá con nuevos lanzamientos</div>
         <a class="buy" href="https://payhip.com/order?link=G5U1r">Asegurar mi acceso</a>
       </div>
     </div>
@@ -321,13 +314,12 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
       </article>
 
       <article class="card">
-        <div class="card-media"><img src="img/tienda/plantilla-fl.jpg" alt="Pack de Plantillas"><span class="badge hot">25% OFF</span></div>
+        <div class="card-media"><img src="img/tienda/plantilla-fl.jpg" alt="Pack de Plantillas"></div>
         <div class="card-body">
           <span class="by">FL Studio + Ableton</span>
           <h3>Pack de Plantillas</h3>
           <p>Las dos plantillas (FL Studio y Ableton) en un solo pack. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
-          <div class="price-row"><span class="price">$14.99</span><span class="price-old">$19.99</span></div>
-          <div class="promo-chip">🎟️ 25% con el código <strong>PACK25</strong> · hasta el domingo</div>
+          <div class="price-row"><span class="price">$19.99</span></div>
           <a class="buy" href="https://payhip.com/order?link=8Ljoq">Comprar</a>
         </div>
       </article>
@@ -449,27 +441,6 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
   }
 })();
 
-// Cuenta regresiva oferta plantillas — termina lunes 00:00 (Chile -04)
-(function(){
-  var el=document.getElementById('cd-ticker'), tk=document.getElementById('offer-ticker');
-  if(!el||!tk) return;
-  var deadline=new Date('2026-08-17T23:59:59-04:00').getTime();
-  function p(n){return(n<10?'0':'')+n;}
-  var t=setInterval(tick,1000);
-  function tick(){
-    var d=deadline-Date.now();
-    if(d<=0){
-      clearInterval(t);
-      tk.classList.add('ended');
-      tk.innerHTML='<span class="tk-txt">El drop de 24h terminó — vuelve pronto por el próximo</span>';
-      return;
-    }
-    var days=Math.floor(d/8.64e7),h=Math.floor(d%8.64e7/3.6e6),
-        m=Math.floor(d%3.6e6/6e4),s=Math.floor(d%6e4/1e3);
-    el.textContent=(days>0?days+'d ':'')+p(h)+':'+p(m)+':'+p(s);
-  }
-  tick();
-})();
 </script>
 
 </body>
