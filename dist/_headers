@@ -1,0 +1,14 @@
+/
+  Cache-Control: no-store, max-age=0
+
+/index.html
+  Cache-Control: no-store, max-age=0
+
+/fl
+  Cache-Control: no-store, max-age=0
+
+/fl.html
+  Cache-Control: no-store, max-age=0
+
+/checkout.js
+  Cache-Control: no-store, max-age=0

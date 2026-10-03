@@ -1,0 +1,16 @@
+name = "iceroom-tienda"
+compatibility_date = "2026-09-24"
+pages_build_output_dir = "dist"
+
+# Este archivo manda sobre la configuración de Pages: los bindings y [vars] se aplican en cada deploy.
+# Las claves (MP_*, FLOW_*, PAYHIP_API_KEY, ORDER_SECRET) van como SECRETOS en el panel, nunca aquí.
+
+[vars]
+PUBLIC_ORIGIN = "https://iceroom.cl"
+# "live" = débito/tarjeta (Mercado Pago) y Webpay (Flow) visibles para todos.
+CHECKOUT_MODE = "live"
+
+[[d1_databases]]
+binding = "PAYMENTS_DB"
+database_name = "iceroom-pagos"
+database_id = "3f802745-cbb7-4a5c-8aa4-a10285d05906"

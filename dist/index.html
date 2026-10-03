@@ -14,12 +14,12 @@
 <meta property="og:site_name" content="iceroom">
 <meta property="og:title" content="iceroom — Tienda">
 <meta property="og:description" content="Plugins, plantillas, cursos y drumkits de iceroom. Descarga inmediata tras la compra.">
-<meta property="og:url" content="https://iceroom-tienda.pages.dev/">
-<meta property="og:image" content="https://iceroom-tienda.pages.dev/favicon.png">
+<meta property="og:url" content="https://iceroom.cl/">
+<meta property="og:image" content="https://iceroom.cl/favicon.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iceroom — Tienda">
 <meta name="twitter:description" content="Plugins, plantillas, cursos y drumkits de iceroom. Descarga inmediata.">
-<meta name="twitter:image" content="https://iceroom-tienda.pages.dev/favicon.png">
+<meta name="twitter:image" content="https://iceroom.cl/favicon.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -109,6 +109,48 @@ header{position:sticky;top:1rem;z-index:100;margin:1rem auto 0;width:calc(100% -
   font-size:clamp(3rem,11vw,7rem);line-height:.95;
   filter:drop-shadow(0 0 40px rgba(200,220,255,.15))}
 .hero p{max-width:34rem;margin:1.5rem auto 0;color:var(--text-2);font-size:1.05rem}
+.hero-cta{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;margin-top:1.75rem}
+.hero-cta .buy{width:auto;padding-left:1.6rem;padding-right:1.6rem;display:inline-flex;align-items:center;justify-content:center}
+.hero-trust{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;justify-content:center;margin-top:1.4rem;font-size:.78rem;color:var(--text-2)}
+.hero-trust span{white-space:nowrap}
+@media(max-width:560px){.hero-trust span{white-space:normal}}
+
+/* Novedades — lo último de la tienda, arriba del todo */
+.news{max-width:76rem;margin:0 auto;padding:0 clamp(1.5rem,5vw,3rem) clamp(1rem,3vw,1.5rem)}
+.news-head{display:flex;align-items:center;gap:.55rem;margin-bottom:1rem}
+.news-head h2{font-family:var(--font-display);font-weight:800;letter-spacing:.02em;
+  text-transform:uppercase;font-size:.78rem;color:var(--text-2)}
+.news-head .live{width:7px;height:7px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 0 0 rgba(48,209,88,.55);animation:livePulse 2s ease-out infinite}
+@keyframes livePulse{70%{box-shadow:0 0 0 7px rgba(48,209,88,0)}100%{box-shadow:0 0 0 0 rgba(48,209,88,0)}}
+.news-head .rule{flex:1;height:1px;background:var(--border)}
+.news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.75rem}
+.news-item{display:flex;align-items:center;gap:.85rem;text-decoration:none;color:inherit;
+  background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:14px;padding:.8rem;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  transition:transform .3s cubic-bezier(.4,0,.2,1),border-color .3s,background .3s,box-shadow .3s}
+.news-item:hover{transform:translateY(-3px);border-color:var(--border-2);
+  background:var(--glass-bg-hover);box-shadow:0 16px 40px rgba(0,0,0,.35)}
+.news-thumb{flex:0 0 62px;width:62px;height:62px;border-radius:10px;overflow:hidden;
+  background:var(--bg-3);border:1px solid var(--border)}
+.news-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.news-thumb.pct{display:flex;align-items:center;justify-content:center;border-color:transparent;
+  background:linear-gradient(135deg,#ff375f,#bf5af2)}
+.news-thumb.pct b{font-family:var(--font-display);font-weight:800;font-size:1.3rem;
+  letter-spacing:-.04em;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.25)}
+.news-thumb.pct b small{font-size:.66em;margin-left:1px}
+.news-txt{min-width:0}
+.news-tag{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.news-tag.hot{color:#ff375f} .news-tag.purple{color:var(--purple)}
+.news-item h3{font-size:.92rem;font-weight:600;letter-spacing:-.01em;margin:.18rem 0 .22rem}
+.news-item p{font-size:.76rem;line-height:1.35;color:var(--text-2)}
+.news-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:.45rem;margin-top:.45rem}
+.news-price .price{font-size:1.15rem}
+.news-price .price-old{font-size:.8rem}
+.news-price .note,.price-row .note{font-size:.66rem;font-weight:600;letter-spacing:.03em;color:var(--green)}
+.news-item .arrow{margin-left:auto;align-self:center;color:var(--text-3);font-size:1rem;
+  transition:transform .25s,color .25s}
+.news-item:hover .arrow{transform:translateX(3px);color:var(--text)}
 
 /* Secciones */
 section.cat{padding:clamp(2rem,5vw,3.5rem) clamp(1.5rem,5vw,3rem);max-width:76rem;margin:0 auto}
@@ -157,6 +199,12 @@ section.cat{padding:clamp(2rem,5vw,3.5rem) clamp(1.5rem,5vw,3rem);max-width:76re
   letter-spacing:.01em;color:var(--purple);background:rgba(191,90,242,.12);
   border:1px solid rgba(191,90,242,.30);border-radius:9999px;padding:.42rem .8rem;margin-top:.3rem;width:fit-content}
 .promo-chip strong{color:#fff;letter-spacing:.06em;font-weight:800}
+/* Chip de la venta flash del dia — se quita cuando termina la oferta */
+.sale-chip{display:inline-flex;align-items:center;gap:.4rem;font-size:.74rem;font-weight:600;
+  letter-spacing:.01em;color:#ff8da1;background:rgba(255,55,95,.10);
+  border:1px solid rgba(255,55,95,.30);border-radius:9999px;padding:.42rem .8rem;
+  margin-top:.3rem;width:fit-content}
+.sale-chip b{color:#fff;font-weight:800;letter-spacing:.05em}
 
 /* Botón (dispara overlay Payhip) */
 .buy{margin-top:.4rem;background:var(--btn-bg);color:var(--btn-text);font-family:var(--font-body);
@@ -166,6 +214,41 @@ section.cat{padding:clamp(2rem,5vw,3.5rem) clamp(1.5rem,5vw,3rem);max-width:76re
 .buy:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,255,255,.12)}
 .buy.ghost{background:transparent;color:var(--text);border:1px solid var(--border-2)}
 .buy.disabled{background:rgba(255,255,255,.06);color:var(--text-3);cursor:default;pointer-events:none}
+.pay-sheet{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:1rem;background:rgba(0,0,0,.78)}
+.pay-sheet[hidden]{display:none}
+.pay-sheet-card{position:relative;width:min(32rem,100%);max-height:calc(100dvh - 2rem);overflow-y:auto;border:1px solid var(--glass-border);border-radius:24px;padding:1.5rem;
+  background:radial-gradient(120% 90% at 100% 0%,rgba(191,90,242,.18),transparent 52%),#101010;
+  box-shadow:0 24px 80px rgba(0,0,0,.55)}
+.pay-x{position:absolute;right:1.1rem;top:.9rem;background:none;border:0;color:var(--text-2);font-size:1.7rem;cursor:pointer;line-height:1}
+.pay-sheet-price,.pay-sheet-note{color:var(--text-2);font-size:.85rem;margin:.15rem 0 1rem}
+.pay-flow-link{display:block;margin:1rem auto .3rem;background:none;border:0;color:#d9c9e8;font:inherit;font-size:.83rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.pay-status{margin:.9rem 0;color:var(--text-2);font-size:.83rem}
+.pay-status.error{color:#ff9aa9}
+.pay-coupon{margin:.8rem 0 1rem;padding:.8rem;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.025)}
+.pay-coupon>label{display:block;margin-bottom:.45rem;font-size:.72rem;font-weight:700;color:var(--text-2)}
+.pay-coupon>div{display:flex;gap:.45rem}.pay-coupon input{min-width:0;flex:1;border:1px solid var(--border-2);border-radius:999px;background:#090909;color:#fff;padding:.72rem 1rem;text-transform:uppercase}
+.pay-coupon button{border:0;border-radius:999px;padding:.7rem 1rem;background:#fff;color:#000;font-weight:800;cursor:pointer}
+.pay-coupon p{min-height:1.1rem;margin:.4rem .25rem 0;font-size:.72rem;color:var(--text-3)}
+.pay-coupon p.ok{color:var(--green)}.pay-coupon p.error{color:#ff9aa9}
+.pay-addon{display:flex;width:100%;align-items:center;gap:.75rem;margin:.75rem 0;padding:.85rem;text-align:left;border:1px solid rgba(191,90,242,.35);border-radius:16px;background:rgba(191,90,242,.09);color:#fff;cursor:pointer}
+.pay-addon[hidden]{display:none}.pay-addon[aria-pressed="true"]{border-color:var(--green);background:rgba(48,209,88,.09)}
+.pay-addon-check{display:grid;place-items:center;flex:0 0 30px;height:30px;border:1px solid currentColor;border-radius:9px;font-weight:900}
+.pay-addon span:last-child{display:flex;flex-direction:column;gap:.15rem}.pay-addon b{font-size:.82rem}.pay-addon small{color:var(--text-2);font-size:.7rem;line-height:1.35}
+.pay-sheet button:focus-visible,.pay-sheet input:focus-visible{outline:2px solid #d8b9ff;outline-offset:3px}
+@media(max-width:600px){.pay-sheet{padding:0;align-items:end}.pay-sheet-card{width:100%;max-height:96dvh;border-radius:24px 24px 0 0;padding:1.5rem 1.25rem max(1.4rem,env(safe-area-inset-bottom))}}
+.pay-sheet .kicker{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.pay-sheet h2{font-family:var(--font-display);font-weight:800;letter-spacing:-.03em;font-size:1.45rem;line-height:1.15;margin:.4rem 0 .35rem}
+.pay-choice{display:block;width:100%;margin-top:.55rem;border-radius:999px;padding:.95rem 1rem;font-family:var(--font-body);
+  font-weight:700;font-size:.78rem;letter-spacing:.04em;cursor:pointer;text-align:center;background:#fff;color:#000;border:0}
+.pay-choice.ghost{background:transparent;color:#fff;border:1px solid var(--border-2)}
+.pay-choice:disabled{opacity:.55;cursor:wait}
+.pay-choice.pay-soon{opacity:.55;cursor:not-allowed}
+.pay-sheet [hidden]{display:none}
+.flow-mail{display:block;margin-top:.55rem;font-size:.75rem;color:var(--text-2)}
+.flow-mail input{width:100%;margin-top:.3rem;background:#0d0d0d;color:#fff;border:1px solid var(--border-2);border-radius:12px;padding:.7rem .85rem;font:inherit;font-size:.9rem}
+.pay-close{margin-top:.75rem;background:none;border:0;color:var(--text-3);font:inherit;font-size:.8rem;cursor:pointer;width:100%}
+.pay-sheet .mp-error{font-size:.8rem;color:#ff8da1;margin-top:.7rem}
+body.pay-open{overflow:hidden}
 
 /* Bundle destacado */
 .bundle{max-width:76rem;margin:2rem auto;padding:0 clamp(1.5rem,5vw,3rem)}
@@ -213,37 +296,68 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
 <div id="meteors"></div>
 <div class="wrap">
 
+  <!-- OFERTA 24 H · termina 3-oct-2026 16:20 Chile -->
+  <a href="#plantillas" class="ticker" id="offer-ticker" data-sale-until="2026-10-03T19:20:00.000Z">
+    <span class="tk-txt"><span class="flame">🔥</span>&nbsp;<b>24 horas · Plantillas FL Studio y Ableton a US$9.99</b> — descarga inmediata</span>
+    <span class="tk-timer">Termina en <strong id="cd-ticker">24:00:00</strong></span>
+  </a>
+
   <header>
     <a href="#" class="logo">iceroom</a>
     <nav class="hnav">
       <a href="#plugins">Plugins</a>
       <a href="#plantillas">Plantillas</a>
       <a href="#cursos">Cursos</a>
+      <a href="#servicios">Servicios</a>
     </nav>
     <a href="#bundle" class="hcta">Ver bundle →</a>
   </header>
 
+  <!-- NOVEDADES — lo más urgente aparece antes del hero. -->
+  <section class="news" id="novedades">
+    <div class="news-head"><span class="live"></span><h2>Ofertas y novedades</h2><span class="rule"></span></div>
+    <div class="news-grid">
+      <a class="news-item sale-entry" href="https://payhip.com/b/0QEeV" data-mp="0QEeV" data-addon="xNaVU" data-addon-usd="$12.98" data-addon-href="/api/paypal-checkout?product=xNaVU">
+        <div class="news-thumb pct"><b>24<small>H</small></b></div><div class="news-txt"><span class="news-tag hot">Oferta activa</span><h3>Plantilla FL Studio</h3><p>Sesión lista para grabar + Pritti Vocals de regalo.</p><div class="news-price"><span class="price">$9.99</span><span class="price-old">$12.99</span></div></div><span class="arrow">→</span>
+      </a>
+      <a class="news-item sale-entry" href="https://payhip.com/b/3j8In" data-mp="3j8In">
+        <div class="news-thumb pct"><b>24<small>H</small></b></div><div class="news-txt"><span class="news-tag hot">Oferta activa</span><h3>Plantilla Ableton Live</h3><p>Racks y ruteos listos + Pritti Vocals de regalo.</p><div class="news-price"><span class="price">$9.99</span><span class="price-old">$12.99</span></div></div><span class="arrow">→</span>
+      </a>
+      <a class="news-item" href="https://payhip.com/b/Vo0Sq" data-mp="Vo0Sq">
+        <div class="news-thumb"><img src="img/tienda/pritti-grip.jpg" alt="Pritti Grip" loading="lazy"></div><div class="news-txt"><span class="news-tag purple">Beta · nuevo</span><h3>Pritti Grip</h3><p>Compresor vocal para reggaeton, trap y R&amp;B.</p><div class="news-price"><span class="price">$6.99</span></div></div><span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
   <div class="hero">
     <div class="kicker">Tienda · Productos digitales</div>
     <h1>iceroom</h1>
-    <p>Plugins, plantillas y cursos para producir como un profesional. Descarga inmediata tras la compra.</p>
+    <p>Plantillas, plugins y mezcla del productor detrás de <strong style="color:var(--text)">8M+ streams</strong>. Graba y suena profesional desde tu home studio.</p>
+    <div class="hero-cta">
+      <a class="buy" href="#plantillas">Ver la plantilla más vendida</a>
+      <a class="buy ghost" href="#servicios">Pedir mezcla · $69.99</a>
+    </div>
+    <div class="hero-trust"><span>✓ Descarga inmediata</span><span>✓ Paga con tarjeta o PayPal — sin crear cuenta</span><span>✓ +130 productores ya compraron</span></div>
   </div>
 
-  <!-- PRITTI BUNDLE — EARLY ACCESS (estrella) -->
-  <div class="bundle" id="pritti-bundle">
-    <div class="bundle-inner">
-      <div class="txt">
-        <div class="tag">★ Early Access · Founder's Edition</div>
-        <h2>Pritti Bundle</h2>
-        <p>Pritti Vocals + Pritti Backroom, y <strong style="color:#fff">cada plugin que lance de aquí en adelante — gratis y de por vida.</strong> Ya sumamos <strong style="color:#fff">Pritti Eco</strong> (delay) — su beta entra gratis aquí antes que en ningún lado. Tu compra financia el desarrollo de lo que viene. Cuando el ecosistema esté completo el precio sube: entra ahora y no pagas la diferencia nunca.</p>
-      </div>
-      <div class="side">
-        <span class="price">$19.99</span>
-        <div class="save">★ Precio fundador · subirá con nuevos lanzamientos</div>
-        <a class="buy" href="https://payhip.com/order?link=G5U1r">Asegurar mi acceso</a>
-      </div>
+  <!-- SERVICIOS -->
+  <section class="cat" id="servicios">
+    <div class="cat-head"><h2>Servicios</h2><span class="tag">Trabajo 1 a 1 conmigo</span></div>
+    <div class="grid">
+
+      <article class="card">
+        <div class="card-media"><img src="img/tienda/mezcla-master.jpg" alt="Mezcla + Master profesional" loading="lazy"></div>
+        <div class="card-body">
+          <span class="by">by @icycold</span>
+          <h3>Mezcla + Master — 1 canción</h3>
+          <p>Tu tema listo para Spotify, YouTube e Instagram: mezcla de voz y beat + master con volumen competitivo. <strong style="color:var(--green)">2 rondas de ajustes · entrega en 5 días hábiles.</strong> Pagas aquí y me envías tus pistas.</p>
+          <div class="price-row"><span class="price">$69.99</span></div>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="z6Bgp" href="https://payhip.com/b/z6Bgp" data-mp="z6Bgp">Pedir mezcla</a>
+        </div>
+      </article>
+
     </div>
-  </div>
+  </section>
 
   <!-- PLUGINS -->
   <section class="cat" id="plugins">
@@ -251,40 +365,70 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
     <div class="grid">
 
       <article class="card">
-        <div class="card-media"><img src="img/backroom.jpg" alt="Pritti Backroom"></div>
+        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1jtmpg28j1njir8nm1guee1h591a.png" alt="Pritti Backroom" loading="lazy"></div>
         <div class="card-body">
           <span class="by">Reverb · VST3/AU · Win + Mac</span>
           <h3>Pritti Backroom</h3>
           <p>El reverb de iceroom: profundidad, aire y ese ambiente de "trastienda" para tus voces y mezclas. Del sonido seco al espacio perfecto en un par de clics.</p>
           <div class="price-row"><span class="price">$4.99</span></div>
-          <a class="buy payhip-buy-button" data-theme="none" data-product="SQti3" href="https://payhip.com/b/SQti3">Consíguelo</a>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="SQti3" href="https://payhip.com/b/SQti3" data-mp="SQti3">Consíguelo</a>
         </div>
       </article>
 
       <article class="card">
-        <div class="card-media"><img src="img/pritti.png" alt="Pritti Vocals"></div>
+        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1jt9c2ld217asd3l1kk99hd1orm15.png" alt="Pritti Vocals" loading="lazy"></div>
         <div class="card-body">
           <span class="by">Vocal FX · VST3/AU · Win + Mac</span>
           <h3>Pritti Vocals</h3>
           <p>El plugin de voces de iceroom: brillo, presencia y ese pulido "pretty" en un clic. Deja tus voces al frente de la mezcla sin complicaciones.</p>
           <div class="price-row"><span class="price">$3.99</span></div>
-          <a class="buy payhip-buy-button" data-theme="none" data-product="Nqvbs" href="https://payhip.com/b/Nqvbs">Consíguelo</a>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="Nqvbs" href="https://payhip.com/b/Nqvbs" data-mp="Nqvbs">Consíguelo</a>
         </div>
       </article>
 
       <article class="card">
-        <div class="card-media"><span class="glyph">ECO</span></div>
+        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k21gmnc1645dhuk6s1ch06e41f.png" alt="Pritti Eco" loading="lazy"><span class="badge hot">Drop final</span></div>
         <div class="card-body">
           <span class="by">Delay / Eco · VST3/AU · Win + Mac</span>
           <h3>Pritti Eco</h3>
-          <p>El nuevo delay de iceroom: ecos con carácter, desde slaps sutiles hasta estelas infinitas con modulación. Beta recién salida — actualizaciones gratis.</p>
-          <div class="price-row"><span class="price">$5.99</span></div>
-          <a class="buy payhip-buy-button" data-theme="none" data-product="5JbVN" href="https://payhip.com/b/5JbVN">Consíguelo</a>
+          <p>El delay de iceroom: ecos con carácter, desde slaps sutiles hasta estelas infinitas con modulación. <strong style="color:#fff">Drop final: ahora a $4.99.</strong></p>
+          <div class="price-row"><span class="price">$4.99</span><span class="price-old">$5.99</span></div>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="5JbVN" href="https://payhip.com/b/5JbVN" data-mp="5JbVN">Consíguelo</a>
+        </div>
+      </article>
+
+      <!-- PRITTI GRIP — beta 0.9 a la venta suelto desde el 1-oct-2026 (Vo0Sq, $6.99).
+           También incluido en Pritti Bundle (G5U1r) y Pritti Studio (QLfl6). -->
+      <article class="card" id="pritti-grip">
+        <div class="card-media"><img src="img/tienda/pritti-grip.jpg" alt="Pritti Grip" loading="lazy"><span class="badge purple">Beta · Nuevo</span></div>
+        <div class="card-body">
+          <span class="by">Compresor vocal · VST3/AU · Win + Mac</span>
+          <h3>Pritti Grip</h3>
+          <p>El compresor vocal de iceroom para reggaeton, trap y R&amp;B: la voz al frente y pegada, sin aplastarla. 4 estilos (vocals, bus, hard, aggressive) y color de cinta, válvula o FET.</p>
+          <a class="promo-chip" href="#pritti-bundle" style="text-decoration:none">🧪 <strong>BETA v0.9</strong> · incluido si tienes el Pritti Bundle o Pritti Studio</a>
+          <div class="price-row"><span class="price">$6.99</span></div>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="Vo0Sq" href="https://payhip.com/b/Vo0Sq" data-mp="Vo0Sq">Consíguelo</a>
         </div>
       </article>
 
     </div>
   </section>
+
+  <!-- PRITTI BUNDLE — EARLY ACCESS (estrella) -->
+  <div class="bundle" id="pritti-bundle">
+    <div class="bundle-inner">
+      <div class="txt">
+        <div class="tag">★ Early Access · Founder's Edition</div>
+        <h2>Pritti Bundle</h2>
+        <p>Pritti Vocals + Pritti Backroom, y <strong style="color:#fff">cada plugin que lance de aquí en adelante — gratis y de por vida.</strong> Ya sumamos <strong style="color:#fff">Pritti Eco</strong> (delay) y ahora la beta de <strong style="color:#fff">Pritti Grip</strong> (compresor vocal) — llega aquí antes que en ningún lado. Tu compra financia el desarrollo de lo que viene. Cuando el ecosistema esté completo el precio sube: entra ahora y no pagas la diferencia nunca.</p>
+      </div>
+      <div class="side">
+        <span class="price">$19.99</span>
+        <div class="save">★ Precio fundador · subirá con nuevos lanzamientos</div>
+        <a class="buy" href="https://payhip.com/order?link=G5U1r" data-mp="G5U1r">Asegurar mi acceso</a>
+      </div>
+    </div>
+  </div>
 
   <!-- PLANTILLAS -->
   <section class="cat" id="plantillas">
@@ -292,35 +436,61 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
     <div class="grid">
 
       <article class="card">
-        <div class="card-media"><img src="img/tienda/plantilla-fl.jpg" alt="Plantilla FL Studio"></div>
+        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k2e6p1o91jocngas6ujj01klm15.png" alt="Plantilla FL Studio — Plugins Nativos" loading="lazy"></div>
+        <div class="card-body">
+          <span class="by">FL Studio · Plugins nativos</span>
+          <h3>Plantilla FL — Plugins Nativos</h3>
+          <p>Plantilla de grabación hecha 100% con plugins nativos de FL Studio: sin plugins de pago, sin instalar nada extra. Abre, canta y graba. Incluye el .flp + guía.</p>
+          <div class="price-row"><span class="price">$3</span></div>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="34vZU" href="https://payhip.com/b/34vZU" data-mp="34vZU">Comprar</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k2e6qhqktbunvj11nm1089e3b15.png" alt="Plantilla FL Studio" loading="lazy"><span class="badge orange">★ Más vendida</span></div>
         <div class="card-body">
           <span class="by">Vocal Template</span>
           <h3>Plantilla de Grabación — FL Studio</h3>
           <p>Abre, canta y graba. Cadenas de efectos y ruteos ya configurados para que tus voces suenen listas desde la primera toma. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
-          <div class="price-row"><span class="price">$12.99</span></div>
-          <a class="buy payhip-buy-button" data-theme="none" data-product="0QEeV" href="https://payhip.com/b/0QEeV">Comprar</a>
+          <span class="sale-chip sale-entry"><b>24 H</b> · termina pronto</span>
+          <div class="price-row"><span class="price sale-price">$9.99</span><span class="price-old sale-entry">$12.99</span></div>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="0QEeV" href="https://payhip.com/b/0QEeV" data-mp="0QEeV" data-addon="xNaVU" data-addon-usd="$12.98" data-addon-href="/api/paypal-checkout?product=xNaVU">Comprar</a>
         </div>
       </article>
 
       <article class="card">
-        <div class="card-media"><img src="img/tienda/plantilla-ableton.jpg" alt="Plantilla Ableton Live"></div>
+        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k2e6q0ua1e11m29n4r1jgk1cdd15.png" alt="Plantilla Ableton Live" loading="lazy"></div>
         <div class="card-body">
           <span class="by">Vocal Template</span>
           <h3>Plantilla de Grabación — Ableton Live</h3>
           <p>Racks nativos de Ableton y ruteos listos para usar. Graba y mezcla voces al instante, sin perder tiempo montando cadenas. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
-          <div class="price-row"><span class="price">$12.99</span></div>
-          <a class="buy payhip-buy-button" data-theme="none" data-product="3j8In" href="https://payhip.com/b/3j8In">Comprar</a>
+          <span class="sale-chip sale-entry"><b>24 H</b> · termina pronto</span>
+          <div class="price-row"><span class="price sale-price">$9.99</span><span class="price-old sale-entry">$12.99</span></div>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="3j8In" href="https://payhip.com/b/3j8In" data-mp="3j8In">Comprar</a>
         </div>
       </article>
 
       <article class="card">
-        <div class="card-media"><img src="img/tienda/plantilla-fl.jpg" alt="Pack de Plantillas"></div>
+        <div class="card-media"><img src="img/tienda/bundle-plantillas.jpg" alt="Pack de Plantillas" loading="lazy"><span class="badge green">Ahorra $6</span></div>
         <div class="card-body">
-          <span class="by">FL Studio + Ableton</span>
+          <span class="by">FL Studio + Ableton · el mejor valor</span>
           <h3>Pack de Plantillas</h3>
-          <p>Las dos plantillas (FL Studio y Ableton) en un solo pack. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
-          <div class="price-row"><span class="price">$19.99</span></div>
-          <a class="buy" href="https://payhip.com/order?link=8Ljoq">Comprar</a>
+          <p>Las 2 plantillas (FL Studio y Ableton) en un pack — todo el flujo pro de grabación por menos que comprarlas por separado. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
+          <div class="price-row"><span class="price">$19.99</span><span class="price-old">$25.98</span></div>
+          <a class="buy" href="https://payhip.com/order?link=8Ljoq" data-mp="8Ljoq">Comprar</a>
+        </div>
+      </article>
+
+      <!-- PRITTI STUDIO — bundle plantillas + plugins (22-sep-2026, QLfl6).
+           Precio de lista $29.99; ancla $39.95 = FL 12.99 + Ableton 12.99 + Vocals 3.99 + Backroom 4.99 + Eco 4.99. -->
+      <article class="card">
+        <div class="card-media"><img src="img/tienda/pritti-studio.jpg" alt="Pritti Studio" loading="lazy"><span class="badge green">Ahorra $9</span></div>
+        <div class="card-body">
+          <span class="by">Plantillas + plugins</span>
+          <h3>Pritti Studio</h3>
+          <p>Las 2 plantillas de grabación (FL Studio y Ableton) y los 3 plugins Pritti — Vocals, Backroom y Eco — en un solo pack. <strong style="color:var(--green)">Ya trae la beta de Pritti Grip, y los próximos plugins Pritti entran gratis.</strong></p>
+          <div class="price-row"><span class="price">$29.99</span><span class="price-old">$39.95</span></div>
+          <a class="buy" href="https://payhip.com/order?link=QLfl6" data-mp="QLfl6">Comprar</a>
         </div>
       </article>
 
@@ -333,13 +503,13 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
     <div class="grid">
 
       <article class="card">
-        <div class="card-media"><img src="img/tienda/MasterClass.jpg" alt="Masterclass Mezcla Pro"></div>
+        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1jt7pt2mc1mng1e6v1842dst9pk1i.jpg" alt="Masterclass Mezcla Pro" loading="lazy"></div>
         <div class="card-body">
           <span class="by">by @icycold</span>
           <h3>Masterclass: Mezcla Pro</h3>
           <p>El proceso de mezcla de icycold, paso a paso: grabación, ecualización, compresión, balance y sesiones de mezcla reales. Dos temporadas completas. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
           <div class="price-row"><span class="price">$29.99</span></div>
-          <a class="buy payhip-buy-button" data-theme="none" data-product="a8IWu" href="https://payhip.com/b/a8IWu">Comprar</a>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="a8IWu" href="https://payhip.com/b/a8IWu" data-mp="a8IWu">Comprar</a>
         </div>
       </article>
 
@@ -350,7 +520,7 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
           <h3>The Ultimate Bundle</h3>
           <p>Todo el sistema iceroom en un pack: el curso completo de mezcla + las 2 plantillas (FL Studio y Ableton) + <strong style="color:var(--green)">los plugins Pritti Vocals y Pritti Backroom incluidos.</strong></p>
           <div class="price-row"><span class="price">$59.99</span></div>
-          <a class="buy" href="https://payhip.com/order?link=IiHTG">Comprar</a>
+          <a class="buy" href="https://payhip.com/order?link=IiHTG" data-mp="IiHTG">Comprar</a>
         </div>
       </article>
 
@@ -368,7 +538,7 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
       <div class="side">
         <span class="price">$59.99</span>
         <div class="save" style="color:var(--text-2);font-size:.7rem;margin-bottom:1rem">Acceso de por vida a todo el sistema</div>
-        <a class="buy" href="https://payhip.com/order?link=IiHTG">Comprar ahora</a>
+        <a class="buy" href="https://payhip.com/order?link=IiHTG" data-mp="IiHTG">Comprar ahora</a>
       </div>
     </div>
   </div>
@@ -385,7 +555,7 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
       <article class="card"><div class="card-body">
         <span class="by">Paso 02</span>
         <h3>Paga seguro</h3>
-        <p>Checkout con PayPal y tarjeta en un overlay. Tus datos protegidos, sin salir de la página.</p>
+        <p>PayPal y tarjeta para todo el mundo. En Chile, débito y Mercado Pago en pesos.</p>
       </div></article>
       <article class="card"><div class="card-body">
         <span class="by">Paso 03</span>
@@ -420,14 +590,13 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
 
   <footer>
     <div class="fmark">iceroom</div>
-    <p>Descarga inmediata · Pago seguro con PayPal · Soporte por email</p>
-    <div class="note">🚧 Estamos migrando a la nueva plataforma iceroom — más contenido pronto</div>
+    <p>Descarga inmediata · PayPal, o débito y tarjeta en pesos · Soporte por DM en @iceroomcl</p>
   </footer>
 
 </div>
 
-<!-- Payhip embed: los botones .payhip-buy-button abren el checkout en overlay sobre la página -->
-<script type="text/javascript" src="https://payhip.com/payhip.js"></script>
+<!-- Checkout propio: PayPal se abre en una página completa para funcionar en navegadores internos. -->
+<script src="/checkout.js?v=20261003b" defer></script>
 
 <script>
 (function(){
@@ -439,6 +608,28 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
     m.style.animationDelay=(Math.random()*6).toFixed(1)+'s';
     box.appendChild(m);
   }
+})();
+
+(function(){
+  var ticker=document.getElementById('offer-ticker');
+  var end=Date.parse(ticker&&ticker.dataset.saleUntil||'');
+  var output=document.getElementById('cd-ticker');
+  function tick(){
+    var left=end-Date.now();
+    if(left<=0){
+      ticker.classList.add('ended');ticker.removeAttribute('href');
+      ticker.querySelector('.tk-txt').innerHTML='<b>Oferta finalizada</b> · descubre los productos de iceroom';
+      var timer=ticker.querySelector('.tk-timer');if(timer)timer.hidden=true;
+      document.querySelectorAll('.sale-entry').forEach(function(el){el.hidden=true});
+      document.querySelectorAll('.sale-price').forEach(function(el){el.textContent='$12.99'});
+      document.querySelectorAll('[data-addon="xNaVU"]').forEach(function(el){el.dataset.addonUsd='$15.98'});
+      return;
+    }
+    var h=Math.floor(left/36e5),m=Math.floor(left%36e5/6e4),s=Math.floor(left%6e4/1e3);
+    output.textContent=[h,m,s].map(function(n){return String(n).padStart(2,'0')}).join(':');
+    setTimeout(tick,1000);
+  }
+  if(ticker&&output&&end)tick();
 })();
 
 </script>

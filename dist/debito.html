@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Débito — iceroom</title>
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050505; --text:#fff; --text-2:rgba(255,255,255,.58); --text-3:rgba(255,255,255,.32);
+  --glass-border:rgba(255,255,255,.10); --border-2:rgba(255,255,255,.15);
+  --font-display:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;display:grid;place-items:center;padding:1.25rem;background:#050505;color:#fff;
+  font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+.card{width:min(24rem,100%);border:1px solid var(--glass-border);border-radius:24px;padding:1.35rem 1.25rem 1.15rem;
+  background:radial-gradient(120% 90% at 100% 0%,rgba(191,90,242,.18),transparent 52%),#101010}
+.kicker{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+h1{font-family:var(--font-display);font-weight:800;letter-spacing:-.03em;font-size:1.45rem;line-height:1.15;margin:.4rem 0 .2rem}
+.price{color:var(--text-2);font-size:.95rem;margin-bottom:.35rem}
+.pay-choice{display:block;width:100%;margin-top:.55rem;border-radius:999px;padding:.95rem 1rem;font-family:var(--font-body);
+  font-weight:700;font-size:.78rem;letter-spacing:.04em;cursor:pointer;text-align:center;background:#fff;color:#000;border:0}
+.pay-choice.ghost{background:transparent;color:#fff;border:1px solid var(--border-2)}
+.pay-choice:disabled{opacity:.55;cursor:wait}
+.flow-mail{display:block;margin-top:.55rem;font-size:.75rem;color:var(--text-2)}
+.flow-mail[hidden]{display:none}
+.flow-mail input{width:100%;margin-top:.3rem;background:#0d0d0d;color:#fff;border:1px solid var(--border-2);border-radius:12px;padding:.7rem .85rem;font:inherit;font-size:.9rem}
+.mp-error{font-size:.8rem;color:#ff8da1;margin-top:.7rem}
+.mp-error[hidden]{display:none}
+</style>
+</head>
+<body>
+<script>
+  (function () {
+    var product = new URLSearchParams(location.search).get("product");
+    if (product) location.replace("/?checkout=" + encodeURIComponent(product));
+  })();
+</script>
+  <main class="card">
+    <p class="kicker">Débito</p>
+    <h1 id="name">Tu producto</h1>
+    <p class="price" id="price"></p>
+    <button type="button" class="pay-choice" data-choice="flow">Flow</button>
+    <button type="button" class="pay-choice ghost" data-choice="mp">Mercado Pago</button>
+    <label class="flow-mail" hidden>Correo<input type="email" autocomplete="email" placeholder="tu@correo.cl"></label>
+    <p class="mp-error" hidden></p>
+  </main>
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var product = params.get("product") || "";
+  var nameEl = document.getElementById("name");
+  var priceEl = document.getElementById("price");
+  var mail = document.querySelector(".flow-mail");
+  var emailInput = document.querySelector("input");
+  var err = document.querySelector(".mp-error");
+  var flowBtn = document.querySelector("[data-choice=flow]");
+  var mpBtn = document.querySelector("[data-choice=mp]");
+  if (params.get("name")) nameEl.textContent = params.get("name");
+
+  function money(n) { return "$" + Number(n).toLocaleString("es-CL"); }
+
+  fetch("/api/prices").then(function (r) { return r.json(); }).then(function (data) {
+    var clp = data && data[product];
+    if (!clp) {
+      flowBtn.disabled = true;
+      mpBtn.disabled = true;
+      err.hidden = false;
+      err.textContent = "Este producto no está en pesos.";
+      return;
+    }
+    priceEl.textContent = money(clp);
+  }).catch(function () {});
+
+  function pay(button, url, payload, fallback) {
+    button.disabled = true;
+    err.hidden = true;
+    fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      return r.json().then(function (data) { return { ok: r.ok, data: data }; });
+    }).then(function (res) {
+      if (res.ok && res.data.url) { location.href = res.data.url; return; }
+      button.disabled = false;
+      err.hidden = false;
+      err.textContent = (res.data && res.data.error) || fallback;
+    }).catch(function () {
+      button.disabled = false;
+      err.hidden = false;
+      err.textContent = fallback;
+    });
+  }
+
+  document.querySelector(".card").addEventListener("click", function (event) {
+    var chosen = event.target.closest("[data-choice]");
+    if (!chosen || !product) return;
+    if (chosen.getAttribute("data-choice") === "flow") {
+      var email = emailInput.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        mail.hidden = false;
+        err.hidden = false;
+        err.textContent = "Flow necesita tu correo.";
+        emailInput.focus();
+        return;
+      }
+      pay(chosen, "/api/flow-checkout", { product: product, email: email }, "No se pudo abrir Flow");
+      return;
+    }
+    pay(chosen, "/api/checkout", { product: product }, "No se pudo abrir Mercado Pago");
+  });
+})();
+</script>
+</body>
+</html>

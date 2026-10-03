@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>iceroom — Pago</title>
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--text:#fff;--text-2:rgba(255,255,255,.62);--line:rgba(255,255,255,.14);--green:#30d158}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--text);
+  font-family:'DM Sans',system-ui,sans-serif;padding:1.5rem}
+main{width:min(32rem,100%);border:1px solid var(--line);border-radius:24px;padding:clamp(1.6rem,4vw,2.4rem);
+  background:radial-gradient(120% 80% at 100% 0%,rgba(191,90,242,.16),transparent 50%),rgba(255,255,255,.03)}
+.kicker{font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+h1{font-weight:700;letter-spacing:-.03em;font-size:clamp(1.8rem,5vw,2.4rem);margin:.45rem 0 .8rem}
+p{color:var(--text-2);line-height:1.5}
+.code{margin:1.2rem 0;padding:1rem 1.1rem;border-radius:16px;border:1px dashed var(--line);
+  font-family:ui-monospace,monospace;font-size:1.35rem;letter-spacing:.08em;text-align:center}
+a.btn,button.btn{display:block;margin-top:1rem;background:#fff;color:#000;text-decoration:none;text-align:center;
+  font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:.72rem;border:0;border-radius:999px;
+  padding:.95rem 1.2rem;cursor:pointer}
+.back{display:inline-block;margin-top:1.2rem;color:var(--text-2);font-size:.85rem}
+.ok{color:var(--green)}
+.steps{margin:1rem 0 0;padding-left:1.2rem;color:var(--text-2);line-height:1.6}
+.steps b{color:var(--text)}
+.copied{margin-top:.6rem;font-size:.85rem;color:var(--green)}
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">iceroom</div>
+  <h1 id="title">Confirmando el pago…</h1>
+  <p id="copy">Confirmando el pago…</p>
+  <div class="code" id="code" hidden></div>
+  <ol class="steps" id="steps" hidden>
+    <li>Toca el botón: copia tu código y abre Payhip.</li>
+    <li>En <b>Add coupon</b> pega el código. El total queda en <b>US$0</b>.</li>
+    <li>Escribe tu correo y confirma: la descarga aparece al tiro y Payhip te la manda a tu correo.</li>
+  </ol>
+  <a class="btn" id="go" hidden target="_blank" rel="noopener">Copiar código e ir a descargar</a>
+  <p class="copied" id="copied" hidden>Código copiado. Pégalo en "Add coupon".</p>
+  <a class="back" href="/">Volver a la tienda</a>
+</main>
+<script src="/gracias.js" defer></script>
+</body>
+</html>
