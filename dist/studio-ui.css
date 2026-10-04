@@ -1,0 +1,50 @@
+/* Shared monochrome UI. Product colours remain inside the original product. */
+:root{--bg:#080808;--bg-2:#101010;--bg-3:#181818;--text:#f7f7f7;--text-2:#b3b3b3;--text-3:#888;--border:#272727;--border-2:#424242;--glass-border:#303030;--green:#f7f7f7;--purple:#f7f7f7;--orange:#f7f7f7;--blue:#f7f7f7}
+[hidden]{display:none!important}
+::selection{color:#000;background:#fff}
+:focus-visible{outline:2px solid #fff!important;outline-offset:5px}
+html{scroll-padding-top:7rem}
+body.pay-open{overflow:hidden}
+.pay-sheet{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:1rem;background:rgba(0,0,0,.84);backdrop-filter:blur(8px)}
+.pay-sheet-card{position:relative;width:min(32rem,100%);max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain;border:1px solid #393939;border-radius:18px;padding:2rem;background:#101010;box-shadow:0 24px 100px #000}
+.pay-sheet:not([hidden]) .pay-sheet-card{animation:sheet-in .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes sheet-in{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:none}}
+.pay-x{position:absolute;right:1rem;top:1rem;width:36px;height:36px;border:1px solid #333;border-radius:50%;background:#171717;color:#fff;font-size:1.5rem;cursor:pointer;line-height:1}
+.pay-sheet .kicker{font-size:.65rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#999}
+.pay-sheet h2{font-family:var(--font-display);font-size:1.65rem;line-height:1.15;font-weight:600;letter-spacing:-.04em;margin:.65rem 2rem .5rem 0}
+.pay-sheet-price,.pay-sheet-note{color:#bbb;font-size:.85rem;margin:.25rem 0 1.25rem}
+.pay-choice{display:block;width:100%;min-height:50px;margin-top:.6rem;border-radius:9px;padding:.95rem 1rem;border:1px solid #fff;background:#fff;color:#000;font:600 .85rem var(--font-body);cursor:pointer;transition:background .2s,transform .2s}
+.pay-choice:hover{background:#ddd;transform:translateY(-1px)}
+.pay-choice.ghost{color:#fff;border:1px solid #393939;background:transparent}
+.pay-choice.ghost:hover{background:#222}
+.pay-choice:disabled,.pay-choice.pay-soon{opacity:.5;cursor:wait;transform:none}
+.pay-sheet .pay-close{width:100%;padding:.7rem;margin-top:.5rem;border:0;background:none;font:inherit;font-size:.8rem;color:#aaa;cursor:pointer}
+.pay-addon{display:flex;align-items:center;gap:.8rem;width:100%;margin:1rem 0;padding:1rem;border:1px solid #373737;border-radius:10px;background:#171717;color:#fff;cursor:pointer;text-align:left;font:inherit;transition:border-color .2s,background .2s}
+.pay-addon[aria-pressed="true"]{border-color:#fff;background:#242424}
+.pay-addon-check{flex:none;display:grid;place-items:center;width:30px;height:30px;border:1px solid #666;border-radius:6px;font-weight:700}
+.pay-addon[aria-pressed="true"] .pay-addon-check{color:#000;background:#fff;border-color:#fff}
+.pay-addon span:last-child{display:flex;flex-direction:column;gap:.25rem}
+.pay-addon b{font-size:.85rem}.pay-addon small{color:#aaa;font-size:.74rem;line-height:1.45}
+.pay-coupon{margin:1rem 0;padding:1rem;border:1px solid #292929;border-radius:10px;background:#0a0a0a}
+.pay-coupon>label{display:block;font-size:.76rem;font-weight:500;color:#bbb;margin-bottom:.6rem}
+.pay-coupon>div{display:flex;gap:.5rem}
+.pay-coupon input{min-width:0;flex:1;padding:.75rem;border:1px solid #333;border-radius:6px;background:#151515;color:#fff;font:inherit;font-size:.8rem;text-transform:uppercase}
+.pay-coupon button{padding:.65rem .9rem;border:0;border-radius:6px;background:#fff;color:#000;font:600 .8rem var(--font-body);cursor:pointer}
+.pay-coupon p{font-size:.75rem;color:#aaa;margin-top:.5rem}.pay-coupon p:empty{display:none}
+.pay-coupon p.ok{color:#fff}.pay-coupon p.error,.pay-status.error{color:#ffb3b3}
+.pay-status{font-size:.85rem;color:#bbb;margin:1rem 0}
+.flow-mail{display:block;margin-top:1rem;font-size:.8rem;color:#bbb}
+.flow-mail input{width:100%;padding:.9rem;margin-top:.5rem;border:1px solid #444;border-radius:8px;background:#0a0a0a;color:#fff;font:inherit}
+.pay-flow-link{color:#ccc;background:none;border:0;text-decoration:underline;cursor:pointer}
+/* Keep /fl visually continuous with the storefront. */
+.offer,.addon-card{background:#101010;border-color:#333}
+.addon-card{--pink:#fff}
+.pick:hover{border-color:#aaa}
+.pick[aria-checked="true"]{background:#222;border-color:#fff;box-shadow:none}
+.pick[aria-checked="true"] .pick-box{background:#fff;border-color:#fff}
+.pick[aria-checked="true"] .pick-box::before{color:#000}
+.addon-card.with-addon .addon-go{color:#000;background:#fff}
+.bonus{background:#111;border-color:#333}
+.video{border-radius:12px}.about img{filter:grayscale(1)}
+@media(max-width:600px){.pay-sheet{padding:0;align-items:end}.pay-sheet-card{width:100%;max-height:94dvh;border-radius:20px 20px 0 0;padding:1.75rem 1.25rem max(1.5rem,env(safe-area-inset-bottom))}.pay-sheet h2{font-size:1.5rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}

@@ -67,7 +67,9 @@ function request(claim, formData, deviceId) {
 // Forma real de window.MP_DEVICE_SESSION_ID (medida en la tienda el 30-sep-2026).
 const DEVICE_REAL = "armor." + "a".repeat(192) + "." + "b".repeat(32);
 
-test("un cupón de Payhip se valida y descuenta también en el checkout local", async () => {
+test("un cupón de Payhip se valida y descuenta sobre el precio vigente al crear el checkout", async (t) => {
+  // The flash sale has ended; intent amounts must use the regular price.
+  t.mock.timers.enable({ apis: ["Date"], now: new Date("2026-10-04T12:00:00.000Z") });
   const db = database();
   const env = { PAYMENTS_DB: db, PAYHIP_API_KEY: "payhip-secret" };
   const previous = globalThis.fetch;
@@ -84,8 +86,8 @@ test("un cupón de Payhip se valida y descuenta también en el checkout local", 
     const quote = await couponQuote(env, { key: "0QEeV", checkout: "b" }, "voces20", 9990);
     assert.deepEqual(quote, { code: "VOCES20", amount: 7992, discount: 1998, payhipUsage: 1 });
     const intent = await createIntent(env, "0QEeV", "mp", "", "voces20");
-    assert.equal(intent.amount, 7992);
-    assert.equal((await getIntent(env, intent.claim)).amount_clp, 7992);
+    assert.equal(intent.amount, 10392);
+    assert.equal((await getIntent(env, intent.claim)).amount_clp, 10392);
   } finally { globalThis.fetch = previous; db.close(); }
 });
 
