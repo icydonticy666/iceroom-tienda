@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>iceroom — Tienda</title>
-<meta name="description" content="Plugins, plantillas, cursos y drumkits de iceroom. Herramientas y sonidos para producir como un profesional.">
+<meta name="description" content="Plantillas de grabación, plugins Pritti y cursos de iceroom. Abre una sesión lista para grabar en FL Studio o Ableton. Descarga inmediata.">
 <meta name="theme-color" content="#080808">
 <link rel="icon" type="image/png" sizes="1024x1024" href="/favicon.png?v=20261003">
 <link rel="apple-touch-icon" href="/favicon.png?v=20261003">
@@ -13,12 +13,12 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="iceroom">
 <meta property="og:title" content="iceroom — Tienda">
-<meta property="og:description" content="Plugins, plantillas, cursos y drumkits de iceroom. Descarga inmediata tras la compra.">
+<meta property="og:description" content="Plantillas de grabación, plugins Pritti y cursos de iceroom. Descarga inmediata tras la compra.">
 <meta property="og:url" content="https://iceroom.cl/">
 <meta property="og:image" content="https://iceroom.cl/favicon.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iceroom — Tienda">
-<meta name="twitter:description" content="Plugins, plantillas, cursos y drumkits de iceroom. Descarga inmediata.">
+<meta name="twitter:description" content="Plantillas de grabación, plugins Pritti y cursos de iceroom. Descarga inmediata.">
 <meta name="twitter:image" content="https://iceroom.cl/favicon.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -264,8 +264,8 @@ footer p{color:var(--text-3);font-size:.8rem;margin-top:.75rem}
 footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(--text-2);
   border:1px solid var(--border);border-radius:9999px;padding:.5rem 1.1rem}
 </style>
-<link rel="stylesheet" href="/studio-ui.css?v=20261003d">
-<link rel="stylesheet" href="/storefront-refinements.css?v=20261003d">
+<link rel="stylesheet" href="/studio-ui.css?v=20261003e">
+<link rel="stylesheet" href="/storefront-refinements.css?v=20261003e">
 </head>
 <body>
 <a href="#contenido" class="skip-link">Ir al contenido</a>
@@ -276,8 +276,8 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
 <header>
     <a href="#" class="logo">iceroom</a>
     <nav class="hnav" id="store-navigation" aria-label="Navegación principal">
-      <a href="#plugins">Plugins</a>
       <a href="#plantillas">Plantillas</a>
+      <a href="#plugins">Plugins</a>
       <a href="#cursos">Cursos</a>
       <a href="#servicios">Servicios</a>
     </nav>
@@ -306,42 +306,102 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
     <h1>iceroom</h1>
     <p>Plantillas, plugins y mezcla del productor detrás de <strong style="color:var(--text)">8M+ streams</strong>. Graba y suena profesional desde tu home studio.</p>
     <div class="hero-cta">
-      <a class="buy" href="#plantillas">Ver la plantilla más vendida</a>
-      <a class="buy ghost" href="#servicios">Pedir mezcla · $69.99</a>
+      <a class="buy" href="#plantilla-fl">Ver la plantilla más vendida <span aria-hidden="true">↗</span></a>
+      <a class="buy ghost" href="#plugins">Explorar plugins Pritti</a>
     </div>
     <div class="hero-trust"><span>✓ Descarga inmediata</span><span>✓ Paga con tarjeta o PayPal — sin crear cuenta</span><span>✓ +130 productores ya compraron</span></div>
   </div>
 
-  <!-- SERVICIOS -->
-  <section class="cat" id="servicios">
-    <div class="cat-head"><h2>Servicios</h2><span class="tag">Trabajo 1 a 1 conmigo</span></div>
-    <div class="grid">
-
-      <article class="card">
-        <div class="card-media"><img src="img/tienda/mezcla-master.jpg" alt="Mezcla + Master profesional" loading="lazy"></div>
-        <div class="card-body">
-          <span class="by">by @icycold</span>
-          <h3>Mezcla + Master — 1 canción</h3>
-          <p>Tu tema listo para Spotify, YouTube e Instagram: mezcla de voz y beat + master con volumen competitivo. <strong style="color:var(--green)">2 rondas de ajustes · entrega en 5 días hábiles.</strong> Pagas aquí y me envías tus pistas.</p>
-          <div class="price-row"><span class="price">$69.99</span></div>
-          <a class="buy payhip-buy-button" data-theme="none" data-product="z6Bgp" href="https://payhip.com/b/z6Bgp" data-mp="z6Bgp">Pedir mezcla</a>
+  <!-- PLANTILLAS -->
+  <section class="cat" id="plantillas">
+    <div class="cat-head"><div><span class="section-index">01 / GRABA</span><h2>Plantillas</h2></div><span class="tag">FL Studio · Ableton</span></div>
+    <div class="catalog-toolbar"><p>Menos configurar. Más crear.</p><div class="template-filters" role="group" aria-label="Filtrar plantillas" hidden>
+      <button type="button" data-filter="all" aria-pressed="true">Todas</button><button type="button" data-filter="fl" aria-pressed="false">FL Studio</button><button type="button" data-filter="ableton" aria-pressed="false">Ableton</button><button type="button" data-filter="packs" aria-pressed="false">Packs</button>
+    </div></div>
+    <p class="sr-only" id="template-results" role="status" aria-live="polite"></p>
+    <div class="grid template-grid" id="template-products">
+      <article class="card template-feature" id="plantilla-fl" data-template="fl">
+        <div class="card-media feature-media">
+          <img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k2e6qhqktbunvj11nm1089e3b15.png" alt="Plantilla de Grabación FL Studio — portada original" loading="lazy">
+          <span class="badge">★ Más vendida</span>
+          <button type="button" class="demo-trigger" data-demo aria-label="Ver demo de la Plantilla FL Studio"><span class="demo-play" aria-hidden="true">▶</span><span>Así grabo mis voces<small>Ver demo con sonido</small></span><span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="card-body feature-body">
+          <span class="by">TU SESIÓN, LISTA PARA GRABAR</span>
+          <h3>Plantilla de Grabación — FL Studio</h3>
+          <p class="feature-lead">Abre la sesión. Graba tu voz.</p>
+          <p>Cadenas de efectos y ruteos configurados para empezar con la primera toma, sin armar la sesión desde cero.</p>
+          <ul class="feature-points"><li>Sesión .flp + guía de uso</li><li>Pritti Vocals incluido</li><li>Descarga después del pago</li></ul>
+          <div class="feature-purchase"><div class="price-row"><span class="price">$12.99</span><span class="price-unit">USD</span></div>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="0QEeV" href="https://payhip.com/b/0QEeV" data-mp="0QEeV" data-addon="xNaVU" data-addon-usd="$15.98" data-addon-href="/api/paypal-checkout?product=xNaVU">Quiero mi plantilla <span aria-hidden="true">↗</span></a></div>
+          <p class="feature-compat">FL Studio 20+ · Requiere plugins externos de pago. <a href="/fl#compatibilidad">Ver detalles y compatibilidad</a></p>
         </div>
       </article>
-
+      <article class="card" data-template="fl">
+        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k2e6p1o91jocngas6ujj01klm15.png" alt="Plantilla FL Studio — Plugins Nativos" loading="lazy"></div>
+        <div class="card-body">
+          <span class="by">FL Studio · Plugins nativos</span>
+          <h3>Plantilla FL — Plugins Nativos</h3>
+          <p>Plantilla de grabación hecha 100% con plugins nativos de FL Studio: sin plugins de pago, sin instalar nada extra. Abre, canta y graba. Incluye el .flp + guía.</p>
+          <div class="price-row"><span class="price">$3</span></div>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="34vZU" href="https://payhip.com/b/34vZU" data-mp="34vZU">Comprar</a>
+        </div>
+      </article>
+      <article class="card" data-template="ableton">
+        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k2e6q0ua1e11m29n4r1jgk1cdd15.png" alt="Plantilla Ableton Live" loading="lazy"></div>
+        <div class="card-body">
+          <span class="by">Vocal Template</span>
+          <h3>Plantilla de Grabación — Ableton Live</h3>
+          <p>Racks nativos de Ableton y ruteos listos para usar. Graba y mezcla voces al instante, sin perder tiempo montando cadenas. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
+          <div class="price-row"><span class="price">$12.99</span></div>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="3j8In" href="https://payhip.com/b/3j8In" data-mp="3j8In">Comprar</a>
+        </div>
+      </article>
+      <article class="card" data-template="packs">
+        <div class="card-media"><img src="img/tienda/bundle-plantillas.jpg" alt="Pack de Plantillas" loading="lazy"><span class="badge green">Ahorra $6</span></div>
+        <div class="card-body">
+          <span class="by">FL Studio + Ableton · el mejor valor</span>
+          <h3>Pack de Plantillas</h3>
+          <p>Las 2 plantillas (FL Studio y Ableton) en un pack — todo el flujo pro de grabación por menos que comprarlas por separado. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
+          <div class="price-row"><span class="price">$19.99</span><span class="price-old">$25.98</span></div>
+          <a class="buy" href="https://payhip.com/order?link=8Ljoq" data-mp="8Ljoq">Comprar</a>
+        </div>
+      </article>
+      <article class="card" data-template="packs">
+        <div class="card-media"><img src="img/tienda/pritti-studio.jpg" alt="Pritti Studio" loading="lazy"><span class="badge green">Ahorra $9</span></div>
+        <div class="card-body">
+          <span class="by">Plantillas + plugins</span>
+          <h3>Pritti Studio</h3>
+          <p>Las 2 plantillas de grabación (FL Studio y Ableton) y los 3 plugins Pritti — Vocals, Backroom y Eco — en un solo pack. <strong style="color:var(--green)">Ya trae la beta de Pritti Grip, y los próximos plugins Pritti entran gratis.</strong></p>
+          <div class="price-row"><span class="price">$29.99</span><span class="price-old">$39.95</span></div>
+          <a class="buy" href="https://payhip.com/order?link=QLfl6" data-mp="QLfl6">Comprar</a>
+        </div>
+      </article>
     </div>
   </section>
 
   <!-- PLUGINS -->
   <section class="cat" id="plugins">
-    <div class="cat-head"><h2>Plugins</h2><span class="tag">VST · con licencia</span></div>
+    <div class="cat-head"><div><span class="section-index">02 / DALE CARÁCTER</span><h2>Plugins</h2></div><span class="tag">VST · con licencia</span></div>
     <div class="grid">
+      <article class="card" id="pritti-grip">
+        <div class="card-media"><img src="img/tienda/pritti-grip.jpg" alt="Pritti Grip" loading="lazy"><span class="badge purple">Beta · Nuevo</span><button type="button" class="preview-trigger" data-preview aria-label="Ampliar interfaz de Pritti Grip">Ver interfaz <span aria-hidden="true">↗</span></button></div>
+        <div class="card-body">
+          <span class="by">Compresor vocal · VST3/AU · Win + Mac</span>
+          <h3>Pritti Grip</h3>
+          <p>El compresor vocal de iceroom para reggaeton, trap y R&amp;B: la voz al frente y pegada, sin aplastarla. 4 estilos (vocals, bus, hard, aggressive) y color de cinta, válvula o FET.</p>
+          <a class="promo-chip" href="#pritti-bundle" style="text-decoration:none">🧪 <strong>BETA v0.9</strong> · incluido si tienes el Pritti Bundle o Pritti Studio</a>
+          <div class="price-row"><span class="price">$6.99</span></div>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="Vo0Sq" href="https://payhip.com/b/Vo0Sq" data-mp="Vo0Sq">Consíguelo</a>
+        </div>
+      </article>
 
       <article class="card">
         <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1jtmpg28j1njir8nm1guee1h591a.png" alt="Pritti Backroom" loading="lazy"><button type="button" class="preview-trigger" data-preview aria-label="Ampliar interfaz de Pritti Backroom">Ver interfaz <span aria-hidden="true">↗</span></button></div>
         <div class="card-body">
           <span class="by">Reverb · VST3/AU · Win + Mac</span>
           <h3>Pritti Backroom</h3>
-          <p>El reverb de iceroom: profundidad, aire y ese ambiente de "trastienda" para tus voces y mezclas. Del sonido seco al espacio perfecto en un par de clics.</p>
+          <p>Dale espacio a tu voz. Desde un ambiente íntimo hasta un reverb profundo, con el carácter de Pritti.</p>
           <div class="price-row"><span class="price">$4.99</span></div>
           <a class="buy payhip-buy-button" data-theme="none" data-product="SQti3" href="https://payhip.com/b/SQti3" data-mp="SQti3">Consíguelo</a>
         </div>
@@ -352,7 +412,7 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
         <div class="card-body">
           <span class="by">Vocal FX · VST3/AU · Win + Mac</span>
           <h3>Pritti Vocals</h3>
-          <p>El plugin de voces de iceroom: brillo, presencia y ese pulido "pretty" en un clic. Deja tus voces al frente de la mezcla sin complicaciones.</p>
+          <p>Brillo, presencia y voces al frente de la mezcla. Un punto de partida rápido para encontrar tu sonido.</p>
           <div class="price-row"><span class="price">$3.99</span></div>
           <a class="buy payhip-buy-button" data-theme="none" data-product="Nqvbs" href="https://payhip.com/b/Nqvbs" data-mp="Nqvbs">Consíguelo</a>
         </div>
@@ -363,23 +423,9 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
         <div class="card-body">
           <span class="by">Delay / Eco · VST3/AU · Win + Mac</span>
           <h3>Pritti Eco</h3>
-          <p>El delay de iceroom: ecos con carácter, desde slaps sutiles hasta estelas infinitas con modulación.</p>
+          <p>Ecos con carácter. De un slap sutil a estelas largas con modulación: encuentra el espacio de tu voz.</p>
           <div class="price-row"><span class="price">$4.99</span></div>
           <a class="buy payhip-buy-button" data-theme="none" data-product="5JbVN" href="https://payhip.com/b/5JbVN" data-mp="5JbVN">Consíguelo</a>
-        </div>
-      </article>
-
-      <!-- PRITTI GRIP — beta 0.9 a la venta suelto desde el 1-oct-2026 (Vo0Sq, $6.99).
-           También incluido en Pritti Bundle (G5U1r) y Pritti Studio (QLfl6). -->
-      <article class="card" id="pritti-grip">
-        <div class="card-media"><img src="img/tienda/pritti-grip.jpg" alt="Pritti Grip" loading="lazy"><span class="badge purple">Beta · Nuevo</span><button type="button" class="preview-trigger" data-preview aria-label="Ampliar interfaz de Pritti Grip">Ver interfaz <span aria-hidden="true">↗</span></button></div>
-        <div class="card-body">
-          <span class="by">Compresor vocal · VST3/AU · Win + Mac</span>
-          <h3>Pritti Grip</h3>
-          <p>El compresor vocal de iceroom para reggaeton, trap y R&amp;B: la voz al frente y pegada, sin aplastarla. 4 estilos (vocals, bus, hard, aggressive) y color de cinta, válvula o FET.</p>
-          <a class="promo-chip" href="#pritti-bundle" style="text-decoration:none">🧪 <strong>BETA v0.9</strong> · incluido si tienes el Pritti Bundle o Pritti Studio</a>
-          <div class="price-row"><span class="price">$6.99</span></div>
-          <a class="buy payhip-buy-button" data-theme="none" data-product="Vo0Sq" href="https://payhip.com/b/Vo0Sq" data-mp="Vo0Sq">Consíguelo</a>
         </div>
       </article>
 
@@ -402,74 +448,9 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
     </div>
   </div>
 
-  <!-- PLANTILLAS -->
-  <section class="cat" id="plantillas">
-    <div class="cat-head"><h2>Plantillas</h2><span class="tag">FL Studio · Ableton</span></div>
-    <div class="grid">
-
-      <article class="card">
-        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k2e6p1o91jocngas6ujj01klm15.png" alt="Plantilla FL Studio — Plugins Nativos" loading="lazy"></div>
-        <div class="card-body">
-          <span class="by">FL Studio · Plugins nativos</span>
-          <h3>Plantilla FL — Plugins Nativos</h3>
-          <p>Plantilla de grabación hecha 100% con plugins nativos de FL Studio: sin plugins de pago, sin instalar nada extra. Abre, canta y graba. Incluye el .flp + guía.</p>
-          <div class="price-row"><span class="price">$3</span></div>
-          <a class="buy payhip-buy-button" data-theme="none" data-product="34vZU" href="https://payhip.com/b/34vZU" data-mp="34vZU">Comprar</a>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k2e6qhqktbunvj11nm1089e3b15.png" alt="Plantilla FL Studio" loading="lazy"><span class="badge orange">★ Más vendida</span></div>
-        <div class="card-body">
-          <span class="by">Vocal Template</span>
-          <h3>Plantilla de Grabación — FL Studio</h3>
-          <p>Abre, canta y graba. Cadenas de efectos y ruteos ya configurados para que tus voces suenen listas desde la primera toma. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
-          <div class="price-row"><span class="price">$12.99</span></div>
-          <a class="buy payhip-buy-button" data-theme="none" data-product="0QEeV" href="https://payhip.com/b/0QEeV" data-mp="0QEeV" data-addon="xNaVU" data-addon-usd="$15.98" data-addon-href="/api/paypal-checkout?product=xNaVU">Comprar</a>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k2e6q0ua1e11m29n4r1jgk1cdd15.png" alt="Plantilla Ableton Live" loading="lazy"></div>
-        <div class="card-body">
-          <span class="by">Vocal Template</span>
-          <h3>Plantilla de Grabación — Ableton Live</h3>
-          <p>Racks nativos de Ableton y ruteos listos para usar. Graba y mezcla voces al instante, sin perder tiempo montando cadenas. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
-          <div class="price-row"><span class="price">$12.99</span></div>
-          <a class="buy payhip-buy-button" data-theme="none" data-product="3j8In" href="https://payhip.com/b/3j8In" data-mp="3j8In">Comprar</a>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card-media"><img src="img/tienda/bundle-plantillas.jpg" alt="Pack de Plantillas" loading="lazy"><span class="badge green">Ahorra $6</span></div>
-        <div class="card-body">
-          <span class="by">FL Studio + Ableton · el mejor valor</span>
-          <h3>Pack de Plantillas</h3>
-          <p>Las 2 plantillas (FL Studio y Ableton) en un pack — todo el flujo pro de grabación por menos que comprarlas por separado. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
-          <div class="price-row"><span class="price">$19.99</span><span class="price-old">$25.98</span></div>
-          <a class="buy" href="https://payhip.com/order?link=8Ljoq" data-mp="8Ljoq">Comprar</a>
-        </div>
-      </article>
-
-      <!-- PRITTI STUDIO — bundle plantillas + plugins (22-sep-2026, QLfl6).
-           Precio de lista $29.99; ancla $39.95 = FL 12.99 + Ableton 12.99 + Vocals 3.99 + Backroom 4.99 + Eco 4.99. -->
-      <article class="card">
-        <div class="card-media"><img src="img/tienda/pritti-studio.jpg" alt="Pritti Studio" loading="lazy"><span class="badge green">Ahorra $9</span></div>
-        <div class="card-body">
-          <span class="by">Plantillas + plugins</span>
-          <h3>Pritti Studio</h3>
-          <p>Las 2 plantillas de grabación (FL Studio y Ableton) y los 3 plugins Pritti — Vocals, Backroom y Eco — en un solo pack. <strong style="color:var(--green)">Ya trae la beta de Pritti Grip, y los próximos plugins Pritti entran gratis.</strong></p>
-          <div class="price-row"><span class="price">$29.99</span><span class="price-old">$39.95</span></div>
-          <a class="buy" href="https://payhip.com/order?link=QLfl6" data-mp="QLfl6">Comprar</a>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
   <!-- CURSOS -->
   <section class="cat" id="cursos">
-    <div class="cat-head"><h2>Cursos</h2><span class="tag">Acceso de por vida</span></div>
+    <div class="cat-head"><div><span class="section-index">03 / APRENDE</span><h2>Cursos</h2></div><span class="tag">Acceso de por vida</span></div>
     <div class="grid">
 
       <article class="card">
@@ -512,6 +493,25 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
       </div>
     </div>
   </div>
+
+  <!-- SERVICIOS -->
+  <section class="cat" id="servicios">
+    <div class="cat-head"><div><span class="section-index">04 / TERMINA TU CANCIÓN</span><h2>Servicios</h2></div><span class="tag">Trabajo 1 a 1 conmigo</span></div>
+    <div class="grid">
+
+      <article class="card">
+        <div class="card-media"><img src="img/tienda/mezcla-master.jpg" alt="Mezcla + Master profesional" loading="lazy"></div>
+        <div class="card-body">
+          <span class="by">by @icycold</span>
+          <h3>Mezcla + Master — 1 canción</h3>
+          <p>Tu tema listo para Spotify, YouTube e Instagram: mezcla de voz y beat + master con volumen competitivo. <strong style="color:var(--green)">2 rondas de ajustes · entrega en 5 días hábiles.</strong> Pagas aquí y me envías tus pistas.</p>
+          <div class="price-row"><span class="price">$69.99</span></div>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="z6Bgp" href="https://payhip.com/b/z6Bgp" data-mp="z6Bgp">Pedir mezcla</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
 
   <!-- CÓMO FUNCIONA -->
   <section class="cat" id="como-funciona">
@@ -560,24 +560,25 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
 
   <footer>
     <div class="fmark">iceroom</div>
-    <p>Descarga inmediata · PayPal, o débito y tarjeta en pesos · Soporte por DM en @iceroomcl</p>
+    <p>Descarga inmediata · PayPal, o débito y tarjeta en pesos · Soporte por DM en <a href="https://instagram.com/iceroomcl/" target="_blank" rel="noopener">@iceroomcl ↗</a></p>
   </footer>
 
 </div>
 
 <div class="product-preview" id="product-preview" hidden>
   <article class="preview-panel" role="dialog" aria-modal="true" aria-labelledby="preview-title" tabindex="-1">
-    <button type="button" class="preview-close" data-preview-close aria-label="Cerrar vista de interfaz">×</button>
+    <button type="button" class="preview-close" data-preview-close aria-label="Cerrar vista previa">×</button>
     <p class="preview-eyebrow">Pritti / Vista de interfaz</p>
     <h3 id="preview-title">Interfaz del plugin</h3>
     <img alt="Interfaz del plugin ampliada">
+    <video id="preview-video" controls playsinline preload="none" poster="/img/fl/poster.jpg" aria-label="Demo de grabación con la Plantilla FL Studio" hidden></video>
     <div class="preview-footer"><span class="price"></span><a class="buy preview-buy payhip-buy-button" href="#" data-mp="">Comprar plugin</a></div>
   </article>
 </div>
 
 <!-- Checkout propio: PayPal se abre en una página completa para funcionar en navegadores internos. -->
 <script src="/checkout.js?v=20261003b" defer></script>
-<script src="/storefront-refinements.js?v=20261003d" defer></script>
+<script src="/storefront-refinements.js?v=20261003e" defer></script>
 
 
 
