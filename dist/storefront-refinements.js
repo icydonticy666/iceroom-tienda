@@ -40,7 +40,7 @@
         if (!previewVideo.getAttribute('src')) previewVideo.src = '/img/fl/demo.mp4';
         previewVideo.currentTime = 0;
       } else {
-        previewImage.src = image.currentSrc || image.src; previewImage.alt = image.alt + ' — interfaz ampliada';
+        previewImage.src = image.currentSrc || image.src; previewImage.alt = 'Interfaz de ' + previewTitle.textContent + ' — vista ampliada';
       }
       previewPrice.textContent = card.querySelector('.price').textContent;
       previewBuy.href = buy.href; previewBuy.dataset.mp = buy.dataset.mp;
@@ -110,7 +110,7 @@
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   var meteors = document.getElementById('meteors');
   if (!reducedMotion.matches) {
-    for (var i=0; i<10; i++) {
+    for (var i=0; i<4; i++) {
       var meteor = document.createElement('span'); meteor.className = 'meteor';
       meteor.style.top = Math.random()*100+'%'; meteor.style.left = Math.random()*100+'%';
       meteor.style.animationDuration = (Math.random()*5+5).toFixed(1)+'s'; meteor.style.animationDelay = (Math.random()*9).toFixed(1)+'s'; meteors.appendChild(meteor);

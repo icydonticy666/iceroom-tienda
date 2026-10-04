@@ -264,13 +264,14 @@ footer p{color:var(--text-3);font-size:.8rem;margin-top:.75rem}
 footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(--text-2);
   border:1px solid var(--border);border-radius:9999px;padding:.5rem 1.1rem}
 </style>
-<link rel="stylesheet" href="/studio-ui.css?v=20261003e">
-<link rel="stylesheet" href="/storefront-refinements.css?v=20261003e">
+<link rel="stylesheet" href="/studio-ui.css?v=20261003f">
+<link rel="stylesheet" href="/storefront-refinements.css?v=20261003f">
+<link rel="stylesheet" href="/product-art.css?v=20261004a">
+<link rel="stylesheet" href="/collection-explorer.css?v=20261004a">
 </head>
 <body>
 <a href="#contenido" class="skip-link">Ir al contenido</a>
 
-<div id="meteors"></div>
 <div class="wrap">
 
 <header>
@@ -287,21 +288,37 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
 
   <!-- NOVEDADES — lo más urgente aparece antes del hero. -->
   <section class="news" id="novedades">
-    <div class="news-head"><span class="live" aria-hidden="true"></span><h2>Novedades y destacados</h2><span class="rule"></span><span class="news-hint" aria-hidden="true">Desliza →</span></div>
+    <div class="news-head"><span class="live" aria-hidden="true"></span><h2>Destacados</h2><span class="rule"></span><span class="news-hint" aria-hidden="true">Desliza →</span></div>
     <div class="news-grid" tabindex="0" aria-label="Productos destacados: desliza horizontalmente para ver más">
       <a class="news-item" href="https://payhip.com/b/Vo0Sq" data-mp="Vo0Sq">
-        <div class="news-thumb"><img src="img/tienda/pritti-grip.jpg" alt="Pritti Grip" width="64" height="64"></div><div class="news-txt"><span class="news-tag">Beta disponible</span><h3>Pritti Grip</h3><p>Compresión vocal con carácter.</p><div class="news-price"><span class="price">$6.99</span></div></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="news-thumb"><div class="product-art art-grip art-mini" role="img" aria-label="Pritti Grip">
+          <div class="art-top"><span>06 / PRITTI GRIP</span><span class="art-brand">iceroom</span></div>
+          <div class="art-heading"><span>GRIP</span></div>
+          <img class="art-object art-plugin-ui" src="/img/art/grip-ui.webp" alt="Interfaz real de Pritti grip" loading="lazy" decoding="async">
+          <div class="art-bottom"><span>COMPRESIÓN VOCAL / BETA 0.9</span><span class="art-registration" aria-hidden="true"></span></div>
+        </div></div><div class="news-txt"><span class="news-tag">Compresor vocal</span><h3>Pritti Grip</h3><p>Compresión vocal con carácter.</p><div class="news-price"><span class="price">$6.99</span></div></div><span class="arrow" aria-hidden="true">→</span>
       </a>
       <a class="news-item" href="https://payhip.com/order?link=QLfl6" data-mp="QLfl6">
-        <div class="news-thumb"><img src="img/tienda/pritti-studio.jpg" alt="Pritti Studio" width="64" height="64"></div><div class="news-txt"><span class="news-tag">Plantillas + plugins</span><h3>Pritti Studio</h3><p>Tu sesión y el ecosistema Pritti.</p><div class="news-price"><span class="price">$29.99</span></div></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="news-thumb"><div class="product-art art-studio art-mini" role="img" aria-label="Pritti Studio">
+          <div class="art-top"><span>05 / PLANTILLAS + PLUGINS</span><span class="art-brand">iceroom</span></div>
+          <div class="art-heading"><span>STUDIO</span></div>
+          <img class="art-object art-plugin-ui" src="/img/art/vocals-ui.webp" alt="Interfaz real de Pritti Vocals" loading="lazy" decoding="async">
+          <div class="art-bottom"><span>EL ECOSISTEMA PRITTI / LISTO PARA CREAR</span><span class="art-registration" aria-hidden="true"></span></div>
+        </div></div><div class="news-txt"><span class="news-tag">Plantillas + plugins</span><h3>Pritti Studio</h3><p>Tu sesión y el ecosistema Pritti.</p><div class="news-price"><span class="price">$29.99</span></div></div><span class="arrow" aria-hidden="true">→</span>
       </a>
       <a class="news-item" href="https://payhip.com/b/34vZU" data-mp="34vZU">
-        <div class="news-thumb"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=180/https://pe56d.s3.amazonaws.com/o_1k2e6p1o91jocngas6ujj01klm15.png" alt="Plantilla FL con plugins nativos" width="64" height="64"></div><div class="news-txt"><span class="news-tag">Para empezar</span><h3>Plantilla FL Nativa</h3><p>Con los plugins de FL Studio.</p><div class="news-price"><span class="price">$3</span></div></div><span class="arrow" aria-hidden="true">→</span>
+        <div class="news-thumb"><div class="product-art art-fl-native art-mini" role="img" aria-label="Plantilla FL Nativa">
+          <div class="art-top"><span>02 / FL STUDIO / PLUGINS NATIVOS</span><span class="art-brand">iceroom</span></div>
+          <div class="art-heading"><span>NATIVE</span></div>
+          <img class="art-object art-fl-logo" src="/img/art/fl-logo.webp" alt="" loading="lazy" decoding="async">
+          <div class="art-bottom"><span>TU SESIÓN / SOLO PLUGINS NATIVOS</span><span class="art-registration" aria-hidden="true"></span></div>
+        </div></div><div class="news-txt"><span class="news-tag">Para empezar</span><h3>Plantilla FL Nativa</h3><p>Con los plugins de FL Studio.</p><div class="news-price"><span class="price">$3</span></div></div><span class="arrow" aria-hidden="true">→</span>
       </a>
     </div>
   </section>
 
   <div class="hero" id="contenido">
+    <div id="meteors" aria-hidden="true"></div>
     <div class="kicker">Tienda · Productos digitales</div>
     <h1>iceroom</h1>
     <p>Plantillas, plugins y mezcla del productor detrás de <strong style="color:var(--text)">8M+ streams</strong>. Graba y suena profesional desde tu home studio.</p>
@@ -322,7 +339,12 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
     <div class="grid template-grid" id="template-products">
       <article class="card template-feature" id="plantilla-fl" data-template="fl">
         <div class="card-media feature-media">
-          <img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k2e6qhqktbunvj11nm1089e3b15.png" alt="Plantilla de Grabación FL Studio — portada original" loading="lazy">
+          <div class="product-art art-fl" role="img" aria-label="Plantilla de Grabación — FL Studio">
+          <div class="art-top"><span>01 / VOCAL TEMPLATE</span><span class="art-brand">iceroom</span></div>
+          <div class="art-heading"><span>FL STUDIO</span></div>
+          <img class="art-object art-fl-logo" src="/img/art/fl-logo.webp" alt="" loading="lazy" decoding="async">
+          <div class="art-bottom"><span>ABRE LA SESIÓN. GRABA TU VOZ.</span><span class="art-registration" aria-hidden="true"></span></div>
+        </div>
           <span class="badge">★ Más vendida</span>
           <button type="button" class="demo-trigger" data-demo aria-label="Ver demo de la Plantilla FL Studio"><span class="demo-play" aria-hidden="true">▶</span><span>Así grabo mis voces<small>Ver demo con sonido</small></span><span aria-hidden="true">↗</span></button>
         </div>
@@ -338,7 +360,12 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
         </div>
       </article>
       <article class="card" data-template="fl">
-        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k2e6p1o91jocngas6ujj01klm15.png" alt="Plantilla FL Studio — Plugins Nativos" loading="lazy"></div>
+        <div class="card-media"><div class="product-art art-fl-native" role="img" aria-label="Plantilla FL — Plugins Nativos">
+          <div class="art-top"><span>02 / FL STUDIO / PLUGINS NATIVOS</span><span class="art-brand">iceroom</span></div>
+          <div class="art-heading"><span>NATIVE</span></div>
+          <img class="art-object art-fl-logo" src="/img/art/fl-logo.webp" alt="" loading="lazy" decoding="async">
+          <div class="art-bottom"><span>TU SESIÓN / SOLO PLUGINS NATIVOS</span><span class="art-registration" aria-hidden="true"></span></div>
+        </div></div>
         <div class="card-body">
           <span class="by">FL Studio · Plugins nativos</span>
           <h3>Plantilla FL — Plugins Nativos</h3>
@@ -348,7 +375,12 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
         </div>
       </article>
       <article class="card" data-template="ableton">
-        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k2e6q0ua1e11m29n4r1jgk1cdd15.png" alt="Plantilla Ableton Live" loading="lazy"></div>
+        <div class="card-media"><div class="product-art art-ableton" role="img" aria-label="Plantilla de Grabación — Ableton Live">
+          <div class="art-top"><span>03 / VOCAL TEMPLATE</span><span class="art-brand">iceroom</span></div>
+          <div class="art-heading"><span>ABLETON</span></div>
+          <img class="art-object art-ableton-logo" src="/img/art/ableton-logo.svg" alt="" loading="lazy" decoding="async">
+          <div class="art-bottom"><span>LIVE / MENOS CONFIGURAR. MÁS CREAR.</span><span class="art-registration" aria-hidden="true"></span></div>
+        </div></div>
         <div class="card-body">
           <span class="by">Vocal Template</span>
           <h3>Plantilla de Grabación — Ableton Live</h3>
@@ -358,22 +390,22 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
         </div>
       </article>
       <article class="card" data-template="packs">
-        <div class="card-media"><img src="img/tienda/bundle-plantillas.jpg" alt="Pack de Plantillas" loading="lazy"><span class="badge green">Ahorra $6</span></div>
+        <div class="card-media"><div class="product-art art-templates art-composed" role="img" aria-label="TEMPLATES: FL STUDIO + ABLETON / PRITTI VOCALS INCLUIDO"><div class="art-top"><span>04 / PACK DE PLANTILLAS</span><span class="art-brand">iceroom</span></div><div class="art-heading"><span>TEMPLATES</span></div><div class="art-board template-board"><div class="board-platform"><div><img class="" src="/img/art/fl-logo.webp" alt="" loading="lazy" decoding="async"><b>FL STUDIO</b></div><div><img class="" src="/img/art/ableton-logo.svg" alt="" loading="lazy" decoding="async"><b>ABLETON</b></div></div><span class="board-caption">DOS SESIONES LISTAS PARA GRABAR</span></div><div class="art-bottom"><span>FL STUDIO + ABLETON / PRITTI VOCALS INCLUIDO</span><span class="art-registration" aria-hidden="true"></span></div></div><span class="badge green">Ahorra $6</span></div>
         <div class="card-body">
           <span class="by">FL Studio + Ableton · el mejor valor</span>
           <h3>Pack de Plantillas</h3>
           <p>Las 2 plantillas (FL Studio y Ableton) en un pack — todo el flujo pro de grabación por menos que comprarlas por separado. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
-          <div class="price-row"><span class="price">$19.99</span><span class="price-old">$25.98</span></div>
+          <button type="button" class="explore-kit" hidden data-kit="templates"><span>Explorar qué incluye</span><span aria-hidden="true">↗</span></button><div class="price-row"><span class="price">$19.99</span><span class="price-old">$25.98</span></div>
           <a class="buy" href="https://payhip.com/order?link=8Ljoq" data-mp="8Ljoq">Comprar</a>
         </div>
       </article>
       <article class="card" data-template="packs">
-        <div class="card-media"><img src="img/tienda/pritti-studio.jpg" alt="Pritti Studio" loading="lazy"><span class="badge green">Ahorra $9</span></div>
+        <div class="card-media"><div class="product-art art-studio art-composed" role="img" aria-label="STUDIO: FL + ABLETON / EL ECOSISTEMA PRITTI"><div class="art-top"><span>05 / PLANTILLAS + PLUGINS</span><span class="art-brand">iceroom</span></div><div class="art-heading"><span>STUDIO</span></div><div class="art-board studio-board"><div class="board-templates"><div class="board-platform"><div><img class="" src="/img/art/fl-logo.webp" alt="" loading="lazy" decoding="async"><b>FL STUDIO</b></div><div><img class="" src="/img/art/ableton-logo.svg" alt="" loading="lazy" decoding="async"><b>ABLETON</b></div></div><b>2 PLANTILLAS</b></div><div class="board-suite"><div class="board-plugin"><img class="" src="/img/art/vocals-ui.webp" alt="" loading="lazy" decoding="async"><span>VOCALS</span></div><div class="board-plugin"><img class="" src="/img/art/backroom-ui.webp" alt="" loading="lazy" decoding="async"><span>BACKROOM</span></div><div class="board-plugin"><img class="" src="/img/art/eco-ui.webp" alt="" loading="lazy" decoding="async"><span>ECO</span></div><div class="board-plugin"><img class="" src="/img/art/grip-ui.webp" alt="" loading="lazy" decoding="async"><span>GRIP · BETA</span></div></div></div><div class="art-bottom"><span>FL + ABLETON / EL ECOSISTEMA PRITTI</span><span class="art-registration" aria-hidden="true"></span></div></div><span class="badge green">Ahorra $9</span></div>
         <div class="card-body">
           <span class="by">Plantillas + plugins</span>
           <h3>Pritti Studio</h3>
           <p>Las 2 plantillas de grabación (FL Studio y Ableton) y los 3 plugins Pritti — Vocals, Backroom y Eco — en un solo pack. <strong style="color:var(--green)">Ya trae la beta de Pritti Grip, y los próximos plugins Pritti entran gratis.</strong></p>
-          <div class="price-row"><span class="price">$29.99</span><span class="price-old">$39.95</span></div>
+          <button type="button" class="explore-kit" hidden data-kit="studio"><span>Explorar qué incluye</span><span aria-hidden="true">↗</span></button><div class="price-row"><span class="price">$29.99</span><span class="price-old">$39.95</span></div>
           <a class="buy" href="https://payhip.com/order?link=QLfl6" data-mp="QLfl6">Comprar</a>
         </div>
       </article>
@@ -385,7 +417,12 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
     <div class="cat-head"><div><span class="section-index">02 / DALE CARÁCTER</span><h2>Plugins</h2></div><span class="tag">VST · con licencia</span></div>
     <div class="grid">
       <article class="card" id="pritti-grip">
-        <div class="card-media"><img src="img/tienda/pritti-grip.jpg" alt="Pritti Grip" loading="lazy"><span class="badge purple">Beta · Nuevo</span><button type="button" class="preview-trigger" data-preview aria-label="Ampliar interfaz de Pritti Grip">Ver interfaz <span aria-hidden="true">↗</span></button></div>
+        <div class="card-media"><div class="product-art art-grip" role="img" aria-label="Pritti Grip">
+          <div class="art-top"><span>06 / PRITTI GRIP</span><span class="art-brand">iceroom</span></div>
+          <div class="art-heading"><span>GRIP</span></div>
+          <img class="art-object art-plugin-ui" src="/img/art/grip-ui.webp" alt="Interfaz real de Pritti grip" loading="lazy" decoding="async">
+          <div class="art-bottom"><span>COMPRESIÓN VOCAL / BETA 0.9</span><span class="art-registration" aria-hidden="true"></span></div>
+        </div><span class="badge purple">Beta</span><button type="button" class="preview-trigger" data-preview aria-label="Ampliar interfaz de Pritti Grip">Ver interfaz <span aria-hidden="true">↗</span></button></div>
         <div class="card-body">
           <span class="by">Compresor vocal · VST3/AU · Win + Mac</span>
           <h3>Pritti Grip</h3>
@@ -397,7 +434,12 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
       </article>
 
       <article class="card">
-        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1jtmpg28j1njir8nm1guee1h591a.png" alt="Pritti Backroom" loading="lazy"><button type="button" class="preview-trigger" data-preview aria-label="Ampliar interfaz de Pritti Backroom">Ver interfaz <span aria-hidden="true">↗</span></button></div>
+        <div class="card-media"><div class="product-art art-backroom" role="img" aria-label="Pritti Backroom">
+          <div class="art-top"><span>07 / PRITTI BACKROOM</span><span class="art-brand">iceroom</span></div>
+          <div class="art-heading"><span>BACKROOM</span></div>
+          <img class="art-object art-plugin-ui" src="/img/art/backroom-ui.webp" alt="Interfaz real de Pritti backroom" loading="lazy" decoding="async">
+          <div class="art-bottom"><span>REVERB / DALE ESPACIO A TU VOZ</span><span class="art-registration" aria-hidden="true"></span></div>
+        </div><button type="button" class="preview-trigger" data-preview aria-label="Ampliar interfaz de Pritti Backroom">Ver interfaz <span aria-hidden="true">↗</span></button></div>
         <div class="card-body">
           <span class="by">Reverb · VST3/AU · Win + Mac</span>
           <h3>Pritti Backroom</h3>
@@ -408,7 +450,12 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
       </article>
 
       <article class="card">
-        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1jt9c2ld217asd3l1kk99hd1orm15.png" alt="Pritti Vocals" loading="lazy"><button type="button" class="preview-trigger" data-preview aria-label="Ampliar interfaz de Pritti Vocals">Ver interfaz <span aria-hidden="true">↗</span></button></div>
+        <div class="card-media"><div class="product-art art-vocals" role="img" aria-label="Pritti Vocals">
+          <div class="art-top"><span>08 / PRITTI VOCALS</span><span class="art-brand">iceroom</span></div>
+          <div class="art-heading"><span>VOCALS</span></div>
+          <img class="art-object art-plugin-ui" src="/img/art/vocals-ui.webp" alt="Interfaz real de Pritti vocals" loading="lazy" decoding="async">
+          <div class="art-bottom"><span>VOCAL FX / TU VOZ AL FRENTE</span><span class="art-registration" aria-hidden="true"></span></div>
+        </div><button type="button" class="preview-trigger" data-preview aria-label="Ampliar interfaz de Pritti Vocals">Ver interfaz <span aria-hidden="true">↗</span></button></div>
         <div class="card-body">
           <span class="by">Vocal FX · VST3/AU · Win + Mac</span>
           <h3>Pritti Vocals</h3>
@@ -419,7 +466,12 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
       </article>
 
       <article class="card">
-        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1k21gmnc1645dhuk6s1ch06e41f.png" alt="Pritti Eco" loading="lazy"><button type="button" class="preview-trigger" data-preview aria-label="Ampliar interfaz de Pritti Eco">Ver interfaz <span aria-hidden="true">↗</span></button></div>
+        <div class="card-media"><div class="product-art art-eco" role="img" aria-label="Pritti Eco">
+          <div class="art-top"><span>09 / PRITTI ECO</span><span class="art-brand">iceroom</span></div>
+          <div class="art-heading"><span>ECO</span></div>
+          <img class="art-object art-plugin-ui" src="/img/art/eco-ui.webp" alt="Interfaz real de Pritti eco" loading="lazy" decoding="async">
+          <div class="art-bottom"><span>DELAY / ECOS CON CARÁCTER</span><span class="art-registration" aria-hidden="true"></span></div>
+        </div><button type="button" class="preview-trigger" data-preview aria-label="Ampliar interfaz de Pritti Eco">Ver interfaz <span aria-hidden="true">↗</span></button></div>
         <div class="card-body">
           <span class="by">Delay / Eco · VST3/AU · Win + Mac</span>
           <h3>Pritti Eco</h3>
@@ -434,7 +486,7 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
 
   <!-- PRITTI BUNDLE — EARLY ACCESS (estrella) -->
   <div class="bundle" id="pritti-bundle">
-    <div class="bundle-inner">
+    <div class="bundle-inner has-art"><div class="bundle-art"><div class="product-art art-pritti-bundle art-composed" role="img" aria-label="PRITTI: CUATRO PLUGINS / UN MISMO SONIDO"><div class="art-top"><span>13 / ECOSISTEMA PRITTI</span><span class="art-brand">iceroom</span></div><div class="art-heading"><span>PRITTI</span></div><div class="art-board pritti-board"><div class="board-plugin"><img class="" src="/img/art/vocals-ui.webp" alt="" loading="lazy" decoding="async"><span>VOCALS / VOZ</span></div><div class="board-plugin"><img class="" src="/img/art/backroom-ui.webp" alt="" loading="lazy" decoding="async"><span>BACKROOM / REVERB</span></div><div class="board-plugin"><img class="" src="/img/art/eco-ui.webp" alt="" loading="lazy" decoding="async"><span>ECO / DELAY</span></div><div class="board-plugin"><img class="" src="/img/art/grip-ui.webp" alt="" loading="lazy" decoding="async"><span>GRIP / COMPRESOR · BETA</span></div></div><div class="art-bottom"><span>CUATRO PLUGINS / UN MISMO SONIDO</span><span class="art-registration" aria-hidden="true"></span></div></div></div>
       <div class="txt">
         <div class="tag">★ Early Access · Founder's Edition</div>
         <h2>Pritti Bundle</h2>
@@ -443,7 +495,7 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
       <div class="side">
         <span class="price">$19.99</span>
         <div class="save">★ Precio fundador · subirá con nuevos lanzamientos</div>
-        <a class="buy" href="https://payhip.com/order?link=G5U1r" data-mp="G5U1r">Asegurar mi acceso</a>
+        <button type="button" class="explore-kit" hidden data-kit="pritti"><span>Explorar los plugins</span><span aria-hidden="true">↗</span></button><a class="buy" href="https://payhip.com/order?link=G5U1r" data-mp="G5U1r">Asegurar mi acceso</a>
       </div>
     </div>
   </div>
@@ -454,23 +506,23 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
     <div class="grid">
 
       <article class="card">
-        <div class="card-media"><img src="https://payhip.com/cdn-cgi/image/format=auto,width=750/https://pe56d.s3.amazonaws.com/o_1jt7pt2mc1mng1e6v1842dst9pk1i.jpg" alt="Masterclass Mezcla Pro" loading="lazy"></div>
+        <div class="card-media"><div class="product-art art-masterclass art-composed" role="img" aria-label="MEZCLA PRO: APRENDE EL PROCESO / PRITTI VOCALS INCLUIDO"><div class="art-top"><span>10 / MASTERCLASS</span><span class="art-brand">iceroom</span></div><div class="art-heading"><span>MEZCLA PRO</span></div><div class="art-board course-board"><div class="board-portrait"><img class="" src="/img/art/icycold.webp" alt="" loading="lazy" decoding="async"><span>CON ICYCOLD</span></div><div class="board-syllabus"><span class="board-kicker">DOS TEMPORADAS</span><strong>De la toma<br>a la mezcla.</strong><ul><li>Grabación</li><li>EQ y compresión</li><li>Balance</li><li>Sesiones reales</li></ul></div></div><div class="art-bottom"><span>APRENDE EL PROCESO / PRITTI VOCALS INCLUIDO</span><span class="art-registration" aria-hidden="true"></span></div></div></div>
         <div class="card-body">
           <span class="by">by @icycold</span>
           <h3>Masterclass: Mezcla Pro</h3>
           <p>El proceso de mezcla de icycold, paso a paso: grabación, ecualización, compresión, balance y sesiones de mezcla reales. Dos temporadas completas. <strong style="color:var(--green)">+ Pritti Vocals de regalo.</strong></p>
-          <div class="price-row"><span class="price">$29.99</span></div>
+          <button type="button" class="explore-kit" hidden data-kit="masterclass"><span>Explorar la masterclass</span><span aria-hidden="true">↗</span></button><div class="price-row"><span class="price">$29.99</span></div>
           <a class="buy payhip-buy-button" data-theme="none" data-product="a8IWu" href="https://payhip.com/b/a8IWu" data-mp="a8IWu">Comprar</a>
         </div>
       </article>
 
       <article class="card">
-        <div class="card-media"><img src="img/tienda/bundle.jpg" alt="The Ultimate Bundle"></div>
+        <div class="card-media"><div class="product-art art-ultimate art-composed" role="img" aria-label="ULTIMATE: APRENDE / GRABA / MEZCLA"><div class="art-top"><span>11 / THE ULTIMATE BUNDLE</span><span class="art-brand">iceroom</span></div><div class="art-heading"><span>ULTIMATE</span></div><div class="art-board ultimate-board"><div class="board-course"><div class="board-portrait"><img class="" src="/img/art/icycold.webp" alt="" loading="lazy" decoding="async"><span>CON ICYCOLD</span></div><b>MEZCLA PRO</b><small>Curso completo</small></div><div class="board-templates"><div class="board-platform"><div><img class="" src="/img/art/fl-logo.webp" alt="" loading="lazy" decoding="async"><b>FL STUDIO</b></div><div><img class="" src="/img/art/ableton-logo.svg" alt="" loading="lazy" decoding="async"><b>ABLETON</b></div></div><b>2 PLANTILLAS</b></div><div class="board-fx"><div class="board-fx-images"><img src="/img/art/vocals-ui.webp" alt="" loading="lazy" decoding="async"><img src="/img/art/backroom-ui.webp" alt="" loading="lazy" decoding="async"></div><b>2 PLUGINS PRITTI</b><small>Vocals + Backroom</small></div></div><div class="art-bottom"><span>APRENDE / GRABA / MEZCLA</span><span class="art-registration" aria-hidden="true"></span></div></div></div>
         <div class="card-body">
           <span class="by">by @icycold</span>
           <h3>The Ultimate Bundle</h3>
           <p>Todo el sistema iceroom en un pack: el curso completo de mezcla + las 2 plantillas (FL Studio y Ableton) + <strong style="color:var(--green)">los plugins Pritti Vocals y Pritti Backroom incluidos.</strong></p>
-          <div class="price-row"><span class="price">$59.99</span></div>
+          <button type="button" class="explore-kit" hidden data-kit="ultimate"><span>Explorar qué incluye</span><span aria-hidden="true">↗</span></button><div class="price-row"><span class="price">$59.99</span></div>
           <a class="buy" href="https://payhip.com/order?link=IiHTG" data-mp="IiHTG">Comprar</a>
         </div>
       </article>
@@ -500,7 +552,12 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
     <div class="grid">
 
       <article class="card">
-        <div class="card-media"><img src="img/tienda/mezcla-master.jpg" alt="Mezcla + Master profesional" loading="lazy"></div>
+        <div class="card-media"><div class="product-art art-mix art-type-only" role="img" aria-label="Mezcla + Master — 1 canción">
+          <div class="art-top"><span>12 / MEZCLA + MASTER / 1 CANCIÓN</span><span class="art-brand">iceroom</span></div>
+          <div class="art-heading"><span>MEZCLA</span><span>MASTER</span></div>
+
+          <div class="art-bottom"><span>TU CANCIÓN / LISTA PARA PUBLICAR</span><span class="art-registration" aria-hidden="true"></span></div>
+        </div></div>
         <div class="card-body">
           <span class="by">by @icycold</span>
           <h3>Mezcla + Master — 1 canción</h3>
@@ -576,9 +633,12 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
   </article>
 </div>
 
+<dialog id="kit-dialog" aria-labelledby="kit-title"><button type="button" class="kit-close" aria-label="Cerrar contenido">×</button><p class="kit-eyebrow">ICEROOM / EXPLORA TU PRÓXIMO PASO</p><h2 id="kit-title"></h2><p id="kit-intro"></p><div id="kit-tabs" role="tablist" aria-label="Contenido del producto"></div><div id="kit-content" role="tabpanel" tabindex="0"></div><div class="kit-footer"><span class="kit-price"></span><button type="button" class="buy" id="kit-buy">Elegir este producto <span aria-hidden="true">↗</span></button></div></dialog>
+
 <!-- Checkout propio: PayPal se abre en una página completa para funcionar en navegadores internos. -->
 <script src="/checkout.js?v=20261003b" defer></script>
-<script src="/storefront-refinements.js?v=20261003e" defer></script>
+<script src="/storefront-refinements.js?v=20261003f" defer></script>
+<script src="/collection-explorer.js?v=20261004a" defer></script>
 
 
 

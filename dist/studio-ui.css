@@ -1,5 +1,5 @@
 /* Shared monochrome UI. Product colours remain inside the original product. */
-:root{--bg:#080808;--bg-2:#101010;--bg-3:#181818;--text:#f7f7f7;--text-2:#b3b3b3;--text-3:#888;--border:#272727;--border-2:#424242;--glass-border:#303030;--green:#f7f7f7;--purple:#f7f7f7;--orange:#f7f7f7;--blue:#f7f7f7}
+:root{--bg:#080808;--bg-2:#111;--bg-3:#191919;--text:#f5f4f1;--text-2:#b7b7b7;--text-3:#929292;--border:#333;--border-2:#595959;--glass-border:#383838;--green:#f5f4f1;--purple:#f5f4f1;--orange:#f5f4f1;--blue:#f5f4f1}
 [hidden]{display:none!important}
 ::selection{color:#000;background:#fff}
 :focus-visible{outline:2px solid #fff!important;outline-offset:5px}
@@ -37,7 +37,7 @@ body.pay-open{overflow:hidden}
 .flow-mail input{width:100%;padding:.9rem;margin-top:.5rem;border:1px solid #444;border-radius:8px;background:#0a0a0a;color:#fff;font:inherit}
 .pay-flow-link{color:#ccc;background:none;border:0;text-decoration:underline;cursor:pointer}
 /* Keep /fl visually continuous with the storefront. */
-.offer,.addon-card{background:#101010;border-color:#333}
+.offer,.addon-card{background:#191919;border-color:#3b3b3b}
 .addon-card{--pink:#fff}
 .pick:hover{border-color:#aaa}
 .pick[aria-checked="true"]{background:#222;border-color:#fff;box-shadow:none}
