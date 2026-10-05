@@ -1,4 +1,5 @@
 import { bundleCollection, payhipKey, PRODUCT_COLLECTIONS } from "./catalog.js";
+import { cyberActive } from './campaign.js';
 
 export function normalizeCoupon(value) {
   const code = String(value || "").trim().toUpperCase();
@@ -55,6 +56,7 @@ async function legacyStatus(env, code) {
 }
 
 export async function couponQuote(env, product, rawCode, baseAmount, now = Date.now()) {
+  if (!product.testOnly && cyberActive(now)) throw new Error('coupon-cyber-active');
   const code = normalizeCoupon(rawCode);
   if (!code) throw new Error("coupon-invalid");
   if (!env.PAYHIP_API_KEY) throw new Error("coupon-service");

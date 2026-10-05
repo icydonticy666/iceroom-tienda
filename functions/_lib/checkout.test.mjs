@@ -248,7 +248,9 @@ test("Payhip duplicado se acepta solo si el cupón existente coincide con la com
   } finally { globalThis.fetch = previous; db.close(); }
 });
 
-test("Flow guarda su token, valida el callback y entrega una sola vez", async () => {
+test("Flow guarda su token, valida el callback y entrega una sola vez", async t => {
+  // This fixture uses the regular price; campaign amounts have their own tests.
+  t.mock.timers.enable({ apis: ['Date'], now: new Date('2026-11-01T12:00:00Z') });
   const db = database();
   const env = { PAYMENTS_DB: db, FLOW_API_KEY: "flow-public", FLOW_SECRET_KEY: "flow-secret",
     FLOW_SANDBOX: "1", PUBLIC_ORIGIN: "https://iceroom.example", ORDER_SECRET: "order-secret", PAYHIP_API_KEY: "payhip-secret" };

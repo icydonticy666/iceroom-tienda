@@ -108,14 +108,6 @@
   queueNavigation();
 
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  var meteors = document.getElementById('meteors');
-  if (!reducedMotion.matches) {
-    for (var i=0; i<4; i++) {
-      var meteor = document.createElement('span'); meteor.className = 'meteor';
-      meteor.style.top = Math.random()*100+'%'; meteor.style.left = Math.random()*100+'%';
-      meteor.style.animationDuration = (Math.random()*5+5).toFixed(1)+'s'; meteor.style.animationDelay = (Math.random()*9).toFixed(1)+'s'; meteors.appendChild(meteor);
-    }
-  }
   if ('IntersectionObserver' in window && !reducedMotion.matches) {
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } });

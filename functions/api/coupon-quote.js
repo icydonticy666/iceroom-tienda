@@ -14,6 +14,7 @@ export async function onRequestPost({ request, env }) {
     return json({ coupon: quote.code, amount: quote.amount, discount: quote.discount });
   } catch (error) {
     const reason = String(error?.message || "");
+    if (reason === 'coupon-cyber-active') return json({ error: 'El 25% Cyber Day ya está aplicado. No es acumulable con otros cupones.' }, 400);
     if (reason === "coupon-limit") return json({ error: "Este cupón ya alcanzó su límite de usos." }, 400);
     if (reason === "coupon-local-limit") return json({ error: "Este cupón tiene usos limitados y por seguridad se aplica desde PayPal." }, 400);
     if (reason === "coupon-minimum") return json({ error: "Este pedido no alcanza el mínimo del cupón." }, 400);

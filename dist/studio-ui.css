@@ -1,4 +1,4 @@
-/* Shared monochrome UI. Product colours remain inside the original product. */
+/* Shared matte UI; Pritti Grip supplies the action accent. */
 :root{--bg:#080808;--bg-2:#111;--bg-3:#191919;--text:#f5f4f1;--text-2:#b7b7b7;--text-3:#929292;--border:#333;--border-2:#595959;--glass-border:#383838;--green:#f5f4f1;--purple:#f5f4f1;--orange:#f5f4f1;--blue:#f5f4f1}
 [hidden]{display:none!important}
 ::selection{color:#000;background:#fff}
@@ -38,6 +38,8 @@ body.pay-open{overflow:hidden}
 .pay-flow-link{color:#ccc;background:none;border:0;text-decoration:underline;cursor:pointer}
 /* Keep /fl visually continuous with the storefront. */
 .offer,.addon-card{background:#191919;border-color:#3b3b3b}
+.top .logo{display:inline-flex;align-items:center;gap:8px}.top .brand-mark{width:15px;height:15px;color:#b7aaff}
+a.fl-buy{background:#9484fc;color:#100c20;border-color:transparent}a.fl-buy:hover{background:#aa9aff;color:#100c20}.pay-sheet .kicker{color:#b7aaff}
 .addon-card{--pink:#fff}
 .pick:hover{border-color:#aaa}
 .pick[aria-checked="true"]{background:#222;border-color:#fff;box-shadow:none}

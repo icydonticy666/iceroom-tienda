@@ -9,7 +9,7 @@ import { mpSignatureOk } from "./signature.js";
 test("el precio CLP es el mismo precio de lista en USD × 1.000 (sin promos automáticas)", () => {
   const studio = PRODUCTS.QLfl6;
   assert.equal(priceOf(studio, new Date("2026-09-24T15:00:00.000Z")), 29990);
-  assert.deepEqual(allowedPrices(studio), [29990]);
+  assert.deepEqual(allowedPrices(studio), [29990, 22492]);
   // Una promo debe vencer; `limit` es opcional para una venta flash sin stock artificial.
   for (const product of Object.values(PRODUCTS)) {
     if (product.promo) assert.ok(Date.parse(product.promo.until) && (!product.promo.limit || product.promo.limit > 0), product.key);

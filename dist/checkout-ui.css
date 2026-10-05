@@ -1,0 +1,120 @@
+/* A graphite desktop window, with the lavender sampled from Pritti Grip. */
+.pay-sheet{--pay-accent:#9484fc;--pay-ink:#b7aaff;background:#050509b8;backdrop-filter:blur(16px) saturate(.65);padding:24px;font-family:var(--font-body,Arial,sans-serif)}
+.pay-sheet .pay-sheet-card{width:min(920px,100%);padding:0;border:1px solid #ffffff29;border-radius:18px;background:#1c1c1f;box-shadow:0 32px 100px #000a,0 0 0 1px #0005,inset 0 1px #ffffff0d;max-height:calc(100dvh - 48px);scrollbar-width:thin;scrollbar-color:#55555f transparent;color:#f4f3f8}
+.pay-titlebar{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:2;height:51px;padding:0 19px;border-bottom:1px solid #ffffff0c;background:#252528f5;backdrop-filter:blur(14px)}
+.pay-window-controls{display:flex;align-items:center;gap:8px;width:69px}
+.pay-sheet .pay-x{position:relative;inset:auto;display:grid;place-items:center;width:13px;height:13px;min-height:0;padding:0;border:1px solid #e4524b;border-radius:50%;background:#ff6259;color:#621a13;font-family:Arial,sans-serif;font-size:12px;line-height:1;cursor:pointer}
+.pay-x::before{content:'';position:absolute;inset:-15px}
+.pay-x span{opacity:0;transition:opacity .2s}.pay-x:hover span,.pay-x:focus-visible span{opacity:1}
+.pay-window-dot{width:12px;height:12px;border-radius:50%;background:#edbf4f;border:1px solid #d6a744;pointer-events:none}
+.pay-window-dot:last-child{background:#5ac66e;border-color:#40ac55}
+.pay-window-brand{display:inline-flex;align-items:center;gap:7px;font-family:Helvetica,Arial,sans-serif;font-weight:700;font-size:14px;letter-spacing:-.04em;color:#dbdade}
+.pay-window-brand svg{width:11px;height:11px;color:var(--pay-ink)}
+.pay-window-lock{display:flex;justify-content:flex-end;width:69px;color:#a4a3ae}.pay-window-lock svg{width:14px;height:14px}
+.pay-sheet-body{padding:26px}
+.pay-eyebrow{font-size:9px;font-weight:600;letter-spacing:.17em;color:#b0a9c8;margin:0 0 15px}
+.pay-product{display:flex;align-items:center;gap:18px;padding-bottom:22px;border-bottom:1px solid #ffffff12}
+.pay-product-art{position:relative;display:grid;place-items:center;flex:none;width:84px;height:84px;overflow:hidden;border-radius:15px;border:1px solid #ffffff19;background:radial-gradient(ellipse at 50% 90%,#9484fc22,transparent 80%),#121215;box-shadow:0 6px 16px #0003}
+.pay-product-art>svg{width:35px;height:35px;color:var(--pay-accent)}
+.pay-product-art img{display:block;width:100%;height:100%;object-fit:contain;position:relative}
+.pay-product-art .pay-art-logo{padding:15px}.pay-product-art .pay-art-ui{padding:7px}.pay-product-art img[src$="icycold.webp"]{object-fit:cover;padding:0}
+.pay-art-stack img{position:absolute;width:66%;height:66%;left:2%;top:3%;border:1px solid #ffffff16;background:#161619;border-radius:6px;transform:rotate(-9deg)}
+.pay-art-stack img:last-child{left:32%;top:33%;transform:rotate(7deg)}.pay-art-stack .pay-art-logo{padding:7px}
+.pay-product-info{min-width:0;flex:1}
+.pay-sheet .pay-product h2{font-family:var(--font-body,Arial,sans-serif);font-size:21px;font-weight:600;line-height:1.2;letter-spacing:-.035em;margin:0 0 9px;overflow-wrap:anywhere}
+.pay-product-usd{font-size:20px;font-weight:650;letter-spacing:-.035em;line-height:1.2;margin:0;color:#f9f8ff;font-variant-numeric:tabular-nums}
+.pay-sheet .pay-sheet-price{font-size:11px;line-height:1.5;color:#b4b2bd;margin:4px 0 0;font-variant-numeric:tabular-nums}
+.pay-sheet .pay-addon{gap:12px;padding:13px 14px;margin:18px 0 0;border-radius:11px;border-color:#ffffff18;background:#ffffff04;color:#e5e3ed}
+.pay-addon:hover{border-color:#9484fc70;background:#9484fc09}
+.pay-sheet .pay-addon-check{width:23px;height:23px;border-radius:7px;border-color:#ffffff36;font-size:15px;font-weight:400;transition:background .2s,color .2s}
+.pay-sheet .pay-addon b{display:flex;flex-wrap:wrap;gap:4px 9px;font-size:12px;line-height:1.4;font-weight:600}
+.pay-addon em{font-style:normal;color:var(--pay-ink);white-space:nowrap;font-weight:600}
+.pay-sheet .pay-addon small{font-size:10px;line-height:1.6;color:#b4b2bf;margin-top:2px}
+.pay-sheet .pay-addon[aria-pressed=true]{border-color:#9484fc8c;background:#9484fc0f}
+.pay-sheet .pay-addon[aria-pressed=true] .pay-addon-check{background:var(--pay-accent);border-color:var(--pay-accent);color:#100c20}
+.pay-sheet .pay-coupon{border:0;border-bottom:1px solid #ffffff12;border-radius:0;background:none;margin:0 0 21px;padding:0 0 14px}
+.pay-coupon summary{display:flex;align-items:center;justify-content:space-between;min-height:45px;cursor:pointer;list-style:none;font-size:12px;color:#c2bfce;font-weight:500}
+.pay-coupon summary::-webkit-details-marker{display:none}.pay-coupon summary:hover{color:var(--pay-ink)}
+.pay-coupon summary>span{font-size:18px;font-weight:300;color:#aaa5ba;transition:transform .2s}.pay-coupon[open] summary>span{transform:rotate(45deg)}
+.pay-sheet .pay-coupon .pay-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.pay-sheet .pay-coupon-entry{gap:8px}
+.pay-sheet .pay-coupon input{padding:12px;border-radius:8px;font-size:12px;border-color:#ffffff20;background:#121214;box-shadow:inset 0 1px 3px #0003}
+.pay-sheet .pay-coupon button{border:1px solid #ffffff1a;border-radius:8px;background:#36333e;color:#eeebf8;font-size:11px;padding:9px 16px}
+.pay-sheet .pay-coupon button:hover{border-color:#9484fc80;background:#413b57}
+.pay-coupon-hint{display:block;font-size:10px;line-height:1.5;color:#a8a4b4;margin-top:9px}
+.pay-coupon p.ok{color:#b6edc7}
+.pay-methods-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 12px}
+.pay-methods-heading h3{font:600 13px var(--font-body,Arial,sans-serif);letter-spacing:-.02em;margin:0}.pay-methods-heading>span{font-size:9px;letter-spacing:.07em;color:#a8a4b4}
+.pay-sheet .pay-method{display:flex;align-items:center;gap:13px;text-align:left;min-height:68px;margin:8px 0 0;padding:12px 15px;border-radius:11px;border:1px solid #ffffff19;background:#27262c;color:#f2f0f8;box-shadow:0 2px 4px #0001;transition:background .18s,border-color .18s,transform .18s,box-shadow .18s}
+.pay-sheet .pay-method:hover{background:#32303d;border-color:#9484fc8f;transform:translateY(-1px);box-shadow:0 4px 14px #0003}
+.pay-sheet .pay-method:active{transform:scale(.99)}
+.pay-method-icon{display:grid;place-items:center;flex:none;width:35px;height:35px;border-radius:9px;border:1px solid #ffffff13;background:#18181e;color:#c6bbf8}
+.pay-method-icon svg{width:21px;height:21px}.pay-method-copy{min-width:0;flex:1;display:flex;flex-direction:column;gap:5px}
+.pay-method-copy b{font-size:13px;font-weight:600;line-height:1.2}.pay-method-copy small{color:#bbb6cc;font-size:11px;font-weight:400;line-height:1.4}
+.pay-method-arrow{font:400 17px Arial,sans-serif;color:#aaa3c5;transition:transform .2s}.pay-method:hover .pay-method-arrow{transform:translate(2px,-2px);color:var(--pay-ink)}
+.pay-sheet .pay-method[data-action=card]{background:#9484fc12;border-color:#9484fc4d}.pay-sheet .pay-method[data-action=card]:hover{background:#9484fc21;border-color:#9484fc}
+.pay-sheet .pay-choice:not(.pay-method):not(.ghost){background:var(--pay-accent);border-color:transparent;color:#100c20}
+.pay-sheet .pay-choice:not(.pay-method):not(.ghost):hover{background:#aa9aff}
+.pay-sheet .pay-footer-note{display:flex;align-items:center;justify-content:center;gap:7px;font-size:10px;color:#aaa6b5;line-height:1.5;margin:22px 0 0}
+.pay-footer-note svg{width:12px;height:12px;flex:none}
+.pay-sheet .pay-close{color:var(--pay-ink);font-size:12px}.pay-sheet .pay-close:hover{color:#e2dcff}
+.pay-sheet :focus-visible{outline:2px solid var(--pay-accent)!important;outline-offset:3px}
+.pay-sheet .flow-mail{font-size:12px}.pay-sheet .flow-mail input{font-size:16px;border-color:#ffffff25;background:#121214;border-radius:9px}
+.pay-sheet .pay-status{border:1px solid #9484fc40;border-radius:9px;padding:12px;font-size:12px;line-height:1.6;background:#9484fc09}
+.pay-sheet .pay-status.error{border-color:#ff9c9c3b;background:#ff9c9c08}
+.pay-sheet-card[data-step=card] .pay-addon,.pay-sheet-card[data-step=card] .pay-coupon,.pay-sheet-card[data-step=challenge] .pay-addon,.pay-sheet-card[data-step=challenge] .pay-coupon{display:none}
+.pay-sheet-card[data-step=card] .pay-product,.pay-sheet-card[data-step=challenge] .pay-product{margin-bottom:22px}
+.pay-sheet button:disabled{cursor:wait;opacity:.5}
+@media(max-width:600px){.pay-sheet{padding:12px;align-items:center}.pay-sheet .pay-sheet-card{width:100%;border-radius:17px;max-height:calc(100dvh - 24px)}.pay-titlebar{height:46px;padding:0 16px}.pay-sheet-body{padding:21px 19px max(21px,env(safe-area-inset-bottom))}.pay-product{gap:14px;padding-bottom:18px}.pay-product-art{width:67px;height:67px;border-radius:12px}.pay-product-art .pay-art-logo{padding:12px}.pay-sheet .pay-product h2{font-size:18px}.pay-product-usd{font-size:19px}.pay-sheet .pay-coupon input{font-size:16px}.pay-sheet .pay-method{padding:11px 12px;min-height:65px;gap:11px}.pay-method-copy small{font-size:10px}.pay-footer-note{flex-wrap:wrap}.pay-sheet .pay-coupon{margin-bottom:17px;padding-bottom:10px}.pay-sheet .pay-addon{padding:11px}.pay-methods-heading{margin-bottom:10px}}
+@media(max-width:350px){.pay-sheet-body{padding:18px 14px}.pay-product{gap:11px}.pay-product-art{width:57px;height:57px}.pay-sheet .pay-product h2{font-size:16px}.pay-method-icon{width:29px;height:31px}.pay-sheet .pay-method{gap:9px;padding:11px}.pay-method-copy b{font-size:11px}.pay-method-copy small{font-size:9px}.pay-sheet .pay-footer-note{font-size:9px}.pay-sheet .pay-addon b{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.pay-sheet:not([hidden]) .pay-sheet-card{animation:none}.pay-sheet *{transition:none!important}.pay-sheet .pay-method:hover,.pay-method:hover .pay-method-arrow{transform:none}}
+
+/* A product brief beside the payment choices: understand first, then pay. */
+.pay-sheet-body{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);padding:0}
+.pay-overview{padding:30px;background:radial-gradient(ellipse at 10% 0,#9484fc0d,transparent 65%),#17171a;border-right:1px solid #ffffff0d}
+.pay-purchase{padding:30px;min-width:0}
+.pay-product{display:block;border-bottom:0;padding:0}
+.pay-product-art{width:112px;height:100px;margin-bottom:20px;border-radius:14px}
+.pay-product-art .pay-art-logo{padding:20px}.pay-product-art .pay-art-ui{padding:8px}
+.pay-product-type{font-size:9px;line-height:1.5;font-weight:600;letter-spacing:.09em;color:var(--pay-ink);margin:0 0 8px}
+.pay-sheet .pay-product h2{font-size:25px;line-height:1.17;margin:0;max-width:310px}
+.pay-product-description{font-size:13px;line-height:1.6;color:#bdb9c9;margin:15px 0 24px}
+.pay-includes-title{font-size:12px;letter-spacing:0;font-weight:600;margin:0 0 12px;color:#efedf5}
+.pay-includes{display:grid;gap:11px;padding:0;margin:0;list-style:none}
+.pay-includes li{position:relative;padding-left:23px;font-size:12px;line-height:1.55;color:#dedbe7}
+.pay-includes li::before{content:'✓';position:absolute;left:0;top:1px;display:grid;place-items:center;width:15px;height:15px;border-radius:50%;color:#c9c0ff;background:#9484fc19;font-size:9px}
+.pay-requirements{font-size:11px;line-height:1.65;color:#b8b3c4;margin:24px 0 0;padding-top:17px;border-top:1px solid #ffffff10}
+.pay-requirements b{display:block;font-size:10px;letter-spacing:.02em;color:#e2dfec;margin-bottom:5px}
+.pay-delivery{font-size:10px;line-height:1.6;color:#aaa4bb;margin:17px 0 0}
+.pay-total{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.pay-total-label{display:block;color:#c2bccf;font-size:10px;margin-bottom:8px}
+.pay-sheet .pay-product-usd{font-size:44px;line-height:1.1;letter-spacing:-.04em}
+.pay-product-usd .cyber-previous{font-size:15px;letter-spacing:0;display:inline-block;vertical-align:middle;margin-left:8px}
+.pay-once{white-space:nowrap;border:1px solid #ffffff18;border-radius:20px;padding:5px 8px;font-size:9px;color:#c1bccf;margin-top:21px}
+.pay-sheet .pay-sheet-price{font-size:14px;line-height:1.5;margin-top:10px;color:#d3cddd}
+.pay-selected-extra{font-size:10px;line-height:1.6;color:var(--pay-ink);margin:12px 0 0}
+.pay-addon-label{display:block;font-size:8px;letter-spacing:.1em;font-weight:600;color:#b7afd0;margin-bottom:4px}
+.pay-sheet .pay-addon{margin:18px 0}.pay-sheet .pay-addon b{font-size:11px}
+.pay-methods-heading{margin-top:22px}
+.pay-sheet .pay-method{padding:16px;gap:13px;min-height:82px}
+.pay-method-icon{width:42px;height:42px}.pay-method-icon svg{width:25px;height:25px}.pay-method-copy b{font-size:16px}.pay-method-copy small{font-size:12px}
+.pay-sheet .pay-footer-note{font-size:9px;text-align:center;align-items:flex-start;line-height:1.6}
+.pay-sheet-card:not([data-step=methods]) .pay-overview{display:none}
+.pay-sheet-card:not([data-step=methods]) .pay-sheet-body{display:block}
+.pay-sheet-card:not([data-step=methods]){max-width:490px}
+.pay-order-name{font-size:17px;font-weight:600;line-height:1.3;letter-spacing:-.02em;margin:0 0 22px;color:#f4f2fa}
+.pay-sheet-card[data-step=methods] .pay-order-name{display:none}
+@media(max-width:680px){
+  .pay-sheet{padding:10px}.pay-sheet .pay-sheet-card{width:100%;max-height:calc(100dvh - 20px);border-radius:16px}
+  .pay-sheet-body{display:block;padding:0}.pay-overview{padding:23px 22px;border-right:0;border-bottom:1px solid #ffffff10}
+  .pay-purchase{padding:22px}.pay-overview>.pay-eyebrow{display:none}
+  .pay-product{display:flex;gap:15px;align-items:center;padding:0}
+  .pay-product-art{width:69px;height:69px;margin:0;border-radius:12px}.pay-product-art .pay-art-logo{padding:12px}
+  .pay-sheet .pay-product h2{font-size:20px}.pay-product-type{font-size:8px;margin-bottom:5px}
+  .pay-product-description{font-size:12px;margin:14px 0 17px}.pay-includes{gap:7px}.pay-includes li{font-size:11px}
+  .pay-includes-title{font-size:11px;margin-bottom:10px}.pay-requirements{margin-top:16px;padding-top:13px;font-size:10px}
+  .pay-delivery{margin-top:11px;font-size:9px}.pay-purchase>.pay-eyebrow{margin-bottom:14px}
+  .pay-sheet .pay-product-usd{font-size:36px}.pay-sheet .pay-addon{padding:12px}
+  .pay-sheet .pay-method{padding:14px;min-height:76px}.pay-method-copy b{font-size:15px}.pay-method-copy small{font-size:11px}
+}
+@media(max-width:350px){.pay-overview,.pay-purchase{padding:18px}.pay-sheet .pay-product h2{font-size:17px}.pay-product-art{width:55px;height:55px}.pay-method-icon{width:42px;height:42px}.pay-method-icon svg{width:25px;height:25px}.pay-method-copy b{font-size:16px}.pay-method-copy small{font-size:12px}.pay-once{font-size:8px;padding:5px 7px}.pay-product-usd .cyber-previous{font-size:10px}}

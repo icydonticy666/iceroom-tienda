@@ -29,6 +29,7 @@ export async function onRequestPost({ request, env }) {
   try {
     intent = await createIntent(env, product.key, "flow", email, body?.coupon);
   } catch (error) {
+    if (error?.message === 'coupon-cyber-active') return json({ error: 'Cyber Day ya incluye el 25%. Quita el otro cupón y vuelve a intentarlo.' }, 400);
     if (String(error?.message || "").startsWith("coupon-")) return json({ error: "Ese cupón no es válido para esta compra." }, 400);
     return json({ error: "No se pudo preparar el descuento." }, 503);
   }

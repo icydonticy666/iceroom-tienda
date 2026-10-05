@@ -1,3 +1,5 @@
+import { cyberActive, cyberPrice } from './campaign.js';
+
 /** Precios CLP fijados en el servidor. El navegador no puede mandar el monto. */
 export const PRODUCTS = {
   z6Bgp: { key: "z6Bgp", name: "Mezcla + Master — 1 canción", clp: 69990, kind: "service", checkout: "b" },
@@ -29,12 +31,14 @@ export const PRODUCTS = {
 };
 
 export function priceOf(product, now = new Date()) {
+  if (!product.testOnly && cyberActive(now)) return cyberPrice(product.clp);
   if (product.promo && now.getTime() < Date.parse(product.promo.until)) return product.promo.clp;
   return product.clp;
 }
 
 export function allowedPrices(product) {
   const prices = [product.clp];
+  if (!product.testOnly) prices.push(cyberPrice(product.clp));
   if (product.promo) prices.push(product.promo.clp);
   return prices;
 }

@@ -264,18 +264,22 @@ footer p{color:var(--text-3);font-size:.8rem;margin-top:.75rem}
 footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(--text-2);
   border:1px solid var(--border);border-radius:9999px;padding:.5rem 1.1rem}
 </style>
-<link rel="stylesheet" href="/studio-ui.css?v=20261003f">
+<link rel="stylesheet" href="/studio-ui.css?v=20261004c">
+<link rel="stylesheet" href="/checkout-ui.css?v=20261004e">
 <link rel="stylesheet" href="/storefront-refinements.css?v=20261003f">
 <link rel="stylesheet" href="/product-art.css?v=20261004a">
 <link rel="stylesheet" href="/collection-explorer.css?v=20261004a">
+<link rel="stylesheet" href="/brand-experience.css?v=20261004c">
+<link rel="stylesheet" href="/promotion.css?v=20261004d">
 </head>
 <body>
+<a class="cyber-bar" data-cyber hidden href="#plantillas"><strong>CYBER DAY</strong><span>25% de descuento en toda la tienda</span><span class="cyber-timer">Termina en <time data-cyber-clock>72:00:00</time> ↗</span></a>
 <a href="#contenido" class="skip-link">Ir al contenido</a>
 
 <div class="wrap">
 
 <header>
-    <a href="#" class="logo">iceroom</a>
+    <a href="#" class="logo"><svg class="brand-mark" viewBox="0 0 84 81" aria-hidden="true" focusable="false"><path d="M16 0H68L84 26L42 81L0 26Z" fill="currentColor"/></svg><span>iceroom</span></a>
     <nav class="hnav" id="store-navigation" aria-label="Navegación principal">
       <a href="#plantillas">Plantillas</a>
       <a href="#plugins">Plugins</a>
@@ -290,13 +294,13 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
   <section class="news" id="novedades">
     <div class="news-head"><span class="live" aria-hidden="true"></span><h2>Destacados</h2><span class="rule"></span><span class="news-hint" aria-hidden="true">Desliza →</span></div>
     <div class="news-grid" tabindex="0" aria-label="Productos destacados: desliza horizontalmente para ver más">
-      <a class="news-item" href="https://payhip.com/b/Vo0Sq" data-mp="Vo0Sq">
-        <div class="news-thumb"><div class="product-art art-grip art-mini" role="img" aria-label="Pritti Grip">
-          <div class="art-top"><span>06 / PRITTI GRIP</span><span class="art-brand">iceroom</span></div>
-          <div class="art-heading"><span>GRIP</span></div>
-          <img class="art-object art-plugin-ui" src="/img/art/grip-ui.webp" alt="Interfaz real de Pritti grip" loading="lazy" decoding="async">
-          <div class="art-bottom"><span>COMPRESIÓN VOCAL / BETA 0.9</span><span class="art-registration" aria-hidden="true"></span></div>
-        </div></div><div class="news-txt"><span class="news-tag">Compresor vocal</span><h3>Pritti Grip</h3><p>Compresión vocal con carácter.</p><div class="news-price"><span class="price">$6.99</span></div></div><span class="arrow" aria-hidden="true">→</span>
+      <a class="news-item" href="https://payhip.com/b/0QEeV" data-mp="0QEeV" data-addon="xNaVU" data-addon-usd="$15.98" data-addon-href="/api/paypal-checkout?product=xNaVU">
+        <div class="news-thumb"><div class="product-art art-fl art-mini" role="img" aria-label="Plantilla FL Studio">
+          <div class="art-top"><span>01 / FL STUDIO</span><span class="art-brand">iceroom</span></div>
+          <div class="art-heading"><span>FL STUDIO</span></div>
+          <img class="art-object art-fl-logo" src="/img/art/fl-logo.webp" alt="" loading="lazy" decoding="async">
+          <div class="art-bottom"><span>ABRE / CANTA / GRABA</span><span class="art-registration" aria-hidden="true"></span></div>
+        </div></div><div class="news-txt"><span class="news-tag">Lista para grabar</span><h3>Plantilla FL Studio</h3><p>Abre la sesión y graba tu próxima voz.</p><div class="news-price"><span class="price">$12.99</span></div></div><span class="arrow" aria-hidden="true">→</span>
       </a>
       <a class="news-item" href="https://payhip.com/order?link=QLfl6" data-mp="QLfl6">
         <div class="news-thumb"><div class="product-art art-studio art-mini" role="img" aria-label="Pritti Studio">
@@ -318,15 +322,17 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
   </section>
 
   <div class="hero" id="contenido">
-    <div id="meteors" aria-hidden="true"></div>
+    <canvas id="brand-snow" aria-hidden="true"></canvas>
     <div class="kicker">Tienda · Productos digitales</div>
-    <h1>iceroom</h1>
+    <h1 class="hero-lockup" aria-label="iceroom"><svg class="brand-mark" viewBox="0 0 84 81" aria-hidden="true" focusable="false"><path d="M16 0H68L84 26L42 81L0 26Z" fill="currentColor"/></svg><span class="hero-word" aria-hidden="true">iceroom</span></h1>
     <p>Plantillas, plugins y mezcla del productor detrás de <strong style="color:var(--text)">8M+ streams</strong>. Graba y suena profesional desde tu home studio.</p>
+    <div class="cyber-offer" data-cyber hidden><h2><strong>25% menos.</strong> Más música.</h2><p>Plantillas, plugins, cursos y servicios. El descuento se aplica al pagar.</p><small data-cyber-end></small></div>
     <div class="hero-cta">
       <a class="buy" href="#plantilla-fl">Ver la plantilla más vendida <span aria-hidden="true">↗</span></a>
       <a class="buy ghost" href="#plugins">Explorar plugins Pritti</a>
     </div>
     <div class="hero-trust"><span>✓ Descarga inmediata</span><span>✓ Paga con tarjeta o PayPal — sin crear cuenta</span><span>✓ +130 productores ya compraron</span></div>
+    <button type="button" id="hero-motion" class="hero-motion" hidden aria-pressed="false" aria-label="Pausar animación del fondo"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="motion-pause" d="M4 3h3v10H4zM10 3h3v10h-3z"/><path class="motion-play" d="m4 2 10 6-10 6z"/></svg><span>Animación</span></button>
   </div>
 
   <!-- PLANTILLAS -->
@@ -616,7 +622,7 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
   </section>
 
   <footer>
-    <div class="fmark">iceroom</div>
+    <div class="fmark"><svg class="brand-mark" viewBox="0 0 84 81" aria-hidden="true" focusable="false"><path d="M16 0H68L84 26L42 81L0 26Z" fill="currentColor"/></svg><span>iceroom</span></div>
     <p>Descarga inmediata · PayPal, o débito y tarjeta en pesos · Soporte por DM en <a href="https://instagram.com/iceroomcl/" target="_blank" rel="noopener">@iceroomcl ↗</a></p>
   </footer>
 
@@ -636,9 +642,11 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
 <dialog id="kit-dialog" aria-labelledby="kit-title"><button type="button" class="kit-close" aria-label="Cerrar contenido">×</button><p class="kit-eyebrow">ICEROOM / EXPLORA TU PRÓXIMO PASO</p><h2 id="kit-title"></h2><p id="kit-intro"></p><div id="kit-tabs" role="tablist" aria-label="Contenido del producto"></div><div id="kit-content" role="tabpanel" tabindex="0"></div><div class="kit-footer"><span class="kit-price"></span><button type="button" class="buy" id="kit-buy">Elegir este producto <span aria-hidden="true">↗</span></button></div></dialog>
 
 <!-- Checkout propio: PayPal se abre en una página completa para funcionar en navegadores internos. -->
-<script src="/checkout.js?v=20261003b" defer></script>
-<script src="/storefront-refinements.js?v=20261003f" defer></script>
+<script src="/promotion.js?v=20261004d" defer></script>
+<script src="/checkout.js?v=20261004e" defer></script>
+<script src="/storefront-refinements.js?v=20261004c" defer></script>
 <script src="/collection-explorer.js?v=20261004a" defer></script>
+<script src="/brand-experience.js?v=20261004c" defer></script>
 
 
 

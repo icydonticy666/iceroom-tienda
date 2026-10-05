@@ -1,0 +1,45 @@
+/* Grip lavender is the default identity; Eco fuchsia signals a sale. */
+.product-art{--art-colour:#d5cbfb;--art-wash:#9484fc13}
+.art-fl,.art-fl-native{--art-colour:#ffbf69;--art-wash:#e5982415}
+.art-ableton{--art-colour:#e9e4bb;--art-wash:#dfd79c0e}
+.art-grip{--art-colour:#b7aaff;--art-wash:#9484fc18}
+.art-backroom{--art-colour:#ca8cec;--art-wash:#a040d014}
+.art-vocals{--art-colour:#ff88a9;--art-wash:#ff407012}
+.art-eco{--art-colour:#f28bce;--art-wash:#c83ca414}
+.product-art .art-heading{color:var(--art-colour)}
+.product-art{background:radial-gradient(ellipse at 50% 62%,var(--art-wash),transparent 70%),#151516}
+.product-art .art-top{border-bottom-color:color-mix(in srgb,var(--art-colour) 28%,transparent)}
+.product-art .art-registration{color:var(--art-colour)}
+.cyber-bar{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;padding:11px 20px;background:#9484fc;color:#100c20;font:600 11px var(--font-body,Arial,sans-serif);letter-spacing:.03em;text-align:center;text-decoration:none}
+.cyber-bar strong{font-weight:800;letter-spacing:.1em}.cyber-bar .cyber-timer{padding-left:16px;border-left:1px solid #100c2033;font-weight:500;white-space:nowrap}.cyber-bar time{font-variant-numeric:tabular-nums;font-weight:800;letter-spacing:.08em}
+.cyber-offer{margin:22px auto 0;position:relative;max-width:640px}
+.cyber-offer h2{font-family:var(--font-body,Arial,sans-serif);font-size:clamp(25px,4vw,43px);font-weight:600;line-height:1.12;letter-spacing:-.045em;margin:0;color:#eeeafc}
+.cyber-offer h2 strong{color:#b7aaff;font-weight:700}
+.hero .cyber-offer p{font-size:12px;line-height:1.7;margin:10px auto 0;color:#bbb3cc}
+.cyber-offer small{display:block;margin-top:9px;font-size:10px;color:#a9a1bd}
+.cyber-active #contenido>p{display:none}
+.cyber-active #contenido .hero-cta{margin-top:23px}
+.cyber-active .news-tag{display:none}
+.cyber-active .price-old{display:none}
+.cyber-tag{display:inline-flex;align-items:center;width:fit-content;padding:4px 7px;border:1px solid #9484fc54;background:#9484fc13;border-radius:5px;color:#c4b8ff;font:600 9px var(--font-body,Arial,sans-serif);letter-spacing:.08em;line-height:1.25;margin-bottom:5px}
+.cyber-previous{font:400 13px var(--font-body,Arial,sans-serif);color:#aaa2b6;margin-left:9px;white-space:nowrap;letter-spacing:0}
+.news-price .cyber-previous{font-size:11px}.cyber-active .news-price .price{color:#d7ccff}
+.cyber-active .price-row,.cyber-active .feature-price{align-items:baseline}
+.pay-cyber-note{display:flex;align-items:center;gap:7px;background:#9484fc12;border:1px solid #9484fc45;color:#c9bdff;font-size:11px;line-height:1.5;padding:11px 13px;margin:17px 0 0;border-radius:9px}
+.pay-sheet .pay-product-usd .cyber-previous{font-size:12px;font-weight:400;color:#aaa2b6;letter-spacing:0}
+.pay-sheet .pay-cyber-note:not([hidden])~.pay-addon{margin-bottom:18px}
+.pay-sheet .pay-cyber-note:not([hidden])~#pay-methods{margin-top:20px}
+.cyber-active .offer{border-color:#9484fc66}.cyber-active .offer>.clp{color:#c3b5ff}
+@media(max-width:680px){.cyber-bar{gap:5px 9px;font-size:10px;padding:10px 12px}.cyber-bar .cyber-timer{width:100%;border:0;padding:0;font-size:9px}.cyber-active .hero{padding-top:35px}.cyber-offer{margin-top:20px}.hero .cyber-offer p{font-size:11px}.cyber-offer small{font-size:9px}.cyber-previous{font-size:12px}}
+
+/* A distinct, temporary colour makes the discount recognisable everywhere. */
+.cyber-bar{background:#ef89cf;color:#240b1d}.cyber-bar .cyber-timer{border-color:#240b1d33}
+.cyber-offer h2 strong{color:#f28bce}.hero .cyber-offer p{color:#c9b5c4}
+.cyber-tag{border-color:#df5ab177;background:#c83ca41b;color:#f8a5dc}
+.cyber-active #contenido>.kicker{color:#f4a0d9;border-color:#c83ca470;background:#c83ca410}
+.cyber-active #contenido>.kicker::before{background:#f28bce}
+.cyber-active a.buy:not(.ghost),.cyber-active #kit-buy{background:#c83ca4;color:#fff;box-shadow:0 5px 25px #c83ca418}
+.cyber-active a.buy:not(.ghost):hover,.cyber-active #kit-buy:hover{background:#af2d8c;color:#fff}
+.cyber-active .price,.cyber-active .news-price .price,.cyber-active .offer>.clp{color:#f6a6db}
+.pay-cyber-note{background:#c83ca414;border-color:#c83ca455;color:#f8a5dc}
+.cyber-active .pay-product-usd{color:#f8a5dc}.cyber-active .offer{border-color:#c83ca470}

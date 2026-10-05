@@ -3,7 +3,7 @@ import { PRODUCTS, payhipKey } from "../_lib/catalog.js";
 // URL estable de ICEROOM. Los enlaces de Payhip pueden cambiar al reemplazar un
 // plan de precio; el navegador del cliente solo guarda esta ruta.
 const OVERRIDES = {
-  xNaVU: "https://payhip.com/order?link=xNaVU&pricing_plan=PjWlK9dkGv",
+  xNaVU: "https://payhip.com/order?link=xNaVU&pricing_plan=91zw89XoBL",
 };
 
 export function onRequestGet({ request }) {
