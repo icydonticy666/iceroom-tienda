@@ -36,6 +36,7 @@
 .cyber-bar{background:#ef89cf;color:#240b1d}.cyber-bar .cyber-timer{border-color:#240b1d33}
 .cyber-offer h2 strong{color:#f28bce}.hero .cyber-offer p{color:#c9b5c4}
 .cyber-tag{border-color:#df5ab177;background:#c83ca41b;color:#f8a5dc}
+.cyber-active .card-media>.badge[data-original-label^="Ahorra"]{background:#ef89cf;color:#240b1d}
 .cyber-active #contenido>.kicker{color:#f4a0d9;border-color:#c83ca470;background:#c83ca410}
 .cyber-active #contenido>.kicker::before{background:#f28bce}
 .cyber-active a.buy:not(.ghost),.cyber-active #kit-buy{background:#c83ca4;color:#fff;box-shadow:0 5px 25px #c83ca418}
