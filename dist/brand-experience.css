@@ -68,3 +68,29 @@ a.buy:not(.ghost):hover::after,#kit-buy:hover::after{left:130%}
 @media(min-width:681px){.hero{padding-top:50px;padding-bottom:50px}.hero h1.hero-lockup{font-size:clamp(76px,10.6vw,134px)}.hero .kicker{margin-bottom:20px}.hero p{margin-top:18px}.hero-cta{margin-top:20px}.motion-ready .grid>.card.reveal:nth-child(even){transition-delay:65ms,65ms,0ms,0ms,0ms}.motion-ready .grid>.card.reveal.is-visible:hover{transition-delay:0ms}}
 @media(max-width:680px){.hero{padding-top:55px;padding-bottom:58px}.hero h1.hero-lockup{font-size:clamp(45px,13vw,84px);gap:.2em;letter-spacing:-.055em}.hero .kicker{font-size:8px;padding:8px 12px;letter-spacing:.12em;margin-bottom:24px}.hero p{font-size:.9rem;margin-top:23px;max-width:340px}.hero-motion{right:50%;translate:50% 0;bottom:8px;font-size:9px;min-height:32px}.hero-cta{margin-top:22px}header .hcta{padding:8px 10px;font-size:.55rem}header .logo .brand-mark{width:12px;height:12px}header .logo{gap:7px}.art-top{border-bottom-color:#9484fc3a}}
 @media(prefers-reduced-motion:reduce){.hero h1.hero-lockup{transform:none}.hero>canvas#brand-snow,.hero-motion{display:none}.brand-letter>span,.hero-lockup .brand-mark{animation:none}.card::after,a.buy::after,#kit-buy::after{display:none}.card:hover .art-registration,.bundle-inner:hover .art-registration{rotate:0deg}}
+
+/* ICEBOX — comunidad oficial de ICEROOM. El azul solo aparece en este punto de entrada. */
+:root{--discord:#5865f2;--discord-bright:#7b83f7;--discord-wash:#5865f21c}
+.discord-link{position:relative;display:inline-flex;align-items:center;text-decoration:none;color:#fff;isolation:isolate}
+.discord-link::before{content:'';position:absolute;inset:-1px;border-radius:inherit;background:linear-gradient(120deg,transparent 18%,#ffffff16 48%,transparent 72%);transform:translateX(-125%);transition:transform .7s cubic-bezier(.2,.8,.2,1);z-index:-1}
+.discord-link:hover::before,.discord-link:focus-visible::before{transform:translateX(125%)}
+.discord-icon{width:1.2em;height:1.2em;display:block;fill:currentColor;flex:none}
+.discord-arrow{font-size:1.05em;line-height:1;transition:transform .25s ease}
+.discord-link:hover .discord-arrow,.discord-link:focus-visible .discord-arrow{transform:translate(3px,-3px)}
+.discord-link-header{gap:7px;padding:9px 12px;border:1px solid #7882f4aa;border-radius:999px;background:var(--discord);font-size:.64rem;font-weight:800;letter-spacing:.1em;box-shadow:0 5px 20px #5865f233;transition:background .25s,box-shadow .25s,transform .25s}
+.discord-link-header:hover,.discord-link-header:focus-visible{background:var(--discord-bright);box-shadow:0 8px 28px #5865f266;transform:translateY(-1px)}
+.discord-link-hero{gap:13px;width:min(100%,430px);margin:18px auto 0;padding:12px 14px 12px 12px;border:1px solid #5865f280;border-radius:16px;background:linear-gradient(110deg,#15151a 0%,#18192b 62%,#202750 100%);box-shadow:0 10px 35px #0005,0 0 0 1px #5865f20d;overflow:hidden;transition:border-color .25s,transform .25s,box-shadow .25s}
+.discord-link-hero::after{content:'';position:absolute;right:-18px;top:-32px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,#5865f240,transparent 68%);pointer-events:none;z-index:-1}
+.discord-link-hero:hover,.discord-link-hero:focus-visible{border-color:#8990ff;transform:translateY(-3px);box-shadow:0 16px 42px #0007,0 0 28px #5865f230}
+.discord-mark{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--discord);color:#fff;box-shadow:0 6px 18px #5865f255;transition:transform .35s cubic-bezier(.2,.8,.2,1),background .25s}
+.discord-link-hero:hover .discord-mark,.discord-link-hero:focus-visible .discord-mark{transform:rotate(-7deg) scale(1.06);background:var(--discord-bright)}
+.discord-mark .discord-icon{width:23px;height:23px}
+.discord-copy{display:flex;flex:1;min-width:0;flex-direction:column;align-items:flex-start;gap:2px}
+.discord-copy strong{font-size:.72rem;letter-spacing:.14em;color:#fff}
+.discord-copy small{font-size:.74rem;line-height:1.3;color:#bfc2e8}
+.discord-link-hero>.discord-arrow{margin-left:auto;color:#cfd2ff;font-size:1.3rem}
+.footer-discord{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:9px 13px;border:1px solid #5865f255;border-radius:999px;color:#bfc2e8;font-size:.72rem;font-weight:700;letter-spacing:.04em;transition:background .25s,border-color .25s,color .25s,transform .25s}
+.footer-discord:hover,.footer-discord:focus-visible{background:var(--discord-wash);border-color:#7882f4aa;color:#fff;transform:translateY(-2px)}
+.discord-icon-wrap{display:grid;place-items:center;color:#aeb5ff}
+@media(max-width:680px){header{gap:8px}.hcta-bundle{display:none}.discord-link-header{padding:8px 10px;font-size:.57rem;gap:5px}.discord-link-header .discord-icon{width:15px;height:15px}.discord-link-header .discord-arrow{display:none}.discord-link-hero{margin-top:15px;padding:11px 12px}.discord-mark{width:38px;height:38px}.discord-copy strong{font-size:.67rem}.discord-copy small{font-size:.68rem}}
+@media(prefers-reduced-motion:reduce){.discord-link::before{display:none}.discord-link:hover,.discord-link:focus-visible,.discord-link-hero:hover .discord-mark{transform:none}}
