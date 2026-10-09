@@ -1,6 +1,7 @@
 import { PRODUCTS, priceOf, sellableInClp } from "./catalog.js";
 import { couponQuote, normalizeCoupon } from "./discounts.js";
 import { randomClaim } from "./http.js";
+import { reserveLimitedCoupon, settleCouponReservation } from "./coupon-reservations.js";
 
 export function requireDb(env) {
   if (!env.PAYMENTS_DB) throw new Error("payment-db-missing");
@@ -23,11 +24,16 @@ export async function createIntent(env, productKey, provider, email = "", rawCou
   const claim = randomClaim();
   const baseAmount = await currentPrice(env, product);
   const coupon = normalizeCoupon(rawCoupon);
-  const amount = coupon ? (await couponQuote(env, product, coupon, baseAmount)).amount : baseAmount;
+  const quote = coupon ? await couponQuote(env, product, coupon, baseAmount) : null;
+  const amount = quote ? quote.amount : baseAmount;
   const idempotencyKey = crypto.randomUUID();
   await requireDb(env).prepare(
-    "INSERT INTO payment_intents (claim, provider, product_key, amount_clp, email, idempotency_key) VALUES (?, ?, ?, ?, ?, ?)"
-  ).bind(claim, provider, product.key, amount, email || null, idempotencyKey).run();
+    "INSERT INTO payment_intents (claim, provider, product_key, amount_clp, email, idempotency_key, coupon_code) VALUES (?, ?, ?, ?, ?, ?, ?)"
+  ).bind(claim, provider, product.key, amount, email || null, idempotencyKey, coupon || null).run();
+  if (quote && !await reserveLimitedCoupon(env, quote, claim)) {
+    await requireDb(env).prepare("DELETE FROM payment_intents WHERE claim = ?").bind(claim).run();
+    throw new Error("coupon-limit");
+  }
   return { claim, product, amount, idempotencyKey, coupon };
 }
 
@@ -41,6 +47,7 @@ export async function setProviderOrder(env, claim, providerToken) {
   await requireDb(env).prepare(
     "UPDATE payment_intents SET provider_token = ?, state = 'pending' WHERE claim = ? AND state = 'created'"
   ).bind(providerToken, claim).run();
+  await settleCouponReservation(env, claim, "pending");
 }
 
 export async function bindPayment(env, intent, paymentId, state) {
@@ -48,6 +55,7 @@ export async function bindPayment(env, intent, paymentId, state) {
   const result = await requireDb(env).prepare(
     "UPDATE payment_intents SET payment_id = COALESCE(payment_id, ?), state = CASE WHEN state IN ('refunded', 'charged_back') THEN state WHEN state = 'approved' AND ? NOT IN ('refunded', 'charged_back') THEN state ELSE ? END WHERE claim = ? AND (payment_id IS NULL OR payment_id = ?)"
   ).bind(String(paymentId), state, state, intent.claim, String(paymentId)).run();
+  if (result.meta.changes === 1) await settleCouponReservation(env, intent.claim, state);
   return result.meta.changes === 1;
 }
 

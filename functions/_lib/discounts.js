@@ -1,5 +1,6 @@
 import { bundleCollection, payhipKey, PRODUCT_COLLECTIONS } from "./catalog.js";
 import { cyberActive } from './campaign.js';
+import { limitedCouponAvailable } from "./coupon-reservations.js";
 
 export function normalizeCoupon(value) {
   const code = String(value || "").trim().toUpperCase();
@@ -65,9 +66,10 @@ export async function couponQuote(env, product, rawCode, baseAmount, now = Date.
     throw new Error("coupon-invalid");
   }
 
-  // Payhip no expone un contador transaccional compartido con cobros externos.
-  // Para no exceder cupos, los cupones con límite se conservan solo en PayPal.
-  if (coupon.usage_limit) throw new Error("coupon-local-limit");
+  const usageLimit = Number(coupon.usage_limit || 0);
+  if (usageLimit && !await limitedCouponAvailable(env, code, usageLimit, legacy.usage, now)) {
+    throw new Error("coupon-limit");
+  }
 
   const minimum = Number(coupon.minimum_purchase_amount || 0) * 10;
   if (minimum && baseAmount < minimum) throw new Error("coupon-minimum");
@@ -76,5 +78,5 @@ export async function couponQuote(env, product, rawCode, baseAmount, now = Date.
   else if (Number(coupon.amount_off) > 0) amount = baseAmount - Number(coupon.amount_off) * 10;
   else throw new Error("coupon-invalid");
   if (amount < 350) throw new Error("coupon-local-minimum");
-  return { code, amount, discount: baseAmount - amount, payhipUsage: legacy.usage };
+  return { code, amount, discount: baseAmount - amount, payhipUsage: legacy.usage, usageLimit };
 }

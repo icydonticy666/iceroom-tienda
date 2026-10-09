@@ -1,6 +1,7 @@
 import { bindPayment, getIntent, paymentMatchesIntent, requireDb } from "../_lib/intents.js";
 import { json, paymentOrigin } from "../_lib/http.js";
 import { PRODUCTS } from "../_lib/catalog.js";
+import { activateCouponReservation, settleCouponReservation } from "../_lib/coupon-reservations.js";
 
 export const DEVICE_ID = /^[A-Za-z0-9._:-]{8,512}$/;
 
@@ -25,6 +26,9 @@ export async function onRequestPost({ request, env }) {
         !/^[A-Za-z0-9_-]{2,80}$/.test(String(form.payment_method_id || "")) ||
         !Number.isInteger(Number(form.installments)) || Number(form.installments) < 1 || Number(form.installments) > 48) {
       return json({ error: "Revisa los datos de la tarjeta." }, 400);
+    }
+    if (!await activateCouponReservation(env, intent)) {
+      return json({ error: "El cupón venció o ya fue utilizado. Vuelve al checkout y revisa el total." }, 409);
     }
     const lock = await env.PAYMENTS_DB.prepare(
       "UPDATE payment_intents SET state = 'processing', email = ? WHERE claim = ? AND state = 'created'"
@@ -83,6 +87,7 @@ export async function onRequestPost({ request, env }) {
       if ([400, 402, 422].includes(response.status)) {
         await env.PAYMENTS_DB.prepare("UPDATE payment_intents SET state = 'rejected' WHERE claim = ? AND state = 'processing'")
           .bind(intent.claim).run();
+        await settleCouponReservation(env, intent.claim, "rejected");
         return json({ status: "rejected", error: "No se pudo procesar esa tarjeta. Puedes intentar de nuevo." }, 402);
       }
       return json({ status: "pending", claim: intent.claim, url: `/gracias.html?claim=${intent.claim}` }, 202);
