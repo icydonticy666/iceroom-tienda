@@ -8,6 +8,26 @@ export function requireDb(env) {
   return env.PAYMENTS_DB;
 }
 
+function clean(value, max = 120) {
+  return String(value || "").trim().slice(0, max);
+}
+
+function attributionFields(input = {}) {
+  return {
+    utmSource: clean(input.utmSource, 80),
+    utmMedium: clean(input.utmMedium, 80),
+    utmCampaign: clean(input.utmCampaign, 120),
+    utmContent: clean(input.utmContent, 120),
+    referrer: clean(input.referrer, 500),
+    landingUrl: clean(input.landingUrl, 500),
+    fbclid: clean(input.fbclid, 300),
+    fbp: /^fb\.1\.\d+\.[A-Za-z0-9._-]+$/.test(clean(input.fbp, 300)) ? clean(input.fbp, 300) : "",
+    fbc: /^fb\.1\.\d+\.[A-Za-z0-9._-]+$/.test(clean(input.fbc, 500)) ? clean(input.fbc, 500) : "",
+    clientIp: clean(input.clientIp, 64),
+    userAgent: clean(input.userAgent, 500),
+  };
+}
+
 /** Precio vigente: si la promo tiene cupos (limit) y ya se usaron, vuelve al precio normal. */
 export async function currentPrice(env, product) {
   const amount = priceOf(product);
@@ -18,7 +38,7 @@ export async function currentPrice(env, product) {
   return Number(row?.n || 0) >= product.promo.limit ? product.clp : amount;
 }
 
-export async function createIntent(env, productKey, provider, email = "", rawCoupon = "") {
+export async function createIntent(env, productKey, provider, email = "", rawCoupon = "", rawAttribution = {}) {
   const product = PRODUCTS[productKey];
   if (!sellableInClp(product) || !["mp", "flow"].includes(provider)) return null;
   const claim = randomClaim();
@@ -27,9 +47,14 @@ export async function createIntent(env, productKey, provider, email = "", rawCou
   const quote = coupon ? await couponQuote(env, product, coupon, baseAmount) : null;
   const amount = quote ? quote.amount : baseAmount;
   const idempotencyKey = crypto.randomUUID();
+  const tracking = attributionFields(rawAttribution);
   await requireDb(env).prepare(
-    "INSERT INTO payment_intents (claim, provider, product_key, amount_clp, email, idempotency_key, coupon_code) VALUES (?, ?, ?, ?, ?, ?, ?)"
-  ).bind(claim, provider, product.key, amount, email || null, idempotencyKey, coupon || null).run();
+    "INSERT INTO payment_intents (claim, provider, product_key, amount_clp, email, idempotency_key, coupon_code, utm_source, utm_medium, utm_campaign, utm_content, referrer, landing_url, fbclid, fbp, fbc, client_ip, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+  ).bind(claim, provider, product.key, amount, email || null, idempotencyKey, coupon || null,
+    tracking.utmSource || null, tracking.utmMedium || null, tracking.utmCampaign || null,
+    tracking.utmContent || null, tracking.referrer || null, tracking.landingUrl || null,
+    tracking.fbclid || null, tracking.fbp || null, tracking.fbc || null,
+    tracking.clientIp || null, tracking.userAgent || null).run();
   if (quote && !await reserveLimitedCoupon(env, quote, claim)) {
     await requireDb(env).prepare("DELETE FROM payment_intents WHERE claim = ?").bind(claim).run();
     throw new Error("coupon-limit");

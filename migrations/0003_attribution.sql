@@ -1,0 +1,11 @@
+ALTER TABLE payment_intents ADD COLUMN utm_source TEXT;
+ALTER TABLE payment_intents ADD COLUMN utm_medium TEXT;
+ALTER TABLE payment_intents ADD COLUMN utm_campaign TEXT;
+ALTER TABLE payment_intents ADD COLUMN utm_content TEXT;
+ALTER TABLE payment_intents ADD COLUMN referrer TEXT;
+ALTER TABLE payment_intents ADD COLUMN landing_url TEXT;
+ALTER TABLE payment_intents ADD COLUMN fbclid TEXT;
+ALTER TABLE payment_intents ADD COLUMN fbp TEXT;
+ALTER TABLE payment_intents ADD COLUMN fbc TEXT;
+ALTER TABLE payment_intents ADD COLUMN client_ip TEXT;
+ALTER TABLE payment_intents ADD COLUMN user_agent TEXT;

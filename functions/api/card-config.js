@@ -10,7 +10,11 @@ export async function onRequestPost({ request, env }) {
     requireDb(env);
     const body = await request.json();
     if (PRODUCTS[body?.product]?.testOnly && !testAccess(body?.prueba, env)) return json({ error: "Producto no disponible." }, 400);
-    const intent = await createIntent(env, body?.product, "mp", "", body?.coupon);
+    const intent = await createIntent(env, body?.product, "mp", "", body?.coupon, {
+      ...(body?.attribution || {}),
+      clientIp: request.headers.get("cf-connecting-ip") || "",
+      userAgent: request.headers.get("user-agent") || "",
+    });
     if (!intent) return json({ error: "Producto no disponible." }, 400);
     return json({ claim: intent.claim, amount: intent.amount, publicKey: env.MP_PUBLIC_KEY });
   } catch (error) {

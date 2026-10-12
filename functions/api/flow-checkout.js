@@ -27,7 +27,11 @@ export async function onRequestPost({ request, env }) {
   if (!origin) return json({ error: "Flow requiere un dominio HTTPS público." }, 503);
   let intent;
   try {
-    intent = await createIntent(env, product.key, "flow", email, body?.coupon);
+    intent = await createIntent(env, product.key, "flow", email, body?.coupon, {
+      ...(body?.attribution || {}),
+      clientIp: request.headers.get("cf-connecting-ip") || "",
+      userAgent: request.headers.get("user-agent") || "",
+    });
   } catch (error) {
     if (error?.message === 'coupon-cyber-active') return json({ error: 'Cyber Day ya incluye el 25%. Quita el otro cupón y vuelve a intentarlo.' }, 400);
     if (String(error?.message || "").startsWith("coupon-")) return json({ error: "Ese cupón no es válido para esta compra." }, 400);

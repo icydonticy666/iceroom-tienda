@@ -1,5 +1,31 @@
 (function () {
   var prices = {};
+  function cookie(name) {
+    var match = document.cookie.split(";").map(function (part) { return part.trim(); })
+      .find(function (part) { return part.startsWith(name + "="); });
+    return match ? decodeURIComponent(match.slice(name.length + 1)) : "";
+  }
+  function readAttribution() {
+    var params = new URLSearchParams(location.search);
+    var fbclid = params.get("fbclid") || "";
+    var current = {
+      utmSource: params.get("utm_source") || "",
+      utmMedium: params.get("utm_medium") || "",
+      utmCampaign: params.get("utm_campaign") || "",
+      utmContent: params.get("utm_content") || "",
+      referrer: document.referrer || "",
+      landingUrl: location.href,
+      fbclid: fbclid,
+      fbp: cookie("_fbp"),
+      fbc: cookie("_fbc") || (fbclid ? "fb.1." + Date.now() + "." + fbclid : "")
+    };
+    var saved = {};
+    try { saved = JSON.parse(sessionStorage.getItem("iceroom_attribution") || "{}"); } catch (error) { /* sin sesión */ }
+    Object.keys(current).forEach(function (key) { if (!current[key] && saved[key]) current[key] = saved[key]; });
+    try { sessionStorage.setItem("iceroom_attribution", JSON.stringify(current)); } catch (error) { /* navegador restringido */ }
+    return current;
+  }
+  var attribution = readAttribution();
   var sheet = document.createElement("div");
   sheet.className = "pay-sheet";
   sheet.hidden = true;
@@ -314,7 +340,7 @@
     retryCard.hidden = true;
     setBusy(true, "Preparando pago seguro…");
     try {
-      var config = await api("/api/card-config", { product: product, prueba: testKey, coupon: appliedCoupon });
+      var config = await api("/api/card-config", { product: product, prueba: testKey, coupon: appliedCoupon, attribution: attribution });
       activeClaim = config.claim;
       price.textContent = money(config.amount) + " CLP";
       await loadSdk();
@@ -395,7 +421,7 @@
     }
     setBusy(true, "Conectando con Webpay…");
     try {
-      var result = await api("/api/flow-checkout", { product: productKey(), email: email, prueba: testKey, coupon: appliedCoupon });
+      var result = await api("/api/flow-checkout", { product: productKey(), email: email, prueba: testKey, coupon: appliedCoupon, attribution: attribution });
       location.assign(result.url);
     } catch (error) {
       setBusy(false);
