@@ -6,6 +6,8 @@
   // para todos en la web pagando en pesos (PayPal sigue al precio normal de Payhip).
   var studioPromoEnds = Date.parse("2026-10-19T02:59:00.000Z");
   var studioOffer = offerCode === "meta-studio-1499" && Date.now() < studioPromoEnds;
+  // Anuncio internacional: Pritti Studio a US$14.99 con PayPal primero (en pesos, $14.990). Aprobado el 18-oct-2026.
+  var intlOffer = offerCode === "meta-studio-intl" && Date.now() < Date.parse("2026-10-26T02:59:00.000Z");
   var todayEnds = Date.parse("2026-10-16T02:59:00.000Z"); // 15-oct 23:59 hora de Chile
   // Promos públicas en pesos (tarjeta y Webpay). PayPal sigue al precio normal de Payhip, que se muestra aparte.
   var CLP_PROMOS = {
@@ -157,7 +159,7 @@
   fetch("/api/prices" + (offerCode ? "?offer=" + encodeURIComponent(offerCode) : "")).then(function (r) { return r.json(); }).then(function (data) {
     prices = data || {};
     // La oferta enlazada se refleja de inmediato aunque el navegador conserve una respuesta antigua de /api/prices.
-    if (studioOffer) prices.QLfl6 = 14990;
+    if (studioOffer || intlOffer) prices.QLfl6 = 14990;
     Object.keys(CLP_PROMOS).forEach(function (key) { if (clpPromo(key)) prices[key] = CLP_PROMOS[key].clp; });
     pricesLoaded = true;
     trackInitiateCheckout();
@@ -198,7 +200,7 @@
     return addonSelected && current?.dataset.addon ? current.dataset.addon : current?.getAttribute("data-mp");
   }
   function usdLabel() {
-    if (studioOffer && productKey() === "QLfl6") return "$14.99";
+    if ((studioOffer || intlOffer) && productKey() === "QLfl6") return "$14.99";
     if (clpPromo(productKey())) return clpPromo(productKey()).paypal;
     var offer = window.iceroomPromotion?.get().products[productKey()];
     if (offer) return '$' + (offer.usd / 100).toFixed(2);
@@ -209,20 +211,22 @@
   function refreshSummary() {
     var key = productKey();
     var linkedOffer = studioOffer && key === "QLfl6";
-    var publicPromo = linkedOffer ? null : clpPromo(key);
-    sheet.querySelector('.pay-total-label').textContent = linkedOffer ? "Pritti Studio · oferta exclusiva del anuncio"
+    var intlLinked = intlOffer && key === "QLfl6";
+    var publicPromo = linkedOffer || intlLinked ? null : clpPromo(key);
+    sheet.querySelector('.pay-total-label').textContent = linkedOffer || intlLinked ? "Pritti Studio · oferta exclusiva del anuncio"
       : publicPromo ? publicPromo.title : "Total en USD · PayPal";
     // Promo en pesos: precio grande en CLP y medios de pago arriba en el celular.
-    card.classList.toggle("pay-linked-offer", Boolean(linkedOffer || publicPromo));
+    card.classList.toggle("pay-linked-offer", Boolean(linkedOffer || intlLinked || publicPromo));
     var campaign = window.iceroomPromotion?.get();
     var offer = campaign?.products[key];
-    var clp = linkedOffer ? 14990 : (offer?.clp || prices[key]);
+    var clp = linkedOffer || intlLinked ? 14990 : (offer?.clp || prices[key]);
     price.textContent = !localReady ? "" : clp ? "O " + money(clp) + " CLP con tarjeta / Webpay"
       : "El monto en CLP se confirma antes de pagar";
     var amount = usdLabel();
     usdPrice.textContent = linkedOffer ? money(14990) + " CLP" : publicPromo ? money(publicPromo.clp) + " CLP"
       : amount.startsWith("$") ? "US" + amount : amount;
     if (linkedOffer) price.textContent = "Antes $29.990 · paga con débito, crédito o Webpay";
+    if (intlLinked) price.textContent = "Antes US$29.99 · PayPal o tarjeta internacional. En Chile: $14.990 CLP";
     if (publicPromo) price.textContent = "Antes " + money(publicPromo.before) + " · débito, crédito o Webpay. Con PayPal: US" + publicPromo.paypal;
     if (campaign?.active && offer) {
       var previous = document.createElement('del'); previous.className='cyber-previous';
@@ -230,11 +234,16 @@
     }
     sheet.querySelector('#pay-paypal-price').textContent = amount.startsWith("$") ? "US" + amount + " · pago internacional" : amount;
     var promoNote = sheet.querySelector('.pay-cyber-note');
-    promoNote.textContent = linkedOffer ? "✦ 50% menos, solo por este anuncio. Ya aplicado."
+    promoNote.textContent = linkedOffer || intlLinked ? "✦ 50% menos, solo por este anuncio. Ya aplicado."
       : publicPromo ? "✦ " + publicPromo.note + ". Ya aplicado." : "✦ Cyber Day · 25% aplicado al precio. Sin código.";
-    promoNote.hidden = !(linkedOffer || publicPromo || campaign?.active);
-    couponDetails.hidden = Boolean(linkedOffer || publicPromo || campaign?.active);
-    sheet.querySelector('[data-action="paypal"]').hidden = linkedOffer;
+    promoNote.hidden = !(linkedOffer || intlLinked || publicPromo || campaign?.active);
+    couponDetails.hidden = Boolean(linkedOffer || intlLinked || publicPromo || campaign?.active);
+    var paypalMethod = sheet.querySelector('.pay-method[data-action="paypal"]');
+    paypalMethod.hidden = linkedOffer;
+    // En el anuncio internacional PayPal va primero y destacado; en el resto vuelve al final.
+    sheet.classList.toggle("pay-intl", Boolean(intlLinked));
+    if (intlLinked) methods.insertBefore(paypalMethod, methods.querySelector(".pay-method"));
+    else methods.appendChild(paypalMethod);
     var solo = campaign?.products[current?.getAttribute('data-mp')];
     var combo = campaign?.products[current?.dataset.addon];
     var soloPromo = clpPromo(current?.getAttribute('data-mp'));
@@ -548,6 +557,8 @@
       closeSheet();
       if (addonHref) {
         location.assign(addonHref);
+      } else if (intlOffer && product === "QLfl6") {
+        location.assign("/api/paypal-checkout?product=QLfl6&offer=" + encodeURIComponent(offerCode));
       } else if (button.classList.contains("payhip-buy-button")) {
         // El overlay de Payhip abre PayPal en una ventana emergente que Instagram y
         // otros navegadores internos suelen bloquear. El checkout de página completa
@@ -581,19 +592,19 @@
   function applyCardPromos() {
     Object.keys(CLP_PROMOS).forEach(function (key) {
       var promo = clpPromo(key);
-      var meta = studioOffer && key === "QLfl6";
+      var meta = (studioOffer || intlOffer) && key === "QLfl6";
       if (!promo && !meta) return;
       document.querySelectorAll('a[data-mp="' + key + '"]').forEach(function (button) {
         var area = button.closest("article, .news-item");
         var visiblePrice = area?.querySelector(".price");
-        if (visiblePrice) visiblePrice.textContent = meta ? "$14.99" : money(promo.clp) + " CLP";
+        if (visiblePrice) visiblePrice.textContent = meta ? (intlOffer ? "US$14.99" : "$14.99") : money(promo.clp) + " CLP";
         var oldPrice = area?.querySelector(".price-old");
         if (!oldPrice && visiblePrice && area.tagName === "ARTICLE") {
           oldPrice = document.createElement("del"); oldPrice.className = "price-old"; visiblePrice.after(oldPrice);
         }
-        if (oldPrice) oldPrice.textContent = meta ? "$29.99" : money(promo.before);
+        if (oldPrice) oldPrice.textContent = meta ? (intlOffer ? "US$29.99" : "$29.99") : money(promo.before);
         var badge = area?.querySelector(".badge");
-        if (badge && (meta || promo.badge)) badge.textContent = meta ? "Oferta Meta · 50%" : promo.badge;
+        if (badge && (meta || promo.badge)) badge.textContent = meta ? (intlOffer ? "Oferta · 50%" : "Oferta Meta · 50%") : promo.badge;
         if (key === "QLfl6" && button.classList.contains("buy")) button.textContent = "Comprar Pritti Studio";
       });
     });

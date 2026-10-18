@@ -43,6 +43,13 @@ export const DIRECT_OFFERS = {
     usd: 1499,
     endsAt: "2026-10-19T02:59:00.000Z",
   },
+  // Anuncio internacional (España, EE.UU., México…), aprobado el 18-oct-2026: PayPal a US$14.99 y, en pesos, $14.990.
+  "meta-studio-intl": {
+    product: "QLfl6",
+    clp: 14990,
+    usd: 1499,
+    endsAt: "2026-10-26T02:59:00.000Z",
+  },
 };
 
 export function directOffer(product, code, now = new Date()) {
