@@ -26,7 +26,7 @@ test('la campaña dura 72 horas y respeta ambos límites del servidor', t => {
 
 test('todos los productos reales reciben 25%, incluida la plantilla con adicional', t => {
   duringCampaign(t);
-  assert.equal(Object.keys(USD_CENTS).length,14);
+  assert.equal(Object.keys(USD_CENTS).length,15); // +h32nW (pack Ableton + plugins, 15-oct)
   for (const product of Object.values(PRODUCTS).filter(p=>!p.testOnly)) {
     assert.ok(USD_CENTS[product.key]);
     assert.equal(priceOf(product),product.clp-Math.round(product.clp*.25));

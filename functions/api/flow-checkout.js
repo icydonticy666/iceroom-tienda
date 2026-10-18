@@ -31,15 +31,14 @@ export async function onRequestPost({ request, env }) {
       ...(body?.attribution || {}),
       clientIp: request.headers.get("cf-connecting-ip") || "",
       userAgent: request.headers.get("user-agent") || "",
-    });
+    }, body?.offer);
   } catch (error) {
     if (error?.message === 'coupon-cyber-active') return json({ error: 'Cyber Day ya incluye el 25%. Quita el otro cupón y vuelve a intentarlo.' }, 400);
-    if (String(error?.message || "").startsWith("coupon-")) return json({ error: "Ese cupón no es válido para esta compra." }, 400);
+    if (String(error?.message || "").startsWith("coupon-") || error?.message === "offer-no-coupon") return json({ error: "Esta oferta ya tiene aplicado el descuento máximo." }, 400);
     return json({ error: "No se pudo preparar el descuento." }, 503);
   }
   const price = intent.amount;
   const claim = intent.claim;
-  const optional = JSON.stringify({ product: product.key, clp: price, claim });
 
   try {
     const order = await createFlowOrder(env, {
@@ -52,12 +51,15 @@ export async function onRequestPost({ request, env }) {
       ...(env.FLOW_PAYMENT_METHOD_ID ? { paymentMethod: String(env.FLOW_PAYMENT_METHOD_ID) } : {}),
       urlConfirmation: `${origin}/api/flow-webhook`,
       urlReturn: `${origin}/volver-flow/${claim}`,
-      optional,
     });
     if (!order.url || !order.token) return json({ error: "Flow no devolvió el checkout." }, 502);
     await setProviderOrder(env, claim, order.token);
     return json({ url: `${order.url}?token=${encodeURIComponent(order.token)}`, clp: price });
   } catch (error) {
+    console.log(JSON.stringify({ flow_error: String(error?.message || error), status: error?.status || 0, product: product.key }));
+    if (/userEmail/i.test(String(error?.message || ""))) {
+      return json({ error: "Flow no aceptó ese correo. Revisa que esté bien escrito (por ejemplo, nombre@gmail.com)." }, 400);
+    }
     return json({ error: "No se pudo iniciar Flow. Vuelve a intentarlo." }, 502);
   }
 }

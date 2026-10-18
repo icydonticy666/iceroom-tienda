@@ -2,6 +2,12 @@ import { PRODUCTS, allowedPrices, amountOk, bundleCollection, formatClp, isBundl
 import { couponCode } from "./coupon.js";
 import { bindPayment, getIntent, paymentMatchesIntent } from "./intents.js";
 
+const ADDON_BASE_PRODUCT = "0QEeV";
+const ADDON_PRODUCT = PRODUCTS.xNaVU;
+// xNaVU cuesta US$15.98 y el upgrade post-compra debe quedar en US$2.99.
+// Payhip recibe amount_off en centavos de USD (12.99 = 1299).
+const ADDON_DISCOUNT_CENTS = 1299;
+
 export function payhipOutcome(status, text) {
   if (status >= 200 && status < 300) return "created";
   if (status === 401 || status === 403) return "auth";
@@ -31,6 +37,21 @@ async function existingCoupon(env, product, code, paymentId) {
     if (!Array.isArray(coupons)) throw new Error("payhip-invalid-coupon-list");
     const found = coupons.find((coupon) => coupon.code === code);
     if (found) return couponMatches(found, product, code, paymentId);
+    if (coupons.length < 100) return false;
+  }
+  return false;
+}
+
+async function existingAddonCoupon(env, code, paymentId) {
+  for (let offset = 0; offset < 10000; offset += 100) {
+    const res = await fetch(`https://payhip.com/api/v2/coupons?limit=100&offset=${offset}`, {
+      headers: { "payhip-api-key": env.PAYHIP_API_KEY },
+    });
+    if (!res.ok) throw new Error("payhip-coupon-lookup");
+    const coupons = (await res.json())?.data?.coupons;
+    if (!Array.isArray(coupons)) throw new Error("payhip-invalid-coupon-list");
+    const found = coupons.find((coupon) => coupon.code === code);
+    if (found) return addonCouponMatches(found, code, paymentId);
     if (coupons.length < 100) return false;
   }
   return false;
@@ -101,12 +122,70 @@ async function createCoupon(env, product, code, paymentId) {
   throw error;
 }
 
-async function sendEmail(env, { to, product, code, url, clp }) {
+function addonCouponMatches(coupon, code, paymentId) {
+  return coupon?.code === code &&
+    coupon?.coupon_type === "collection" &&
+    coupon?.collection_id === bundleCollection(ADDON_PRODUCT) &&
+    Number(coupon?.amount_off) === ADDON_DISCOUNT_CENTS &&
+    Number(coupon?.usage_limit) === 1 &&
+    coupon?.notes === `Postcompra ${paymentId}`;
+}
+
+async function createAddonCoupon(env, code, paymentId) {
+  const collection = bundleCollection(ADDON_PRODUCT);
+  if (!collection) throw new Error("payhip-addon-sin-coleccion");
+  const body = new URLSearchParams({
+    code,
+    coupon_type: "collection",
+    collection_id: collection,
+    amount_off: String(ADDON_DISCOUNT_CENTS),
+    usage_limit: "1",
+    notes: `Postcompra ${paymentId}`,
+  });
+  const res = await fetch("https://payhip.com/api/v2/coupons", {
+    method: "POST",
+    headers: {
+      "payhip-api-key": env.PAYHIP_API_KEY,
+      "content-type": "application/x-www-form-urlencoded",
+    },
+    body,
+  });
+  const text = await res.text();
+  const outcome = payhipOutcome(res.status, text);
+  if (outcome === "created") {
+    let coupon;
+    try { coupon = JSON.parse(text)?.data; } catch { /* respuesta inválida */ }
+    if (addonCouponMatches(coupon, code, paymentId)) return outcome;
+    throw new Error("payhip-invalid-addon-coupon");
+  }
+  if (outcome === "exists" && await existingAddonCoupon(env, code, paymentId)) return outcome;
+  const error = new Error(outcome === "auth" ? "payhip-auth" : "payhip-error");
+  error.detail = text.slice(0, 300);
+  throw error;
+}
+
+async function addonOffer(env, product, paymentId, origin = "https://iceroom.cl") {
+  if (product.key !== ADDON_BASE_PRODUCT || !env.PAYHIP_API_KEY) return null;
+  const secret = env.ORDER_SECRET || env.MP_ACCESS_TOKEN || env.FLOW_SECRET_KEY;
+  if (!secret) return null;
+  const code = await couponCode(secret, `${paymentId}:addon`);
+  await createAddonCoupon(env, code, paymentId);
+  return {
+    code,
+    url: `${String(origin || "https://iceroom.cl").replace(/\/$/, "")}/api/paypal-checkout?product=${ADDON_PRODUCT.key}`,
+    price: "US$2.99",
+  };
+}
+
+async function sendEmail(env, { to, product, code, url, clp, addon }) {
   if (!env.RESEND_API_KEY || !env.EMAIL_FROM || !to) return false;
   const steps = `1. Abre el enlace.\n2. Toca "Add coupon" y pega el código ${code}. El total queda en US$0.\n3. Escribe tu correo y confirma.`;
   const download = product.kind === "service"
     ? `${steps}\n\nDespués escríbeme por Instagram @iceroomcl para coordinar la mezcla.`
     : `${steps}\n\nPayhip te muestra la descarga al tiro y te la manda a tu correo.`;
+  const addonText = addon?.code
+    ? `\n\n¿Quieres agregar los 3 plugins Pritti por ${addon.price}?\nUsa este código post-compra (un solo uso): ${addon.code}\n${addon.url}\nEn Payhip, abre "Add coupon" y pega ese código.\n`
+    : "";
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -115,27 +194,33 @@ async function sendEmail(env, { to, product, code, url, clp }) {
     },
     body: JSON.stringify({
       from: env.EMAIL_FROM,
+      // Las respuestas del cliente llegan a soporte@ (Email Routing → Gmail), sea cual sea el remitente.
+      reply_to: env.EMAIL_REPLY_TO || "soporte@iceroom.cl",
       to: [to],
       subject: `Tu compra en iceroom — ${product.name}`,
-      text: `Pago aprobado por ${formatClp(clp)} CLP.\n\nTu código de descarga (un solo uso): ${code}\n${url}\n\n${download}\n`,
+      text: `Pago aprobado por ${formatClp(clp)} CLP.\n\nTu código de descarga (un solo uso): ${code}\n${url}\n\n${download}${addonText}`,
     }),
   });
+  if (!res.ok) console.error(JSON.stringify({ email_error: res.status, from: env.EMAIL_FROM, body: (await res.text()).slice(0, 300) }));
+  else console.log(JSON.stringify({ email_sent: true, from: env.EMAIL_FROM }));
   return res.ok;
 }
 
-async function sendCapi(env, { payment, product, clp, email, origin, ip, ua }) {
+async function sendCapi(env, { payment, product, clp, email, origin, ip, ua, fbp, fbc, sourceUrl }) {
   if (!env.META_PIXEL_ID || !env.META_CAPI_TOKEN || product.testOnly) return false;
   const userData = {};
   if (email) userData.em = [await sha256(email)];
   if (ip) userData.client_ip_address = ip;
   if (ua) userData.client_user_agent = ua;
+  if (fbp) userData.fbp = fbp;
+  if (fbc) userData.fbc = fbc;
   const payload = {
     data: [{
       event_name: "Purchase",
       event_time: Math.floor(Date.now() / 1000),
       event_id: `mp-${payment.id}`,
       action_source: "website",
-      event_source_url: `${origin}/gracias.html`,
+      event_source_url: sourceUrl || `${origin}/gracias.html`,
       user_data: userData,
       custom_data: {
         currency: "CLP",
@@ -154,7 +239,7 @@ async function sendCapi(env, { payment, product, clp, email, origin, ip, ua }) {
   return res.ok;
 }
 
-function view(product, record) {
+function view(product, record, addon) {
   return {
     status: record.refunded ? "refunded" : "approved",
     name: product.name,
@@ -163,6 +248,9 @@ function view(product, record) {
     coupon: record.refunded ? "" : record.code,
     redeemUrl: record.refunded ? "" : redeemUrl(product, record.code),
     emailSent: Boolean(record.emailSent),
+    addonCoupon: addon?.code || "",
+    addonUrl: addon?.url || "",
+    addonPrice: addon?.price || "",
   };
 }
 
@@ -247,6 +335,10 @@ export async function fulfill(env, payment, extras = {}) {
     await kvPut(env, kvKey, record);
   }
 
+  let addon = null;
+  try { addon = await addonOffer(env, product, id, extras.origin); }
+  catch (error) { console.error(JSON.stringify({ addon_coupon_error: String(error?.message || error), payment: id })); }
+
   const email = payerEmail(payment);
   if (env.ORDERS && !record.emailSent) {
     record.emailSent = await sendEmail(env, {
@@ -255,6 +347,7 @@ export async function fulfill(env, payment, extras = {}) {
       code: record.code,
       url: redeemUrl(product, record.code),
       clp: ref.clp,
+      addon,
     });
     if (record.emailSent) await kvPut(env, kvKey, record);
   }
@@ -271,7 +364,7 @@ export async function fulfill(env, payment, extras = {}) {
     if (record.capiSent) await kvPut(env, kvKey, record);
   }
 
-  return view(product, record);
+  return view(product, record, addon);
 }
 
 async function fulfillWithDb(env, payment, extras, intent, product, ref) {
@@ -330,16 +423,24 @@ async function fulfillWithDb(env, payment, extras, intent, product, ref) {
     clp: ref.clp, coupon: "", redeemUrl: "" };
   if (fresh.state !== "ready") return { status: "pending", name: product.name, kind: product.kind,
     clp: ref.clp, coupon: "", redeemUrl: "" };
+  let addon = null;
+  try { addon = await addonOffer(env, product, id, extras.origin); }
+  catch (error) { console.error(JSON.stringify({ addon_coupon_error: String(error?.message || error), payment: id })); }
   const email = payerEmail(payment) || intent.email || "";
   let emailSent = Boolean(fresh.email_sent);
-  if (!emailSent && await sendEmail(env, { to: email, product, code, url: redeemUrl(product, code), clp: ref.clp })) {
+  if (!emailSent && await sendEmail(env, { to: email, product, code, url: redeemUrl(product, code), clp: ref.clp, addon })) {
     await db.prepare("UPDATE payment_fulfillments SET email_sent = 1 WHERE payment_id = ?").bind(id).run();
     emailSent = true;
   }
   if (!fresh.capi_sent && await sendCapi(env, { payment, product, clp: ref.clp, email,
-    origin: extras.origin || "https://iceroom.cl", ip: extras.ip || "", ua: extras.ua || "" })) {
+    origin: extras.origin || "https://iceroom.cl", ip: intent.client_ip || extras.ip || "",
+    ua: intent.user_agent || extras.ua || "", fbp: intent.fbp || "", fbc: intent.fbc || "",
+    sourceUrl: intent.landing_url || "" })) {
     await db.prepare("UPDATE payment_fulfillments SET capi_sent = 1 WHERE payment_id = ?").bind(id).run();
   }
+  // eventId = el mismo event_id que manda sendCapi: Meta deduplica el Purchase del navegador.
   return { status: "approved", name: product.name, kind: product.kind, clp: ref.clp,
-    coupon: code, redeemUrl: redeemUrl(product, code), emailSent };
+    productKey: product.key, eventId: `mp-${id}`,
+    coupon: code, redeemUrl: redeemUrl(product, code), emailSent,
+    addonCoupon: addon?.code || "", addonUrl: addon?.url || "", addonPrice: addon?.price || "" };
 }

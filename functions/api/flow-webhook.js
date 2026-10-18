@@ -14,7 +14,7 @@ export async function onRequestPost({ request, env }) {
     if (!intent || intent.provider !== "flow" || intent.provider_token !== String(token)) {
       return new Response(null, { status: 200 });
     }
-    const result = await fulfill(env, flowAsPayment(status), { origin: siteOrigin(request, env) });
+    const result = await fulfill(env, flowAsPayment(status, intent), { origin: siteOrigin(request, env) });
     if (result.error && result.status >= 500) return new Response(null, { status: 500 });
     return new Response(null, { status: 200 });
   } catch {

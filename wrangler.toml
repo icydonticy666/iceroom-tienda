@@ -9,6 +9,10 @@ pages_build_output_dir = "dist"
 PUBLIC_ORIGIN = "https://iceroom.cl"
 # "live" = débito/tarjeta (Mercado Pago) y Webpay (Flow) visibles para todos.
 CHECKOUT_MODE = "live"
+# Pixel "ICEROOM - Payhip". La API de conversiones además necesita el secreto META_CAPI_TOKEN (lo pega el usuario).
+META_PIXEL_ID = "1428727309189220"
+# Flow manda directo a Webpay (id 1) en vez de su página para elegir entre 9 medios.
+FLOW_PAYMENT_METHOD_ID = "1"
 
 [[d1_databases]]
 binding = "PAYMENTS_DB"

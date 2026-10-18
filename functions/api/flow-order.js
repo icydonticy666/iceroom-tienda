@@ -1,6 +1,7 @@
 import { fulfill } from "../_lib/fulfill.js";
 import { flowAsPayment, flowStatus } from "../_lib/flow.js";
 import { json, siteOrigin } from "../_lib/http.js";
+import { getIntent } from "../_lib/intents.js";
 
 export async function onRequestGet({ request, env }) {
   if (!env.FLOW_API_KEY || !env.FLOW_SECRET_KEY) {
@@ -15,7 +16,8 @@ export async function onRequestGet({ request, env }) {
 
   try {
     const status = await flowStatus(env, token);
-    const payment = flowAsPayment(status);
+    const intent = env.PAYMENTS_DB ? await getIntent(env, claim) : null;
+    const payment = flowAsPayment(status, intent);
     const result = await fulfill(env, payment, {
       claim,
       origin: siteOrigin(request, env),

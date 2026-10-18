@@ -1,0 +1,12 @@
+.dev.vars*
+.env*
+.wrangler
+
+# Documentos internos: el repo es público. No subir estrategia, clientes ni cupones.
+meta-ads/
+servicios/
+preview/
+scripts/
+correos-*.md
+CHECKOUT-SETUP.md
+*.mp4

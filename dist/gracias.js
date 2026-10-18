@@ -9,6 +9,10 @@
   var code = document.getElementById("code");
   var steps = document.getElementById("steps");
   var copied = document.getElementById("copied");
+  var addonOffer = document.getElementById("addon-offer");
+  var addonCode = document.getElementById("addon-code");
+  var addonGo = document.getElementById("addon-go");
+  var addonPrice = document.getElementById("addon-price");
   var tries = 0;
 
   function copyCode(text) {
@@ -25,8 +29,16 @@
     try { document.execCommand("copy"); } catch (e) { /* el código sigue visible para copiarlo a mano */ }
     area.remove();
   }
+  function trackPurchase(data) {
+    if (!window.fbq || !data.eventId) return;
+    var key = "fbq-purchase:" + data.eventId;
+    try { if (localStorage.getItem(key)) return; localStorage.setItem(key, "1"); } catch (e) { /* sin storage: Meta deduplica por eventID */ }
+    fbq("track", "Purchase", { value: data.clp, currency: "CLP", content_ids: [data.productKey],
+      content_type: "product", content_name: data.name }, { eventID: data.eventId });
+  }
   function show(data) {
     if (data.status === "approved" && data.redeemUrl) {
+      trackPurchase(data);
       title.textContent = "Pago confirmado";
       copy.textContent = data.kind === "service"
         ? "Último paso: confirma tu pedido en Payhip con este código. Luego escríbeme por Instagram @iceroomcl."
@@ -41,6 +53,12 @@
       go.href = data.redeemUrl;
       go.textContent = data.coupon ? "Copiar código e ir a descargar" : "Ir a descargar";
       go.hidden = false;
+      if (data.addonCoupon && data.addonUrl && addonOffer) {
+        addonCode.textContent = data.addonCoupon;
+        addonPrice.textContent = data.addonPrice || "US$2.99";
+        addonGo.href = data.addonUrl;
+        addonOffer.hidden = false;
+      }
       return true;
     }
     if (data.status === "rejected") {

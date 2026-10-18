@@ -10,12 +10,15 @@ export const PRODUCTS = {
   G5U1r: { key: "G5U1r", name: "Pritti Bundle", clp: 19990, kind: "download", checkout: "order" },
   "34vZU": { key: "34vZU", name: "Plantilla FL — Plugins Nativos", clp: 2990, kind: "download", checkout: "b" },
   "0QEeV": { key: "0QEeV", name: "Plantilla de Grabación — FL Studio", clp: 12990, kind: "download", checkout: "b",
-    promo: { clp: 9990, until: "2026-10-03T19:20:00.000Z" } },
+    promo: { clp: 9990, from: "2026-10-15T03:00:00.000Z", until: "2026-10-16T02:59:00.000Z" } }, // promo de hoy (15-oct), pedida por el usuario
   // Add-on oculto: Plantilla FL + Pritti Grip, Backroom y Eco por $2.990 adicionales.
   xNaVU: { key: "xNaVU", name: "Plantilla FL Studio + Pritti Grip, Backroom y Eco", clp: 15980, kind: "download", checkout: "order",
-    promo: { clp: 12980, until: "2026-10-03T19:20:00.000Z" } },
+    promo: { clp: 13980, from: "2026-10-15T03:00:00.000Z", until: "2026-10-16T02:59:00.000Z" } }, // plantilla $9.990 + plugins $3.990, solo el 15-oct
   "3j8In": { key: "3j8In", name: "Plantilla de Grabación — Ableton Live", clp: 12990, kind: "download", checkout: "b",
-    promo: { clp: 9990, until: "2026-10-03T19:20:00.000Z" } },
+    promo: { clp: 9990, from: "2026-10-15T03:00:00.000Z", until: "2026-10-16T02:59:00.000Z" } }, // promo de hoy (15-oct)
+  // Pack oculto creado el 15-oct-2026: Plantilla Ableton + Pritti Grip, Backroom, Eco (y Vocals), US$15.98 en Payhip.
+  h32nW: { key: "h32nW", name: "Plantilla Ableton Live + Pritti Grip, Backroom y Eco", clp: 15980, kind: "download", checkout: "order",
+    promo: { clp: 13980, from: "2026-10-15T03:00:00.000Z", until: "2026-10-16T02:59:00.000Z" } }, // plantilla $9.990 + plugins $3.990, solo el 15-oct
   "8Ljoq": { key: "8Ljoq", name: "Pack de Plantillas", clp: 19990, kind: "download", checkout: "order" },
   QLfl6: {
     key: "QLfl6",
@@ -23,6 +26,8 @@ export const PRODUCTS = {
     clp: 29990,
     kind: "download",
     checkout: "order",
+    // Promo pública en pesos, pedida por el usuario el 14-oct-2026; vence junto con la oferta del anuncio.
+    promo: { clp: 14990, from: "2026-10-14T03:00:00.000Z", until: "2026-10-19T02:59:00.000Z" },
   },
   a8IWu: { key: "a8IWu", name: "Masterclass: Mezcla Pro", clp: 29990, kind: "download", checkout: "b" },
   IiHTG: { key: "IiHTG", name: "The Ultimate Bundle", clp: 59990, kind: "download", checkout: "order" },
@@ -30,9 +35,27 @@ export const PRODUCTS = {
   PRUEBA350: { key: "PRUEBA350", payhip: "34vZU", name: "Prueba de pago (Plantilla FL)", clp: 350, kind: "download", testOnly: true },
 };
 
+/** Ofertas accesibles solo mediante un enlace de campaña conocido. */
+export const DIRECT_OFFERS = {
+  "meta-studio-1499": {
+    product: "QLfl6",
+    clp: 14990,
+    usd: 1499,
+    endsAt: "2026-10-19T02:59:00.000Z",
+  },
+};
+
+export function directOffer(product, code, now = new Date()) {
+  const offer = DIRECT_OFFERS[String(code || "")];
+  if (!offer || offer.product !== product?.key || Number(now) >= Date.parse(offer.endsAt)) return null;
+  return offer;
+}
+
 export function priceOf(product, now = new Date()) {
   if (!product.testOnly && cyberActive(now)) return cyberPrice(product.clp);
-  if (product.promo && now.getTime() < Date.parse(product.promo.until)) return product.promo.clp;
+  // `from` es opcional: sin él la promo rige desde siempre hasta `until`.
+  if (product.promo && (!product.promo.from || now.getTime() >= Date.parse(product.promo.from)) &&
+      now.getTime() < Date.parse(product.promo.until)) return product.promo.clp;
   return product.clp;
 }
 
@@ -40,6 +63,7 @@ export function allowedPrices(product) {
   const prices = [product.clp];
   if (!product.testOnly) prices.push(cyberPrice(product.clp));
   if (product.promo) prices.push(product.promo.clp);
+  for (const offer of Object.values(DIRECT_OFFERS)) if (offer.product === product.key) prices.push(offer.clp);
   return prices;
 }
 
@@ -69,6 +93,7 @@ export const BUNDLE_COLLECTIONS = {
   G5U1r: "ZjBLydjbGm",
   QLfl6: "a6zYD8PkWq",
   xNaVU: "91zw9dAoGL",
+  h32nW: "91zwPovqBL", // "Entrega - Plantilla Ableton y Plugins Pritti", oculta, creada el 15-oct-2026
 };
 
 /** Colecciones comerciales conocidas; permite respetar cupones de colección en el checkout local. */

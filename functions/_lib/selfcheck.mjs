@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { allowedPrices, amountOk, parseRef, priceOf, PRODUCTS } from "./catalog.js";
+import { allowedPrices, amountOk, directOffer, parseRef, priceOf, PRODUCTS } from "./catalog.js";
+import { createIntent } from "./intents.js";
 import { couponCode } from "./coupon.js";
 import { payhipOutcome, payerEmail } from "./fulfill.js";
 import { flowAsPayment, flowSign } from "./flow.js";
@@ -8,12 +9,28 @@ import { mpSignatureOk } from "./signature.js";
 
 test("el precio CLP es el mismo precio de lista en USD × 1.000 (sin promos automáticas)", () => {
   const studio = PRODUCTS.QLfl6;
-  assert.equal(priceOf(studio, new Date("2026-09-24T15:00:00.000Z")), 29990);
-  assert.deepEqual(allowedPrices(studio), [29990, 22492]);
+  // Promo pública en pesos hasta el 18-oct 23:59 CL; después vuelve al precio de lista.
+  assert.equal(priceOf(studio, new Date("2026-10-15T15:00:00.000Z")), 14990);
+  assert.equal(priceOf(studio, new Date("2026-10-19T03:00:00.000Z")), 29990);
+  assert.deepEqual(allowedPrices(studio), [29990, 22492, 14990, 14990]);
   // Una promo debe vencer; `limit` es opcional para una venta flash sin stock artificial.
   for (const product of Object.values(PRODUCTS)) {
     if (product.promo) assert.ok(Date.parse(product.promo.until) && (!product.promo.limit || product.promo.limit > 0), product.key);
   }
+});
+
+test("la oferta Meta de Pritti Studio solo funciona con su enlace y vence con la campaña", async (t) => {
+  t.mock.timers.enable({ apis: ["Date"], now: new Date("2026-10-12T18:00:00Z") });
+  const studio = PRODUCTS.QLfl6;
+  assert.equal(directOffer(studio, "meta-studio-1499", new Date("2026-10-12T18:00:00Z")).clp, 14990);
+  assert.equal(directOffer(studio, "otro", new Date("2026-10-12T18:00:00Z")), null);
+  assert.equal(directOffer(studio, "meta-studio-1499", new Date("2026-10-19T02:59:00Z")), null);
+  assert.ok(allowedPrices(studio).includes(14990));
+  let saved;
+  const env = { PAYMENTS_DB: { prepare() { return { bind(...args) { saved = args; return { async run() {} }; } }; } } };
+  const intent = await createIntent(env, "QLfl6", "mp", "", "", {}, "meta-studio-1499");
+  assert.equal(intent.amount, 14990);
+  assert.equal(saved[3], 14990);
 });
 
 test("la referencia del pago solo acepta productos del catálogo", () => {

@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { DatabaseSync } from "node:sqlite";
 import { readFileSync } from "node:fs";
-import { createIntent, getIntent, paymentMatchesIntent } from "./intents.js";
+import { bindPayment, createIntent, getIntent, paymentMatchesIntent } from "./intents.js";
+import { onRequestPost as mpWallet } from "../api/mp-wallet.js";
 import { fulfill } from "./fulfill.js";
 import { BUNDLE_COLLECTIONS } from "./catalog.js";
 import { onRequestPost as cardPayment } from "../api/card-payment.js";
@@ -84,11 +85,56 @@ test("un cupón de Payhip se valida y descuenta sobre el precio vigente al crear
   try {
     assert.equal(normalizeCoupon(" voces20 "), "VOCES20");
     const quote = await couponQuote(env, { key: "0QEeV", checkout: "b" }, "voces20", 9990);
-    assert.deepEqual(quote, { code: "VOCES20", amount: 7992, discount: 1998, payhipUsage: 1 });
+    assert.deepEqual(quote, { code: "VOCES20", amount: 7992, discount: 1998, payhipUsage: 1, usageLimit: 0 });
     const intent = await createIntent(env, "0QEeV", "mp", "", "voces20");
     assert.equal(intent.amount, 10392);
     assert.equal((await getIntent(env, intent.claim)).amount_clp, 10392);
   } finally { globalThis.fetch = previous; db.close(); }
+});
+
+test("un cupón limitado reserva un único checkout local y vuelve a quedar disponible si el pago es rechazado", async (t) => {
+  t.mock.timers.enable({ apis: ["Date"], now: new Date("2026-10-09T12:00:00.000Z") });
+  const db = database();
+  const env = { PAYMENTS_DB: db, PAYHIP_API_KEY: "payhip-secret" };
+  const previous = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    if (String(url).includes("/api/v2/coupons")) return Response.json({ data: { coupons: [{
+      code: "AR", coupon_type: "collection", collection_id: BUNDLE_COLLECTIONS.G5U1r,
+      percent_off: 25, amount_off: null, start_date: null, end_date: null, usage_limit: 1,
+    }] } });
+    if (String(url).includes("/api/v1/coupons/verify")) return Response.json([{ code: "AR", valid: "1", usage: "0" }]);
+    throw new Error("unexpected fetch");
+  };
+  try {
+    const quote = await couponQuote(env, { key: "G5U1r", checkout: "order" }, "AR", 19990);
+    assert.deepEqual(quote, { code: "AR", amount: 14993, discount: 4997, payhipUsage: 0, usageLimit: 1 });
+    const first = await createIntent(env, "G5U1r", "mp", "", "AR");
+    assert.equal(first.amount, 14993);
+    await assert.rejects(createIntent(env, "G5U1r", "mp", "", "AR"), /coupon-limit/);
+    const { settleCouponReservation } = await import("./coupon-reservations.js");
+    await settleCouponReservation(env, first.claim, "rejected");
+    const retry = await createIntent(env, "G5U1r", "mp", "", "AR");
+    assert.equal(retry.amount, 14993);
+  } finally { globalThis.fetch = previous; db.close(); }
+});
+
+test("cada intento conserva campaña, creativo y señales de Meta", async () => {
+  const db = database();
+  try {
+    const intent = await createIntent({ PAYMENTS_DB: db }, "SQti3", "mp", "", "", {
+      utmSource: "meta", utmMedium: "paid_social", utmCampaign: "ventas_oct_01",
+      utmContent: "reel_necesitas_template", referrer: "https://l.instagram.com/",
+      landingUrl: "https://iceroom.cl/?utm_source=meta", fbclid: "abc123",
+      fbp: "fb.1.1791840000.browser123", fbc: "fb.1.1791840000.abc123",
+      clientIp: "203.0.113.10", userAgent: "Instagram 400",
+    });
+    const saved = await getIntent({ PAYMENTS_DB: db }, intent.claim);
+    assert.equal(saved.utm_source, "meta");
+    assert.equal(saved.utm_campaign, "ventas_oct_01");
+    assert.equal(saved.utm_content, "reel_necesitas_template");
+    assert.equal(saved.fbc, "fb.1.1791840000.abc123");
+    assert.equal(saved.client_ip, "203.0.113.10");
+  } finally { db.close(); }
 });
 
 test("el device ID real de MP (con puntos, ~230 caracteres) llega como X-meli-session-id", async () => {
@@ -97,16 +143,22 @@ test("el device ID real de MP (con puntos, ~230 caracteres) llega como X-meli-se
   const intent = await createIntent(env, "SQti3", "mp");
   const formData = { token: "abcdefgh1234", installments: 1, payment_method_id: "visa", payer: { email: "ana@example.com" } };
   const previous = globalThis.fetch;
-  let header;
+  let header, buyer;
   globalThis.fetch = async (url, options) => {
     header = options.headers["X-meli-session-id"];
     const body = JSON.parse(options.body);
-    return Response.json({ id: 22222, status: "approved", currency_id: "CLP",
+    buyer = body.additional_info.payer;
+    return Response.json({ id: 22222, status: "rejected", status_detail: "cc_rejected_high_risk", currency_id: "CLP",
       transaction_amount: intent.amount, external_reference: body.external_reference });
   };
   try {
-    await cardPayment({ request: request(intent.claim, formData, DEVICE_REAL), env });
+    const response = await cardPayment({ request: request(intent.claim, formData, DEVICE_REAL), env });
     assert.equal(header, DEVICE_REAL);
+    assert.equal(buyer.is_first_purchase_online, true);
+    assert.equal(response.status, 402);
+    const saved = await getIntent(env, intent.claim);
+    assert.equal(saved.mp_status_detail, "cc_rejected_high_risk");
+    assert.equal(saved.mp_device, 1);
   } finally { globalThis.fetch = previous; db.close(); }
 });
 
@@ -192,6 +244,77 @@ test("solo el pago aprobado del intento crea un cupón y el reembolso queda para
   } finally { globalThis.fetch = previous; db.close(); }
 });
 
+test("Purchase por CAPI usa la atribución original del checkout", async () => {
+  const db = database();
+  const env = { PAYMENTS_DB: db, ORDER_SECRET: "order-secret", PAYHIP_API_KEY: "payhip-secret",
+    META_PIXEL_ID: "1428727309189220", META_CAPI_TOKEN: "meta-secret" };
+  const intent = await createIntent(env, "SQti3", "mp", "ana@example.com", "", {
+    landingUrl: "https://iceroom.cl/?utm_campaign=warm_dm_oct_15k#plantilla-fl",
+    fbp: "fb.1.1791840000.browser123", fbc: "fb.1.1791840000.click123",
+    clientIp: "203.0.113.10", userAgent: "Instagram 400",
+  });
+  const payment = { id: 77777, status: "approved", currency_id: "CLP", transaction_amount: intent.amount,
+    external_reference: `tienda:SQti3:${intent.claim}:${intent.amount}`, payer: { email: "ana@example.com" } };
+  const previous = globalThis.fetch;
+  let metaPayload;
+  globalThis.fetch = async (url, options) => {
+    if (url === "https://payhip.com/api/v2/coupons") {
+      const fields = new URLSearchParams(options.body);
+      return Response.json({ data: { code: fields.get("code"), product_key: fields.get("product_key"),
+        coupon_type: "single", percent_off: 100, usage_limit: 1, notes: fields.get("notes") } });
+    }
+    if (String(url).startsWith("https://graph.facebook.com/v21.0/1428727309189220/events")) {
+      metaPayload = JSON.parse(options.body);
+      return Response.json({ events_received: 1 });
+    }
+    throw new Error(`unexpected fetch: ${url}`);
+  };
+  try {
+    const result = await fulfill(env, payment, { claim: intent.claim, origin: "https://iceroom.cl" });
+    assert.equal(result.status, "approved");
+    assert.equal(metaPayload.data[0].event_name, "Purchase");
+    assert.equal(metaPayload.data[0].event_source_url, "https://iceroom.cl/?utm_campaign=warm_dm_oct_15k#plantilla-fl");
+    assert.equal(metaPayload.data[0].user_data.fbp, "fb.1.1791840000.browser123");
+    assert.equal(metaPayload.data[0].user_data.fbc, "fb.1.1791840000.click123");
+    assert.equal(metaPayload.data[0].user_data.client_ip_address, "203.0.113.10");
+    assert.equal(metaPayload.data[0].user_data.client_user_agent, "Instagram 400");
+    assert.equal((await db.prepare("SELECT capi_sent FROM payment_fulfillments WHERE payment_id = ?").bind("77777").first()).capi_sent, 1);
+  } finally { globalThis.fetch = previous; db.close(); }
+});
+
+test("una compra de la plantilla crea un cupón post-compra separado para el add-on", async () => {
+  const db = database();
+  const env = { PAYMENTS_DB: db, ORDER_SECRET: "order-secret", PAYHIP_API_KEY: "payhip-secret" };
+  const intent = await createIntent(env, "0QEeV", "mp");
+  const payment = { id: 456789, status: "approved", currency_id: "CLP", transaction_amount: intent.amount,
+    external_reference: `tienda:0QEeV:${intent.claim}:${intent.amount}` };
+  const previous = globalThis.fetch;
+  const sent = [];
+  globalThis.fetch = async (url, options) => {
+    assert.equal(url, "https://payhip.com/api/v2/coupons");
+    const fields = new URLSearchParams(options.body);
+    sent.push(fields);
+    const addon = fields.get("notes") === "Postcompra 456789";
+    return Response.json({ data: {
+      code: fields.get("code"), coupon_type: addon ? "collection" : "single",
+      collection_id: addon ? "91zw9dAoGL" : null, product_key: addon ? null : "0QEeV",
+      percent_off: addon ? null : 100, amount_off: addon ? 1299 : null,
+      usage_limit: 1, notes: fields.get("notes")
+    } });
+  };
+  try {
+    const result = await fulfill(env, payment, { claim: intent.claim, origin: "https://iceroom.cl" });
+    assert.equal(result.status, "approved");
+    assert.match(result.addonCoupon, /^CL[A-Z0-9]{10}$/);
+    assert.equal(result.addonUrl, "https://iceroom.cl/api/paypal-checkout?product=xNaVU");
+    assert.equal(result.addonPrice, "US$2.99");
+    assert.equal(sent.length, 2);
+    assert.equal(sent[1].get("coupon_type"), "collection");
+    assert.equal(sent[1].get("collection_id"), "91zw9dAoGL");
+    assert.equal(sent[1].get("amount_off"), "1299");
+  } finally { globalThis.fetch = previous; db.close(); }
+});
+
 test("un reembolso durante la creación del cupón no vuelve a aprobar la entrega", async () => {
   const db = database();
   const env = { PAYMENTS_DB: db, ORDER_SECRET: "order-secret", PAYHIP_API_KEY: "payhip-secret" };
@@ -263,14 +386,14 @@ test("Flow guarda su token, valida el callback y entrega una sola vez", async t 
       const form = new URLSearchParams(options.body);
       claim = form.get("commerceOrder");
       assert.equal(form.get("amount"), "4990");
+      assert.equal(form.get("optional"), null);
       assert.equal(form.get("urlConfirmation"), "https://iceroom.example/api/flow-webhook");
       created++;
       return Response.json({ url: "https://sandbox.flow.cl/checkout", token: "flow-token", flowOrder: 44 });
     }
     if (String(url).startsWith("https://sandbox.flow.cl/api/payment/getStatus?")) {
       return Response.json({ flowOrder: 44, status: 2, currency: "CLP", amount: 4990,
-        commerceOrder: claim, payer: "ana@example.com",
-        optional: JSON.stringify({ product: "SQti3", clp: 4990, claim }) });
+        commerceOrder: claim, payer: "ana@example.com" });
     }
     if (url === "https://payhip.com/api/v2/coupons") {
       couponCalls++;
@@ -380,4 +503,35 @@ test("el cupón de un bundle va por su colección (un cupón single de la API no
     assert.equal(enviado.get("product_key"), null);
     assert.equal(result.redeemUrl, "https://payhip.com/buy?link=IiHTG");
   } finally { BUNDLE_COLLECTIONS.IiHTG = anterior; globalThis.fetch = previous; db.close(); }
+});
+
+test("cuenta Mercado Pago: crea la preferencia y un reintento aprobado reemplaza al rechazado", async () => {
+  const db = database();
+  const env = { PAYMENTS_DB: db, MP_ACCESS_TOKEN: "test-secret", MP_WEBHOOK_SECRET: "webhook-secret",
+    PAYHIP_API_KEY: "payhip-secret", ORDER_SECRET: "order-secret", PUBLIC_ORIGIN: "https://iceroom.example" };
+  const previous = globalThis.fetch;
+  let sent;
+  globalThis.fetch = async (url, options) => {
+    assert.equal(url, "https://api.mercadopago.com/checkout/preferences");
+    sent = JSON.parse(options.body);
+    return Response.json({ id: "pref-1", init_point: "https://www.mercadopago.cl/checkout/v1/redirect?pref_id=pref-1" });
+  };
+  try {
+    const response = await mpWallet({ request: new Request("https://iceroom.example/api/mp-wallet", {
+      method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ product: "SQti3" }) }), env });
+    const body = await response.json();
+    assert.equal(body.url, "https://www.mercadopago.cl/checkout/v1/redirect?pref_id=pref-1");
+    assert.equal(sent.purpose, "wallet_purchase");
+    assert.equal(sent.back_urls.success, `https://iceroom.example/volver/${body.claim}`);
+    const intent = await getIntent(env, body.claim);
+    assert.equal(intent.state, "pending");
+    assert.equal(sent.external_reference, `tienda:SQti3:${body.claim}:${intent.amount_clp}`);
+    assert.equal(await bindPayment(env, intent, "111", "rejected"), true);
+    assert.equal(await bindPayment(env, intent, "222", "approved"), true);
+    const paid = await getIntent(env, body.claim);
+    assert.equal(paid.payment_id, "222");
+    assert.equal(paid.state, "approved");
+    // Un aviso tardío del intento rechazado no le quita el pedido al pago aprobado.
+    assert.equal(await bindPayment(env, intent, "111", "rejected"), false);
+  } finally { globalThis.fetch = previous; db.close(); }
 });

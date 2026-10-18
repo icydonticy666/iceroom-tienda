@@ -1,12 +1,33 @@
 (function () {
   var prices = {};
+  var pageParams = new URLSearchParams(location.search);
+  var offerCode = pageParams.get("offer") || "";
+  // Pritti Studio a $14.990: con el enlace del anuncio (solo pesos, sin PayPal) y, hasta la misma fecha,
+  // para todos en la web pagando en pesos (PayPal sigue al precio normal de Payhip).
+  var studioPromoEnds = Date.parse("2026-10-19T02:59:00.000Z");
+  var studioOffer = offerCode === "meta-studio-1499" && Date.now() < studioPromoEnds;
+  var todayEnds = Date.parse("2026-10-16T02:59:00.000Z"); // 15-oct 23:59 hora de Chile
+  // Promos públicas en pesos (tarjeta y Webpay). PayPal sigue al precio normal de Payhip, que se muestra aparte.
+  var CLP_PROMOS = {
+    QLfl6: { clp: 14990, before: 29990, paypal: "$29.99", ends: studioPromoEnds, title: "Pritti Studio · 50% menos pagando en pesos",
+      note: "50% menos pagando en pesos, hasta el 18 de octubre", badge: "−50% en pesos · hasta el 18-oct" },
+    "0QEeV": { clp: 9990, before: 12990, paypal: "$12.99", ends: todayEnds, title: "Solo hoy · pagando en pesos",
+      note: "Solo hoy: plantilla a $9.990 pagando en pesos", badge: "Solo hoy · $9.990" },
+    "3j8In": { clp: 9990, before: 12990, paypal: "$12.99", ends: todayEnds, title: "Solo hoy · pagando en pesos",
+      note: "Solo hoy: plantilla a $9.990 pagando en pesos", badge: "Solo hoy · $9.990" },
+    h32nW: { clp: 13980, before: 15980, paypal: "$15.98", ends: todayEnds, title: "Solo hoy · plantilla + 3 plugins Pritti",
+      note: "Solo hoy: plantilla $9.990 + plugins Pritti $3.990", badge: "" },
+    xNaVU: { clp: 13980, before: 15980, paypal: "$15.98", ends: todayEnds, title: "Solo hoy · plantilla + 3 plugins Pritti",
+      note: "Solo hoy: plantilla $9.990 + plugins Pritti $3.990", badge: "" },
+  };
+  function clpPromo(key) { var promo = CLP_PROMOS[key]; return promo && Date.now() < promo.ends ? promo : null; }
   function cookie(name) {
     var match = document.cookie.split(";").map(function (part) { return part.trim(); })
       .find(function (part) { return part.startsWith(name + "="); });
     return match ? decodeURIComponent(match.slice(name.length + 1)) : "";
   }
   function readAttribution() {
-    var params = new URLSearchParams(location.search);
+    var params = pageParams;
     var fbclid = params.get("fbclid") || "";
     var current = {
       utmSource: params.get("utm_source") || "",
@@ -40,13 +61,15 @@
     '<p class="pay-cyber-note" hidden>✦ Cyber Day · 25% aplicado al precio. Sin código.</p>' +
     '<button type="button" class="pay-addon" data-action="toggle-addon" hidden aria-pressed="false"><span class="pay-addon-check">+</span><span><span class="pay-addon-label">EXTRA OPCIONAL</span><b>Agrega 3 plugins Pritti <em>+ US$2.99</em></b><small>Grip + Backroom + Eco Delay. Se suman a tu plantilla y al total.</small></span></button>' +
     '<details class="pay-coupon"><summary>¿Tienes un cupón? <span aria-hidden="true">+</span></summary><label class="pay-sr-only" for="pay-coupon-code">Código de descuento</label><div class="pay-coupon-entry"><input id="pay-coupon-code" type="text" autocomplete="off" maxlength="40" placeholder="Código de descuento"><button type="button" data-action="apply-coupon">Aplicar</button></div><p id="pay-coupon-result" aria-live="polite"></p><small class="pay-coupon-hint">Para tarjeta y Webpay. En PayPal, aplícalo al continuar.</small></details>' +
-    '<div id="pay-methods"><div class="pay-methods-heading"><h3>Elige cómo pagar</h3><span>CLP / USD</span></div><button type="button" class="pay-choice pay-method pay-soon" data-action="card" aria-disabled="true"><span class="pay-method-icon">' + icon('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18M7 15h3"/>') + '</span><span class="pay-method-copy"><b>Débito o crédito</b><small>Mercado Pago · pesos chilenos</small></span>' + arrow + '</button>' +
-    '<button type="button" class="pay-choice pay-method ghost" data-action="flow" hidden><span class="pay-method-icon">' + icon('<path d="m3 9 9-5 9 5M5 10h14M6 10v8m6-8v8m6-8v8M3 20h18"/>') + '</span><span class="pay-method-copy"><b>Webpay · Redcompra</b><small>Flow · pesos chilenos</small></span>' + arrow + '</button>' +
+    '<div id="pay-methods"><div class="pay-methods-heading"><h3>Elige cómo pagar</h3><span>CLP / USD</span></div><button type="button" class="pay-choice pay-method ghost" data-action="flow" hidden><span class="pay-method-icon">' + icon('<path d="m3 9 9-5 9 5M5 10h14M6 10v8m6-8v8m6-8v8M3 20h18"/>') + '</span><span class="pay-method-copy"><b>Webpay · Redcompra</b><small>Débito, crédito o prepago · pesos chilenos</small></span>' + arrow + '</button>' +
+    '<button type="button" class="pay-choice pay-method ghost" data-action="wallet" hidden><span class="pay-method-icon">' + icon('<path d="M4 7a2 2 0 0 1 2-2h11v4"/><rect x="3" y="9" width="18" height="11" rx="2.5"/><path d="M16 14.5h.01"/>') + '</span><span class="pay-method-copy"><b>Cuenta Mercado Pago</b><small>Entra a tu cuenta: saldo o tarjetas guardadas</small></span>' + arrow + '</button>' +
+    '<button type="button" class="pay-choice pay-method pay-soon" data-action="card" aria-disabled="true"><span class="pay-method-icon">' + icon('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18M7 15h3"/>') + '</span><span class="pay-method-copy"><b>Débito o crédito</b><small>Mercado Pago · pesos chilenos</small></span>' + arrow + '</button>' +
     '<button type="button" class="pay-choice pay-method ghost" data-action="paypal"><span class="pay-method-icon">' + icon('<rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 9V6a2 2 0 0 1 2-2h13M21 12h-5v5h5M17 14.5h.01"/>') + '</span><span class="pay-method-copy"><b>PayPal</b><small id="pay-paypal-price">Pago internacional · USD</small></span>' + arrow + '</button></div>' +
     '<div id="pay-card" hidden><p class="pay-sheet-note">Pago seguro procesado por Mercado Pago.</p>' +
     '<div id="card-payment-brick"></div><p class="pay-sheet-note" id="card-after" hidden>🔒 Apenas se aprueba el pago, ves tu acceso en pantalla y te llega al correo.</p>' +
-    '<button type="button" class="pay-choice ghost" data-action="retry-card" hidden>Reintentar con otra tarjeta</button>' +
-    '<button type="button" class="pay-choice ghost" data-action="flow" hidden>¿Prefieres Webpay? Paga con Redcompra →</button></div>' +
+    '<button type="button" class="pay-choice ghost" data-action="flow" hidden>¿Prefieres Webpay? Paga con Redcompra →</button>' +
+    '<button type="button" class="pay-choice ghost pay-wallet-retry" data-action="wallet" hidden>Pagar con mi cuenta de Mercado Pago →</button>' +
+    '<button type="button" class="pay-choice ghost" data-action="retry-card" hidden>Reintentar con otra tarjeta</button></div>' +
     '<div id="pay-challenge" hidden><p class="pay-sheet-note">Tu banco necesita confirmar la compra.</p><div id="status-screen-brick"></div></div>' +
     '<div id="pay-flow" hidden><label class="flow-mail">Correo para el comprobante<input id="flow-email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.cl" required></label>' +
     '<button type="button" class="pay-choice" data-action="flow-submit">Continuar a Webpay</button></div>' +
@@ -55,7 +78,7 @@
     '<p class="pay-footer-note">' + icon('<rect x="6" y="10" width="12" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>') + 'Elegir un medio de pago todavía no realiza un cobro.</p></section></div></div>';
   document.body.appendChild(sheet);
   // ?prueba=<TEST_KEY> habilita en el servidor el producto de prueba; ya no hay botón visible.
-  var testKey = new URLSearchParams(location.search).get("prueba") || "";
+  var testKey = pageParams.get("prueba") || "";
 
   var card = sheet.querySelector(".pay-sheet-card");
   var title = sheet.querySelector("#pay-sheet-title");
@@ -95,6 +118,7 @@
     'xNaVU': { name:'Plantilla FL + 3 plugins Pritti', type:'PLANTILLA + PLUGINS', description:'La sesión de grabación FL con tres herramientas más para trabajar tu voz.', includes:['Plantilla FL Premium + guía de uso','Pritti Vocals incluido con la plantilla','Pritti Grip, Backroom y Eco Delay'], requirements:'FL Studio 20 o superior. La plantilla requiere además plugins externos de pago; este pack no incluye esas licencias.' },
     '34vZU': { name:'Plantilla FL — Plugins Nativos', type:'PLANTILLA · NATIVA', description:'Abre, canta y graba con los efectos que ya vienen en FL Studio.', includes:['Sesión .flp de grabación','Cadena con plugins nativos de FL Studio','Guía de uso'], requirements:'Necesitas FL Studio. No requiere instalar plugins externos de pago.' },
     '3j8In': { name:'Plantilla de Grabación — Ableton Live', type:'PLANTILLA · ABLETON', description:'Empieza a grabar tus voces con los racks y ruteos preparados.', includes:['Plantilla de grabación para Ableton Live','Racks nativos y ruteos de voz','Pritti Vocals de regalo'], requirements:'Necesitas Ableton Live. La compra no incluye una licencia del programa.' },
+    'h32nW': { name:'Plantilla Ableton + 3 plugins Pritti', type:'PLANTILLA + PLUGINS', description:'La sesión de grabación de Ableton con tres herramientas más para trabajar tu voz.', includes:['Plantilla de grabación para Ableton Live','Pritti Vocals de regalo','Pritti Grip, Backroom y Eco Delay'], requirements:'Necesitas Ableton Live. La compra no incluye una licencia del programa.' },
     '8Ljoq': { name:'Pack de Plantillas — FL + Ableton', type:'PACK · 2 PLANTILLAS', description:'Tu flujo de grabación, preparado para trabajar en ambos DAW.', includes:['Plantilla de grabación FL Studio','Plantilla de grabación Ableton Live','Pritti Vocals de regalo'], requirements:'Necesitas el DAW correspondiente. La plantilla FL Premium requiere plugins externos de pago, no incluidos.' },
     'QLfl6': { name:'Pritti Studio', type:'PLANTILLAS + PLUGINS', description:'La sesión y las herramientas Pritti, reunidas en un mismo pack.', includes:['Plantillas de grabación FL Studio y Ableton','Pritti Vocals, Backroom y Eco','Pritti Grip beta + próximos plugins Pritti'], requirements:'Necesitas el DAW correspondiente. Los plugins externos de pago que requiere la plantilla FL Premium no están incluidos.' },
     'Vo0Sq': { name:'Pritti Grip', type:'PLUGIN · BETA v0.9', description:'Compresión vocal con carácter para llevar la voz al frente.', includes:['Compresor vocal Pritti Grip beta','4 estilos: vocals, bus, hard y aggressive','Color de cinta, válvula y FET'], requirements:'Es un plugin para usar dentro de tu DAW. Esta versión está en beta.' },
@@ -130,9 +154,13 @@
     sheet.querySelector('.pay-delivery').textContent = key === 'z6Bgp' ? 'Recibirás las instrucciones para enviar tu canción después del pago.' : 'Producto digital · acceso después de confirmar el pago.';
   }
 
-  fetch("/api/prices").then(function (r) { return r.json(); }).then(function (data) {
+  fetch("/api/prices" + (offerCode ? "?offer=" + encodeURIComponent(offerCode) : "")).then(function (r) { return r.json(); }).then(function (data) {
     prices = data || {};
+    // La oferta enlazada se refleja de inmediato aunque el navegador conserve una respuesta antigua de /api/prices.
+    if (studioOffer) prices.QLfl6 = 14990;
+    Object.keys(CLP_PROMOS).forEach(function (key) { if (clpPromo(key)) prices[key] = CLP_PROMOS[key].clp; });
     pricesLoaded = true;
+    trackInitiateCheckout();
     if (current) { showLocalMethods(Boolean(prices[productKey()])); if (!appliedCoupon) refreshSummary(); }
   }).catch(function () {});
   fetch("/api/methods" + (testKey ? "?prueba=" + encodeURIComponent(testKey) : "")).then(function (r) { if (!r.ok) throw new Error("unavailable"); return r.json(); })
@@ -144,6 +172,17 @@
       if (current && !appliedCoupon) refreshSummary();
     }).catch(function () {});
 
+  /** InitiateCheckout con el valor en pesos; si la hoja abre antes que /api/prices, espera el precio. */
+  var pendingCheckoutEvent = "";
+  function trackInitiateCheckout() {
+    var product = pendingCheckoutEvent;
+    pendingCheckoutEvent = "";
+    if (!product || !window.fbq) return;
+    var data = { content_ids: [product], content_type: "product", currency: "CLP" };
+    if (prices[product]) data.value = prices[product];
+    fbq("track", "InitiateCheckout", data);
+  }
+
   /** Tarjeta y Webpay solo si el producto tiene precio en pesos (los bundles sin colección van por PayPal). */
   function showLocalMethods(clp) {
     var cardButton = sheet.querySelector('[data-action="card"]');
@@ -151,6 +190,7 @@
     cardButton.setAttribute("aria-disabled", String(!(cardReady && clp)));
     currentClp = clp;
     sheet.querySelectorAll('[data-action="flow"]').forEach(function (button) { button.hidden = !(flowReady && clp); });
+    sheet.querySelector('.pay-method[data-action="wallet"]').hidden = !(cardReady && clp);
   }
 
   function money(n) { return "$" + Number(n).toLocaleString("es-CL"); }
@@ -158,6 +198,8 @@
     return addonSelected && current?.dataset.addon ? current.dataset.addon : current?.getAttribute("data-mp");
   }
   function usdLabel() {
+    if (studioOffer && productKey() === "QLfl6") return "$14.99";
+    if (clpPromo(productKey())) return clpPromo(productKey()).paypal;
     var offer = window.iceroomPromotion?.get().products[productKey()];
     if (offer) return '$' + (offer.usd / 100).toFixed(2);
     if (addonSelected && current?.dataset.addonUsd) return current.dataset.addonUsd;
@@ -166,23 +208,39 @@
   }
   function refreshSummary() {
     var key = productKey();
+    var linkedOffer = studioOffer && key === "QLfl6";
+    var publicPromo = linkedOffer ? null : clpPromo(key);
+    sheet.querySelector('.pay-total-label').textContent = linkedOffer ? "Pritti Studio · oferta exclusiva del anuncio"
+      : publicPromo ? publicPromo.title : "Total en USD · PayPal";
+    // Promo en pesos: precio grande en CLP y medios de pago arriba en el celular.
+    card.classList.toggle("pay-linked-offer", Boolean(linkedOffer || publicPromo));
     var campaign = window.iceroomPromotion?.get();
     var offer = campaign?.products[key];
-    var clp = offer?.clp || prices[key];
+    var clp = linkedOffer ? 14990 : (offer?.clp || prices[key]);
     price.textContent = !localReady ? "" : clp ? "O " + money(clp) + " CLP con tarjeta / Webpay"
       : "El monto en CLP se confirma antes de pagar";
     var amount = usdLabel();
-    usdPrice.textContent = amount.startsWith("$") ? "US" + amount : amount;
+    usdPrice.textContent = linkedOffer ? money(14990) + " CLP" : publicPromo ? money(publicPromo.clp) + " CLP"
+      : amount.startsWith("$") ? "US" + amount : amount;
+    if (linkedOffer) price.textContent = "Antes $29.990 · paga con débito, crédito o Webpay";
+    if (publicPromo) price.textContent = "Antes " + money(publicPromo.before) + " · débito, crédito o Webpay. Con PayPal: US" + publicPromo.paypal;
     if (campaign?.active && offer) {
       var previous = document.createElement('del'); previous.className='cyber-previous';
       previous.textContent='US$'+(offer.regularUsd/100).toFixed(2); usdPrice.appendChild(previous);
     }
     sheet.querySelector('#pay-paypal-price').textContent = amount.startsWith("$") ? "US" + amount + " · pago internacional" : amount;
-    sheet.querySelector('.pay-cyber-note').hidden = !campaign?.active;
-    couponDetails.hidden = Boolean(campaign?.active);
+    var promoNote = sheet.querySelector('.pay-cyber-note');
+    promoNote.textContent = linkedOffer ? "✦ 50% menos, solo por este anuncio. Ya aplicado."
+      : publicPromo ? "✦ " + publicPromo.note + ". Ya aplicado." : "✦ Cyber Day · 25% aplicado al precio. Sin código.";
+    promoNote.hidden = !(linkedOffer || publicPromo || campaign?.active);
+    couponDetails.hidden = Boolean(linkedOffer || publicPromo || campaign?.active);
+    sheet.querySelector('[data-action="paypal"]').hidden = linkedOffer;
     var solo = campaign?.products[current?.getAttribute('data-mp')];
     var combo = campaign?.products[current?.dataset.addon];
-    addon.querySelector('em').textContent = '+ US$' + (solo && combo ? ((combo.usd-solo.usd)/100).toFixed(2) : '2.99');
+    var soloPromo = clpPromo(current?.getAttribute('data-mp'));
+    var comboPromo = clpPromo(current?.dataset.addon);
+    addon.querySelector('em').textContent = soloPromo && comboPromo ? '+ ' + money(comboPromo.clp - soloPromo.clp)
+      : '+ US$' + (solo && combo ? ((combo.usd-solo.usd)/100).toFixed(2) : '2.99');
     var extra = sheet.querySelector('.pay-selected-extra');
     extra.hidden = !addonSelected;
     extra.textContent = '✓ Incluye tu plantilla + Grip, Backroom y Eco Delay';
@@ -247,7 +305,7 @@
     var heading = item.querySelector("h3, h2");
     title.textContent = heading ? heading.textContent : "Tu producto";
     var artwork = {
-      '0QEeV': ['fl-logo.webp'], 'xNaVU': ['fl-logo.webp'], '34vZU': ['fl-logo.webp'],
+      '0QEeV': ['fl-logo.webp'], 'xNaVU': ['fl-logo.webp'], '34vZU': ['fl-logo.webp'], 'h32nW': ['ableton-logo.svg'],
       '3j8In': ['ableton-logo.svg'], '8Ljoq': ['fl-logo.webp', 'ableton-logo.svg'],
       'QLfl6': ['fl-logo.webp', 'grip-ui.webp'], 'G5U1r': ['grip-ui.webp', 'eco-ui.webp'],
       'Vo0Sq': ['grip-ui.webp'], 'SQti3': ['backroom-ui.webp'], 'Nqvbs': ['vocals-ui.webp'],
@@ -276,6 +334,8 @@
     refreshSummary();
     sheet.hidden = false;
     document.body.classList.add("pay-open");
+    pendingCheckoutEvent = product;
+    if (pricesLoaded) trackInitiateCheckout();
     showStep("methods");
     card.focus();
   }
@@ -338,9 +398,11 @@
     if (!product || busy) return;
     showStep("card");
     retryCard.hidden = true;
+    cardPanel.querySelector('[data-action="flow"]').classList.add("ghost");
+    cardPanel.querySelector('[data-action="wallet"]').hidden = true;
     setBusy(true, "Preparando pago seguro…");
     try {
-      var config = await api("/api/card-config", { product: product, prueba: testKey, coupon: appliedCoupon, attribution: attribution });
+      var config = await api("/api/card-config", { product: product, prueba: testKey, coupon: appliedCoupon, attribution: attribution, offer: offerCode });
       activeClaim = config.claim;
       price.textContent = money(config.amount) + " CLP";
       await loadSdk();
@@ -369,7 +431,13 @@
                 return;
               }
               notice(error.message, true);
-              if (error.status === 402) retryCard.hidden = false;
+              if (error.status === 402) {
+                // Reintentar la misma tarjeta suele volver a caer en el antifraude de MP: Webpay pasa a ser el botón principal.
+                retryCard.hidden = false;
+                cardPanel.querySelector('[data-action="flow"]').classList.remove("ghost");
+                cardPanel.querySelector('[data-action="wallet"]').hidden = false;
+                if (!flowEmail.value && formData?.payer?.email) flowEmail.value = formData.payer.email;
+              }
               if ([409, 502].includes(error.status) && activeClaim) {
                 location.assign("/gracias.html?claim=" + activeClaim);
               }
@@ -411,6 +479,18 @@
     }
     setTimeout(poll, 3000);
   }
+  async function startWallet() {
+    var product = productKey();
+    if (!product || busy) return;
+    setBusy(true, "Conectando con Mercado Pago…");
+    try {
+      var result = await api("/api/mp-wallet", { product: product, prueba: testKey, coupon: appliedCoupon, attribution: attribution, offer: offerCode });
+      location.assign(result.url);
+    } catch (error) {
+      setBusy(false);
+      notice(error.message, true);
+    }
+  }
   async function startFlow() {
     if (!current || busy) return;
     var email = flowEmail.value.trim();
@@ -421,7 +501,7 @@
     }
     setBusy(true, "Conectando con Webpay…");
     try {
-      var result = await api("/api/flow-checkout", { product: productKey(), email: email, prueba: testKey, coupon: appliedCoupon, attribution: attribution });
+      var result = await api("/api/flow-checkout", { product: productKey(), email: email, prueba: testKey, coupon: appliedCoupon, attribution: attribution, offer: offerCode });
       location.assign(result.url);
     } catch (error) {
       setBusy(false);
@@ -450,6 +530,7 @@
     if (action === "retry-card") { unmountBrick(); startCard(); }
     if (action === "flow") { showStep("flow"); flowEmail.focus(); }
     if (action === "flow-submit") startFlow();
+    if (action === "wallet") { unmountBrick(); startWallet(); }
     if (action === "apply-coupon") applyCoupon();
     if (action === "toggle-addon") {
       addonSelected = !addonSelected;
@@ -496,7 +577,30 @@
   // La huella del dispositivo se arma desde que entran a la tienda, no al elegir tarjeta.
   if (document.readyState === "complete") loadSecurity();
   else window.addEventListener("load", loadSecurity);
-  var deepLink = new URLSearchParams(location.search).get("checkout");
+  // Precios de promo en las tarjetas; se reaplica después de promotion.js, que reescribe los precios en USD.
+  function applyCardPromos() {
+    Object.keys(CLP_PROMOS).forEach(function (key) {
+      var promo = clpPromo(key);
+      var meta = studioOffer && key === "QLfl6";
+      if (!promo && !meta) return;
+      document.querySelectorAll('a[data-mp="' + key + '"]').forEach(function (button) {
+        var area = button.closest("article, .news-item");
+        var visiblePrice = area?.querySelector(".price");
+        if (visiblePrice) visiblePrice.textContent = meta ? "$14.99" : money(promo.clp) + " CLP";
+        var oldPrice = area?.querySelector(".price-old");
+        if (!oldPrice && visiblePrice && area.tagName === "ARTICLE") {
+          oldPrice = document.createElement("del"); oldPrice.className = "price-old"; visiblePrice.after(oldPrice);
+        }
+        if (oldPrice) oldPrice.textContent = meta ? "$29.99" : money(promo.before);
+        var badge = area?.querySelector(".badge");
+        if (badge && (meta || promo.badge)) badge.textContent = meta ? "Oferta Meta · 50%" : promo.badge;
+        if (key === "QLfl6" && button.classList.contains("buy")) button.textContent = "Comprar Pritti Studio";
+      });
+    });
+  }
+  applyCardPromos();
+  window.addEventListener("iceroom:promotion", applyCardPromos);
+  var deepLink = pageParams.get("checkout");
   if (deepLink) {
     var linkedButton = Array.from(document.querySelectorAll("a.buy[data-mp]"))
       .find(function (button) { return button.getAttribute("data-mp") === deepLink; });

@@ -45,8 +45,11 @@ export function flowStatus(env, token) {
   return flowRequest(env, "/payment/getStatus", { apiKey: env.FLOW_API_KEY, token }, "GET");
 }
 
-/** Arma el mismo comprobante que Mercado Pago, para reutilizar la entrega del cupón. */
-export function flowAsPayment(status) {
+/**
+ * Arma el mismo comprobante que Mercado Pago, para reutilizar la entrega del cupón.
+ * Flow muestra "optional" al comprador, así que las órdenes nuevas no lo mandan: producto y monto salen del intent.
+ */
+export function flowAsPayment(status, intent = null) {
   let optional = {};
   try {
     optional = typeof status.optional === "string"
@@ -62,7 +65,7 @@ export function flowAsPayment(status) {
     status: paid[Number(status.status)] || "pending",
     currency_id: status.currency || "CLP",
     transaction_amount: status.amount,
-    external_reference: `tienda:${optional.product}:${claim}:${optional.clp}`,
+    external_reference: `tienda:${optional.product || intent?.product_key}:${claim}:${optional.clp || intent?.amount_clp}`,
     payer: { email: status.payer || "" },
   };
 }

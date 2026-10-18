@@ -36,7 +36,8 @@ export async function onRequestGet({ request, env }) {
       } catch { /* La próxima consulta o el webhook volverán a intentar. */ }
     }
   }
-  if (!intent.payment_id && !intent.provider_token) {
+  // En "Cuenta Mercado Pago" el provider_token es la preferencia: sin payment_id todavía no hay cobro que consultar.
+  if (!intent.payment_id && (!intent.provider_token || intent.provider === "mp")) {
     if (intent.state === "rejected") return json({ status: "rejected" });
     return json({ status: "pending", message: "Esperando confirmación del proveedor." });
   }
@@ -44,7 +45,7 @@ export async function onRequestGet({ request, env }) {
     let payment;
     if (intent.provider === "flow") {
       if (!env.FLOW_API_KEY || !env.FLOW_SECRET_KEY) return json({ error: "Flow no configurado." }, 503);
-      payment = flowAsPayment(await flowStatus(env, intent.provider_token));
+      payment = flowAsPayment(await flowStatus(env, intent.provider_token), intent);
     } else {
       if (!env.MP_ACCESS_TOKEN) return json({ error: "Mercado Pago no configurado." }, 503);
       payment = await getPayment(env, intent.payment_id);

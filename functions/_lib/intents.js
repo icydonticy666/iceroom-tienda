@@ -1,4 +1,4 @@
-import { PRODUCTS, priceOf, sellableInClp } from "./catalog.js";
+import { PRODUCTS, directOffer, priceOf, sellableInClp } from "./catalog.js";
 import { couponQuote, normalizeCoupon } from "./discounts.js";
 import { randomClaim } from "./http.js";
 import { reserveLimitedCoupon, settleCouponReservation } from "./coupon-reservations.js";
@@ -29,7 +29,9 @@ function attributionFields(input = {}) {
 }
 
 /** Precio vigente: si la promo tiene cupos (limit) y ya se usaron, vuelve al precio normal. */
-export async function currentPrice(env, product) {
+export async function currentPrice(env, product, offerCode = "") {
+  const linkedOffer = directOffer(product, offerCode);
+  if (linkedOffer) return linkedOffer.clp;
   const amount = priceOf(product);
   if (amount === product.clp || !product.promo?.limit) return amount;
   const row = await requireDb(env).prepare(
@@ -38,11 +40,13 @@ export async function currentPrice(env, product) {
   return Number(row?.n || 0) >= product.promo.limit ? product.clp : amount;
 }
 
-export async function createIntent(env, productKey, provider, email = "", rawCoupon = "", rawAttribution = {}) {
+export async function createIntent(env, productKey, provider, email = "", rawCoupon = "", rawAttribution = {}, rawOffer = "") {
   const product = PRODUCTS[productKey];
   if (!sellableInClp(product) || !["mp", "flow"].includes(provider)) return null;
   const claim = randomClaim();
-  const baseAmount = await currentPrice(env, product);
+  const linkedOffer = directOffer(product, rawOffer);
+  if (linkedOffer && normalizeCoupon(rawCoupon)) throw new Error("offer-no-coupon");
+  const baseAmount = await currentPrice(env, product, rawOffer);
   const coupon = normalizeCoupon(rawCoupon);
   const quote = coupon ? await couponQuote(env, product, coupon, baseAmount) : null;
   const amount = quote ? quote.amount : baseAmount;
@@ -77,9 +81,11 @@ export async function setProviderOrder(env, claim, providerToken) {
 
 export async function bindPayment(env, intent, paymentId, state) {
   if (!paymentId) return false;
+  // En "Cuenta Mercado Pago" (MP con provider_token) el comprador puede reintentar dentro de MP:
+  // un intento rechazado o cancelado cede su lugar al pago siguiente del mismo pedido.
   const result = await requireDb(env).prepare(
-    "UPDATE payment_intents SET payment_id = COALESCE(payment_id, ?), state = CASE WHEN state IN ('refunded', 'charged_back') THEN state WHEN state = 'approved' AND ? NOT IN ('refunded', 'charged_back') THEN state ELSE ? END WHERE claim = ? AND (payment_id IS NULL OR payment_id = ?)"
-  ).bind(String(paymentId), state, state, intent.claim, String(paymentId)).run();
+    "UPDATE payment_intents SET payment_id = CASE WHEN provider = 'mp' AND provider_token IS NOT NULL AND state IN ('rejected', 'cancelled') THEN ? ELSE COALESCE(payment_id, ?) END, state = CASE WHEN state IN ('refunded', 'charged_back') THEN state WHEN state = 'approved' AND ? NOT IN ('refunded', 'charged_back') THEN state ELSE ? END WHERE claim = ? AND (payment_id IS NULL OR payment_id = ? OR (provider = 'mp' AND provider_token IS NOT NULL AND state IN ('rejected', 'cancelled')))"
+  ).bind(String(paymentId), String(paymentId), state, state, intent.claim, String(paymentId)).run();
   if (result.meta.changes === 1) await settleCouponReservation(env, intent.claim, state);
   return result.meta.changes === 1;
 }

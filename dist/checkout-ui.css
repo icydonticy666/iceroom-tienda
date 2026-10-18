@@ -52,7 +52,7 @@
 .pay-method-icon svg{width:21px;height:21px}.pay-method-copy{min-width:0;flex:1;display:flex;flex-direction:column;gap:5px}
 .pay-method-copy b{font-size:13px;font-weight:600;line-height:1.2}.pay-method-copy small{color:#bbb6cc;font-size:11px;font-weight:400;line-height:1.4}
 .pay-method-arrow{font:400 17px Arial,sans-serif;color:#aaa3c5;transition:transform .2s}.pay-method:hover .pay-method-arrow{transform:translate(2px,-2px);color:var(--pay-ink)}
-.pay-sheet .pay-method[data-action=card]{background:#9484fc12;border-color:#9484fc4d}.pay-sheet .pay-method[data-action=card]:hover{background:#9484fc21;border-color:#9484fc}
+.pay-sheet .pay-method[data-action=flow]{background:#9484fc12;border-color:#9484fc4d}.pay-sheet .pay-method[data-action=flow]:hover{background:#9484fc21;border-color:#9484fc}
 .pay-sheet .pay-choice:not(.pay-method):not(.ghost){background:var(--pay-accent);border-color:transparent;color:#100c20}
 .pay-sheet .pay-choice:not(.pay-method):not(.ghost):hover{background:#aa9aff}
 .pay-sheet .pay-footer-note{display:flex;align-items:center;justify-content:center;gap:7px;font-size:10px;color:#aaa6b5;line-height:1.5;margin:22px 0 0}
@@ -118,3 +118,5 @@
   .pay-sheet .pay-method{padding:14px;min-height:76px}.pay-method-copy b{font-size:15px}.pay-method-copy small{font-size:11px}
 }
 @media(max-width:350px){.pay-overview,.pay-purchase{padding:18px}.pay-sheet .pay-product h2{font-size:17px}.pay-product-art{width:55px;height:55px}.pay-method-icon{width:42px;height:42px}.pay-method-icon svg{width:25px;height:25px}.pay-method-copy b{font-size:16px}.pay-method-copy small{font-size:12px}.pay-once{font-size:8px;padding:5px 7px}.pay-product-usd .cyber-previous{font-size:10px}}
+/* Oferta del anuncio: en el celular, precio y medios de pago antes que la descripción. */
+@media(max-width:680px){.pay-linked-offer .pay-sheet-body{display:flex;flex-direction:column}.pay-linked-offer .pay-purchase{order:-1;border-bottom:1px solid #ffffff10}.pay-linked-offer .pay-overview{border-bottom:0}}

@@ -17,7 +17,7 @@ export function cyberPrice(amount) {
 }
 
 export const USD_CENTS = {
-  '0QEeV': 1299, xNaVU: 1598, '34vZU': 300, '3j8In': 1299,
+  '0QEeV': 1299, xNaVU: 1598, '34vZU': 300, '3j8In': 1299, h32nW: 1598,
   '8Ljoq': 1999, QLfl6: 2999, Vo0Sq: 699, SQti3: 499,
   Nqvbs: 399, '5JbVN': 499, G5U1r: 1999, a8IWu: 2999,
   IiHTG: 5999, z6Bgp: 6999,

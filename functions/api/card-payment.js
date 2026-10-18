@@ -35,6 +35,15 @@ export async function onRequestPost({ request, env }) {
     ).bind(email, intent.claim).run();
     if (lock.meta.changes !== 1) return json({ error: "El pago ya se está procesando." }, 409);
 
+    // Historial del correo en la tienda: el antifraude de MP distingue compradores recurrentes.
+    const history = await env.PAYMENTS_DB.prepare(
+      "SELECT MIN(created_at) AS first_seen, MAX(CASE WHEN state = 'approved' THEN created_at END) AS last_purchase FROM payment_intents WHERE email = ? AND claim != ?"
+    ).bind(email, intent.claim).first().catch(() => null);
+    const isoDate = (value) => value ? new Date(String(value).replace(" ", "T") + "Z").toISOString() : null;
+    const buyer = { is_first_purchase_online: !history?.last_purchase };
+    if (history?.last_purchase) buyer.last_purchase = isoDate(history.last_purchase);
+    if (history?.first_seen) buyer.registration_date = isoDate(history.first_seen);
+    const deviceId = DEVICE_ID.test(String(body?.deviceId || "")) ? String(body.deviceId) : "";
     const payload = {
       transaction_amount: intent.amount_clp,
       token: form.token,
@@ -48,6 +57,7 @@ export async function onRequestPost({ request, env }) {
       statement_descriptor: "ICEROOM",
       // Datos del ítem, IP y device ID: el antifraude de MP rechaza más cuando llegan vacíos.
       additional_info: {
+        payer: buyer,
         items: [{
           id: intent.product_key,
           title: PRODUCTS[intent.product_key]?.name || `iceroom ${intent.product_key}`,
@@ -77,7 +87,7 @@ export async function onRequestPost({ request, env }) {
         "X-Idempotency-Key": intent.idempotency_key,
         // El device ID real es "armor.<192 hex>.<32 hex>" (~230 caracteres, con puntos). El filtro
         // viejo ({8,128} sin puntos) lo botaba siempre y MP rechazaba por cc_rejected_high_risk.
-        ...(DEVICE_ID.test(String(body?.deviceId || "")) ? { "X-meli-session-id": String(body.deviceId) } : {}),
+        ...(deviceId ? { "X-meli-session-id": deviceId } : {}),
       },
       body: JSON.stringify(payload),
     });
@@ -95,7 +105,9 @@ export async function onRequestPost({ request, env }) {
     if (!paymentMatchesIntent(payment, intent) || !await bindPayment(env, intent, payment.id, payment.status)) {
       return json({ error: "La respuesta del proveedor no coincide con el pedido." }, 502);
     }
-    console.log(JSON.stringify({ card: payment.status, detail: payment.status_detail, product: intent.product_key }));
+    console.log(JSON.stringify({ card: payment.status, detail: payment.status_detail, product: intent.product_key, device: Boolean(deviceId) }));
+    await env.PAYMENTS_DB.prepare("UPDATE payment_intents SET mp_status_detail = ?, mp_device = ? WHERE claim = ?")
+      .bind(String(payment.status_detail || ""), deviceId ? 1 : 0, intent.claim).run().catch(() => {});
     if (payment.status === "rejected") {
       const risk = /high_risk|blacklist|fraud/.test(String(payment.status_detail || ""));
       return json({ status: "rejected", detail: payment.status_detail || "",
