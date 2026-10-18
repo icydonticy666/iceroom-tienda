@@ -13,6 +13,8 @@ CHECKOUT_MODE = "live"
 META_PIXEL_ID = "1428727309189220"
 # Flow manda directo a Webpay (id 1) en vez de su página para elegir entre 9 medios.
 FLOW_PAYMENT_METHOD_ID = "1"
+# Anuncio internacional (offer=meta-studio-intl): PayPal a US$14.99 en el bundle oculto NXRwS de Payhip (mismo contenido que QLfl6).
+INTL_STUDIO_PAYPAL_URL = "https://payhip.com/order?link=NXRwS"
 
 [[d1_databases]]
 binding = "PAYMENTS_DB"
