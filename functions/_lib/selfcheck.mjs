@@ -25,7 +25,8 @@ test("la oferta Meta de Pritti Studio solo funciona con su enlace y vence con la
   const studio = PRODUCTS.QLfl6;
   assert.equal(directOffer(studio, "meta-studio-1499", new Date("2026-10-12T18:00:00Z")).clp, 14990);
   assert.equal(directOffer(studio, "otro", new Date("2026-10-12T18:00:00Z")), null);
-  assert.equal(directOffer(studio, "meta-studio-1499", new Date("2026-10-19T02:59:00Z")), null);
+  assert.equal(directOffer(studio, "meta-studio-1499", new Date("2026-10-20T12:00:00Z")).clp, 14990);
+  assert.equal(directOffer(studio, "meta-studio-1499", new Date("2026-10-26T02:59:00Z")), null);
   assert.ok(allowedPrices(studio).includes(14990));
   let saved;
   const env = { PAYMENTS_DB: { prepare() { return { bind(...args) { saved = args; return { async run() {} }; } }; } } };

@@ -37,11 +37,12 @@ export const PRODUCTS = {
 
 /** Ofertas accesibles solo mediante un enlace de campaña conocido. */
 export const DIRECT_OFFERS = {
+  // Extendida el 18-oct-2026 (pedido del usuario): solo el enlace del anuncio de Chile, hasta el 25-oct 23:59 CL.
   "meta-studio-1499": {
     product: "QLfl6",
     clp: 14990,
     usd: 1499,
-    endsAt: "2026-10-19T02:59:00.000Z",
+    endsAt: "2026-10-26T02:59:00.000Z",
   },
   // Anuncio internacional (España, EE.UU., México…), aprobado el 18-oct-2026: PayPal a US$14.99 y, en pesos, $14.990.
   "meta-studio-intl": {

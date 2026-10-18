@@ -5,7 +5,8 @@
   // Pritti Studio a $14.990: con el enlace del anuncio (solo pesos, sin PayPal) y, hasta la misma fecha,
   // para todos en la web pagando en pesos (PayPal sigue al precio normal de Payhip).
   var studioPromoEnds = Date.parse("2026-10-19T02:59:00.000Z");
-  var studioOffer = offerCode === "meta-studio-1499" && Date.now() < studioPromoEnds;
+  // El enlace del anuncio de Chile sigue a $14.990 hasta el 25-oct 23:59 CL (aprobado el 18-oct); la promo pública vence antes.
+  var studioOffer = offerCode === "meta-studio-1499" && Date.now() < Date.parse("2026-10-26T02:59:00.000Z");
   // Anuncio internacional: Pritti Studio a US$14.99 con PayPal primero (en pesos, $14.990). Aprobado el 18-oct-2026.
   var intlOffer = offerCode === "meta-studio-intl" && Date.now() < Date.parse("2026-10-26T02:59:00.000Z");
   var todayEnds = Date.parse("2026-10-16T02:59:00.000Z"); // 15-oct 23:59 hora de Chile
