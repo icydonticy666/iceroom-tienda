@@ -73,6 +73,27 @@ export async function onRequestPost({ request, env }) {
   if (!env.RESEND_API_KEY || !env.EMAIL_FROM) return json({ error: "email-not-configured" }, 500);
 
   const mode = new URL(request.url).searchParams.get("mode") || "";
+  if (mode === "status") {
+    // Conteo por estado de los correos de la promo (sin direcciones), desde la API de Resend.
+    const counts = {};
+    let after = "", pages = 0, total = 0;
+    while (pages++ < 6) {
+      const res = await fetch(`https://api.resend.com/emails?limit=100${after ? `&after=${after}` : ""}`, {
+        headers: { Authorization: `Bearer ${env.RESEND_API_KEY}` },
+      });
+      if (!res.ok) return json({ error: res.status, body: (await res.text()).slice(0, 200) });
+      const data = await res.json();
+      for (const e of data.data || []) {
+        if (!String(e.created_at).startsWith("2026-10-23")) continue;
+        const key = `${e.subject} | ${e.last_event}`;
+        counts[key] = (counts[key] || 0) + 1;
+        total++;
+      }
+      if (!data.has_more || !data.data?.length) break;
+      after = data.data[data.data.length - 1].id;
+    }
+    return json({ total, counts });
+  }
   const mail = mode.startsWith("lastcall") ? LASTCALL : ANNOUNCE;
   const body = await request.json().catch(() => ({}));
   const emails = [...new Set((body.emails || []).map((e) => String(e).trim().toLowerCase()).filter((e) => EMAIL.test(e)))];
