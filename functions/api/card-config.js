@@ -18,7 +18,7 @@ export async function onRequestPost({ request, env }) {
     if (!intent) return json({ error: "Producto no disponible." }, 400);
     return json({ claim: intent.claim, amount: intent.amount, publicKey: env.MP_PUBLIC_KEY });
   } catch (error) {
-    if (error?.message === 'coupon-cyber-active') return json({ error: 'Cyber Day ya incluye el 25%. Quita el otro cupón y vuelve a intentarlo.' }, 400);
+    if (error?.message === 'coupon-cyber-active') return json({ error: 'El 50% de la promo ya está aplicado. No es acumulable con otros cupones.' }, 400);
     if (String(error?.message || "").startsWith("coupon-") || error?.message === "offer-no-coupon") return json({ error: "Esta oferta ya tiene aplicado el descuento máximo." }, 400);
     return json({ error: "No se pudo preparar el pago." }, 503);
   }

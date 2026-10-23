@@ -12,8 +12,11 @@ test("el precio CLP es el mismo precio de lista en USD × 1.000 (sin promos auto
   // Promo pública en pesos hasta el 18-oct 23:59 CL; después vuelve al precio de lista.
   assert.equal(priceOf(studio, new Date("2026-10-15T15:00:00.000Z")), 14990);
   assert.equal(priceOf(studio, new Date("2026-10-19T03:00:00.000Z")), 29990);
-  // Lista, Cyber, promo pública, oferta Meta Chile y oferta Meta internacional.
-  assert.deepEqual(allowedPrices(studio), [29990, 22492, 14990, 14990, 14990]);
+  // Promo 50% de 24 h (23-oct 12:00 a 24-oct 12:00 CL): mitad de precio y después vuelve a lista.
+  assert.equal(priceOf(studio, new Date("2026-10-23T18:00:00.000Z")), 14995);
+  assert.equal(priceOf(studio, new Date("2026-10-24T15:00:00.000Z")), 29990);
+  // Lista, promo sitewide (50%), promo pública, oferta Meta Chile y oferta Meta internacional.
+  assert.deepEqual(allowedPrices(studio), [29990, 14995, 14990, 14990, 14990]);
   // Una promo debe vencer; `limit` es opcional para una venta flash sin stock artificial.
   for (const product of Object.values(PRODUCTS)) {
     if (product.promo) assert.ok(Date.parse(product.promo.until) && (!product.promo.limit || product.promo.limit > 0), product.key);

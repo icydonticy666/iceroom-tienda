@@ -9,7 +9,7 @@
     document.querySelectorAll('[data-cyber]').forEach(el => {el.hidden = !state.active;});
     document.querySelectorAll('.badge').forEach(el => {
       if (!el.dataset.originalLabel) el.dataset.originalLabel=el.textContent;
-      if (/ahorra/i.test(el.dataset.originalLabel)) el.textContent=state.active?'CYBER −25%':el.dataset.originalLabel;
+      if (/ahorra/i.test(el.dataset.originalLabel)) el.textContent=state.active?(state.badge||'PROMO'):el.dataset.originalLabel;
     });
     document.querySelectorAll('a[data-mp]').forEach(link => {
       const product = state.products[link.dataset.mp];
@@ -23,14 +23,14 @@
       previous.textContent = usd(product.regularUsd); previous.hidden = !state.active;
       let badge = item.querySelector('.cyber-tag');
       if (!badge && !item.classList.contains('preview-panel') && !item.hidden) {
-        badge=document.createElement('span'); badge.className='cyber-tag'; badge.textContent='CYBER −25%';
+        badge=document.createElement('span'); badge.className='cyber-tag'; badge.textContent=state.badge||'PROMO';
         const target=item.querySelector('.card-body h3,.txt h2,.news-tag');
         if (target) target.before(badge);
       }
       if (badge) badge.hidden = !state.active;
     });
     const kicker=document.querySelector('#contenido>.kicker');
-    if (kicker) kicker.textContent=state.active?'Cyber Day · 72 horas':'Tienda · Productos digitales';
+    if (kicker) kicker.textContent=state.active?(state.kicker||state.name):'Tienda · Productos digitales';
     document.querySelectorAll('[data-cyber-end]').forEach(el => {
       el.textContent='Hasta el '+new Intl.DateTimeFormat('es-CL',{timeZone:'America/Santiago',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(state.endsAt))+' · hora de Chile';
     });

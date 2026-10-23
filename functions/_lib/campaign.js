@@ -1,10 +1,15 @@
 // The timestamps are set at activation and shared by pricing and the storefront.
+// Promo sitewide vigente. Antes: Cyber Day 25% (4 al 7-oct). Ahora: 50% por 24 horas,
+// pedido por el usuario el 23-oct-2026, de 12:00 a 12:00 hora de Chile. En PayPal la aplica
+// la venta "MITAD24H" de Payhip (Marketing → Run Sale).
 export const CYBER = {
   enabled: true,
-  name: 'Cyber Day',
-  percent: 25,
-  startsAt: '2026-10-04T22:00:00.000Z',
-  endsAt: '2026-10-07T22:00:00.000Z',
+  name: 'Mitad de precio',
+  percent: 50,
+  badge: '−50% · 24 H',
+  kicker: 'Mitad de precio · 24 horas',
+  startsAt: '2026-10-23T15:00:00.000Z',
+  endsAt: '2026-10-24T15:00:00.000Z',
 };
 
 export function cyberActive(now = new Date()) {
