@@ -59,5 +59,14 @@
     return state;
   }).catch(()=>state);
   window.iceroomPromotion={get:()=>state,ready};
+  // swap: dos ventanas (oscura y clara). Se alternan solas cada 4 s hasta que la persona elige una.
+  const stage = document.querySelector('[data-swap-stage]');
+  if (stage) {
+    const buttons = [...stage.querySelectorAll('[data-swap-theme]')];
+    const set = theme => {stage.dataset.theme = theme; buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.swapTheme === theme)));};
+    let auto = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : setInterval(() => set(stage.dataset.theme === 'dark' ? 'light' : 'dark'), 4000);
+    buttons.forEach(b => b.addEventListener('click', () => {clearInterval(auto); auto = 0; set(b.dataset.swapTheme);}));
+  }
+
   document.addEventListener('visibilitychange',()=>{if (!document.hidden) tick();});
 })();

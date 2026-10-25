@@ -270,7 +270,7 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
 <link rel="stylesheet" href="/product-art.css?v=20261004a">
 <link rel="stylesheet" href="/collection-explorer.css?v=20261004a">
 <link rel="stylesheet" href="/brand-experience.css?v=20261004c">
-<link rel="stylesheet" href="/promotion.css?v=20261025c">
+<link rel="stylesheet" href="/promotion.css?v=20261025e">
 <!-- Meta Pixel (ICEROOM - Payhip). Purchase se dispara en gracias.js con el mismo eventID que la API de conversiones. -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -353,25 +353,52 @@ fbq('track','PageView');
     <button type="button" id="hero-motion" class="hero-motion" hidden aria-pressed="false" aria-label="Pausar animación del fondo"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="motion-pause" d="M4 3h3v10H4zM10 3h3v10h-3z"/><path class="motion-play" d="m4 2 10 6-10 6z"/></svg><span>Animación</span></button>
   </div>
 
-  <!-- REGALO SWAP (25-oct-2026): swap gratis con la plantilla y con cualquier producto. Se oculta si SWAP_GIFT está apagado. -->
-  <section class="cat swap-section" id="swap" data-swap-gift>
-    <div class="grid">
-      <article class="card template-feature swap-feature">
-        <div class="card-media feature-media swap-media">
-          <img class="swap-shot" src="/img/swap-app.webp?v=20261025b" width="720" height="933" alt="Ventana de swap: pestañas Cambiar versión y Arreglar plugins, detecta FL 25.2 y Live 12.3 y tiene una zona para soltar el proyecto" loading="lazy" decoding="async">
-          <span class="swap-stamp">GRATIS</span>
+  <!-- REGALO SWAP (25-oct-2026): swap gratis con la plantilla y con cualquier producto. Tarjeta compacta + "Más info". Capturas reales de swap v0.11. Se oculta si SWAP_GIFT está apagado. -->
+  <section class="swap-section" id="swap" data-swap-gift aria-labelledby="swap-title">
+    <div class="swap-card">
+      <div class="swap-main">
+        <div class="swap-stage" data-swap-stage data-theme="dark">
+          <img class="swap-win swap-win-light" src="/img/swap/light-version.webp?v=20261025e" width="560" height="660" alt="swap en modo claro" loading="lazy" decoding="async">
+          <img class="swap-win swap-win-dark" src="/img/swap/dark-version.webp?v=20261025e" width="560" height="660" alt="swap en modo oscuro: detecta FL Studio 25.2 y Ableton Live 12.3" loading="lazy" decoding="async">
+          <div class="swap-toggle" role="group" aria-label="Ver swap en modo oscuro o claro">
+            <button type="button" data-swap-theme="dark" aria-pressed="true">Oscuro</button>
+            <button type="button" data-swap-theme="light" aria-pressed="false">Claro</button>
+          </div>
         </div>
-        <div class="card-body feature-body">
-          <span class="by">REGALO CON TU COMPRA</span>
-          <h3 class="swap-title"><img src="/img/swap.png?v=20261025a" alt="" width="40" height="40">swap</h3>
-          <p class="feature-lead">Gratis al agregar tu plantilla.</p>
-          <p>La app que hace que la plantilla abra en tu equipo. Si tienes otra versión de FL Studio o Ableton, o tus plugins no aparecen, swap hace una copia lista para tu PC. El original no se toca.</p>
-          <ul class="feature-points"><li>Cambia la versión: abre en tu FL o tu Live</li><li>Arregla plugins: de VST2 a VST3, con tus ajustes</li><li>Convierte cadenas de Ableton en presets de FL</li><li>Windows y Mac · se actualiza sola</li></ul>
-          <div class="feature-purchase"><div class="swap-free-row"><span class="swap-free">GRATIS</span><span class="swap-free-note">con la plantilla, y con cualquier producto de la tienda</span></div>
-          <a class="buy payhip-buy-button" data-theme="none" data-product="0QEeV" href="https://payhip.com/b/0QEeV" data-mp="0QEeV" data-addon="xNaVU" data-addon-usd="$15.98" data-addon-href="/api/paypal-checkout?product=xNaVU">Agregar plantilla + swap gratis <span aria-hidden="true">↗</span></a>
-          <p class="feature-compat">swap v0.11 beta · FL Studio 11+ y Ableton Live 9+. <a href="#plantillas">¿Usas Ableton? Ver todas las plantillas</a></p></div>
+        <div class="swap-copy">
+          <div class="swap-lockup"><img src="/img/swap.png?v=20261025a" alt="" width="34" height="34"><span class="swap-name">swap</span><span class="swap-by">by iceroom</span></div>
+          <p class="swap-kicker">Gratis con tu plantilla</p>
+          <h3 id="swap-title" class="swap-head">Abre en tu FL. Con tus plugins.</h3>
+          <p class="swap-lead">Se acabó el «creado con una versión más nueva» y el «plugin no encontrado». swap detecta tu FL Studio o Ableton Live y adapta la plantilla a lo que tienes instalado, sin tocar el original.</p>
+          <div class="swap-free-row"><span class="swap-free">Gratis</span><span class="swap-free-note">al agregar tu plantilla · también con cualquier producto</span></div>
+          <a class="buy payhip-buy-button swap-cta" data-theme="none" data-product="0QEeV" href="https://payhip.com/b/0QEeV" data-mp="0QEeV" data-addon="xNaVU" data-addon-usd="$15.98" data-addon-href="/api/paypal-checkout?product=xNaVU">Agregar plantilla + swap <span aria-hidden="true">↗</span></a>
         </div>
-      </article>
+      </div>
+
+      <details class="swap-more">
+        <summary><span>Más info</span><span class="swap-more-icon" aria-hidden="true">+</span></summary>
+        <div class="swap-info">
+          <div class="swap-features">
+            <div><span class="swap-n">01 · Versión</span><h4>Abre proyectos de versiones más nuevas</h4><p>¿La plantilla está hecha en FL 25 o Live 12.3 y tú tienes otra? swap detecta lo que tienes instalado y hace una copia que abre en tu versión. No eliges nada.</p></div>
+            <div><span class="swap-n">02 · Plugins</span><h4>De VST2 a VST3, con tus ajustes</h4><p>Si un plugin sale "no encontrado" pero lo tienes en VST3, swap lo cambia y le pasa los mismos ajustes. Si no lo tienes instalado, te lo dice.</p></div>
+            <div><span class="swap-n">03 · Presets</span><h4>Tus cadenas de Ableton, en FL Studio</h4><p>Convierte racks y sets de Ableton en presets de canal del mixer de FL.</p></div>
+          </div>
+          <div class="swap-presets">
+            <img src="/img/swap/dark-presets.webp?v=20261025e" width="560" height="660" alt="swap convirtiendo el rack de Ableton rec vocal fx-1 en un preset de FL con Waves Tune Real-Time, Virtual Mix Rack, CLA-76 y Pro-Q 4, todos VST3 con sus ajustes" loading="lazy" decoding="async">
+            <div>
+              <span class="swap-n">Presets, paso a paso</span>
+              <ol class="swap-steps">
+                <li><b>Suelta un rack (.adg) o un set (.als).</b> Un rack da un preset; un set, uno por cada pista de grupo.</li>
+                <li><b>Revisa la cadena.</b> swap lista cada plugin y si pasa como VST3 con sus ajustes. Puedes cambiar el nombre y la carpeta.</li>
+                <li><b>Crea los presets (.fst).</b> Los cargas desde el navegador de FL o los arrastras a un canal del mixer.</li>
+              </ol>
+              <p class="swap-note">Los plugins de terceros (Waves, FabFilter, Soundtoys…) pasan con los mismos ajustes. El EQ Eight se vuelve Fruity Parametric EQ 2. Los efectos propios de Ableton (Glue, Reverb, Saturator…) no existen en FL: swap te dice cuáles quedaron fuera.</p>
+              <p class="swap-caption">En la imagen: un rack real de voces, 4 plugins listos para FL.</p>
+            </div>
+          </div>
+          <p class="swap-facts">Windows y Mac (Apple Silicon e Intel) · FL Studio 11–25 y Ableton Live 9–12 (las más antiguas, en prueba) · Te muestra los cambios antes de convertir · Se actualiza sola · Modo oscuro y claro · beta 0.11</p>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -683,7 +710,7 @@ fbq('track','PageView');
 <dialog id="kit-dialog" aria-labelledby="kit-title"><button type="button" class="kit-close" aria-label="Cerrar contenido">×</button><p class="kit-eyebrow">ICEROOM / EXPLORA TU PRÓXIMO PASO</p><h2 id="kit-title"></h2><p id="kit-intro"></p><div id="kit-tabs" role="tablist" aria-label="Contenido del producto"></div><div id="kit-content" role="tabpanel" tabindex="0"></div><div class="kit-footer"><span class="kit-price"></span><button type="button" class="buy" id="kit-buy">Elegir este producto <span aria-hidden="true">↗</span></button></div></dialog>
 
 <!-- Checkout propio: PayPal se abre en una página completa para funcionar en navegadores internos. -->
-<script src="/promotion.js?v=20261025a" defer></script>
+<script src="/promotion.js?v=20261025e" defer></script>
 <script src="/checkout.js?v=20261025a" defer></script>
 <script src="/storefront-refinements.js?v=20261004c" defer></script>
 <script src="/collection-explorer.js?v=20261004a" defer></script>
