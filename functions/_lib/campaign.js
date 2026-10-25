@@ -27,3 +27,25 @@ export const USD_CENTS = {
   Nqvbs: 399, '5JbVN': 499, G5U1r: 1999, a8IWu: 2999,
   IiHTG: 5999, z6Bgp: 6999,
 };
+
+// Regalo: la app swap gratis con cualquier compra (pedido por el usuario el 25-oct-2026).
+// Sin `endsAt` sigue activo hasta que se apague con `enabled: false` o se le ponga término.
+// Las descargas son las del repo público icydonticy666/swap-releases (swap se actualiza solo).
+const SWAP_RELEASE = 'https://github.com/icydonticy666/swap-releases/releases/download/v0.11.1/';
+export const SWAP_GIFT = {
+  enabled: true,
+  startsAt: '2026-10-25T03:00:00.000Z',
+  endsAt: '',
+  version: '0.11.1',
+  downloads: {
+    windows: SWAP_RELEASE + 'swap-0.11.1-windows-instalador.exe',
+    macSilicon: SWAP_RELEASE + 'swap-0.11.1-mac-apple-silicon.dmg',
+    macIntel: SWAP_RELEASE + 'swap-0.11.1-mac-intel.dmg',
+  },
+};
+
+export function swapGiftActive(now = new Date()) {
+  const time = Number(now);
+  return SWAP_GIFT.enabled && time >= Date.parse(SWAP_GIFT.startsAt) &&
+    (!SWAP_GIFT.endsAt || time < Date.parse(SWAP_GIFT.endsAt));
+}

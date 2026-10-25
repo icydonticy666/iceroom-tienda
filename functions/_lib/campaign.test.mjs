@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { CYBER, cyberActive, cyberPrice, USD_CENTS } from './campaign.js';
+import { CYBER, cyberActive, cyberPrice, SWAP_GIFT, swapGiftActive, USD_CENTS } from './campaign.js';
 import { PRODUCTS, priceOf, allowedPrices } from './catalog.js';
 import { couponQuote } from './discounts.js';
 import { onRequestGet } from '../api/promotion.js';
@@ -65,4 +65,17 @@ test('al vencer se oculta la campaña y vuelven los importes normales', async t 
   assert.equal(offer.active,false);
   assert.equal(offer.products.xNaVU.clp,15980);
   assert.equal(offer.products.xNaVU.usd,1598);
+});
+
+test('el regalo swap se activa desde su inicio y se apaga con enabled o endsAt', () => {
+  const start = Date.parse(SWAP_GIFT.startsAt);
+  assert.equal(swapGiftActive(start - 1), false);
+  assert.equal(swapGiftActive(start), true);
+  const { enabled, endsAt } = SWAP_GIFT;
+  SWAP_GIFT.endsAt = new Date(start + 1000).toISOString();
+  assert.equal(swapGiftActive(start + 1000), false);
+  SWAP_GIFT.endsAt = endsAt; SWAP_GIFT.enabled = false;
+  assert.equal(swapGiftActive(start), false);
+  SWAP_GIFT.enabled = enabled;
+  for (const url of Object.values(SWAP_GIFT.downloads)) assert.match(url, /^https:\/\/github\.com\/icydonticy666\/swap-releases\/releases\/download\//);
 });

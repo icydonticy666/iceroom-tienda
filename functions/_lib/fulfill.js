@@ -1,5 +1,6 @@
 import { PRODUCTS, allowedPrices, amountOk, bundleCollection, formatClp, isBundle, parseRef, payhipKey, redeemUrl } from "./catalog.js";
 import { couponCode } from "./coupon.js";
+import { SWAP_GIFT, swapGiftActive } from "./campaign.js";
 import { bindPayment, getIntent, paymentMatchesIntent } from "./intents.js";
 
 const ADDON_BASE_PRODUCT = "0QEeV";
@@ -186,6 +187,10 @@ async function sendEmail(env, { to, product, code, url, clp, addon }) {
   const addonText = addon?.code
     ? `\n\n¿Quieres agregar los 3 plugins Pritti por ${addon.price}?\nUsa este código post-compra (un solo uso): ${addon.code}\n${addon.url}\nEn Payhip, abre "Add coupon" y pega ese código.\n`
     : "";
+  const d = SWAP_GIFT.downloads;
+  const giftText = swapGiftActive()
+    ? `\n\nTu regalo: swap, gratis con tu compra.\nAbre la plantilla en tu versión de FL Studio o Ableton y pasa tus plugins VST2 a VST3, sin tocar el original.\nWindows: ${d.windows}\nMac (M1, M2, M3, M4): ${d.macSilicon}\nMac Intel: ${d.macIntel}\n`
+    : "";
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -198,7 +203,7 @@ async function sendEmail(env, { to, product, code, url, clp, addon }) {
       reply_to: env.EMAIL_REPLY_TO || "soporte@iceroom.cl",
       to: [to],
       subject: `Tu compra en iceroom — ${product.name}`,
-      text: `Pago aprobado por ${formatClp(clp)} CLP.\n\nTu código de descarga (un solo uso): ${code}\n${url}\n\n${download}${addonText}`,
+      text: `Pago aprobado por ${formatClp(clp)} CLP.\n\nTu código de descarga (un solo uso): ${code}\n${url}\n\n${download}${addonText}${giftText}`,
     }),
   });
   if (!res.ok) console.error(JSON.stringify({ email_error: res.status, from: env.EMAIL_FROM, body: (await res.text()).slice(0, 300) }));

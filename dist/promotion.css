@@ -44,3 +44,27 @@
 .cyber-active .price,.cyber-active .news-price .price,.cyber-active .offer>.clp{color:#f6a6db}
 .pay-cyber-note{background:#c83ca414;border-color:#c83ca455;color:#f8a5dc}
 .cyber-active .pay-product-usd{color:#f8a5dc}.cyber-active .offer{border-color:#c83ca470}
+
+/* Regalo swap (25-oct-2026): marca de la app swap, negro + hielo #9fe8fb. */
+.swap-gift{display:flex;align-items:center;gap:14px;max-width:540px;margin:24px auto 0;padding:12px 16px 12px 12px;border:1px solid #9fe8fb59;border-radius:18px;background:linear-gradient(135deg,#0d0d0df2,#152024e6);color:#e1e1e1;text-decoration:none;text-align:left;box-shadow:0 0 0 4px #9fe8fb0f,0 22px 44px -26px #9fe8fb80;transition:border-color .25s,transform .25s,box-shadow .25s}
+.swap-gift:hover,.swap-gift:focus-visible{border-color:#9fe8fb;transform:translateY(-1px);box-shadow:0 0 0 4px #9fe8fb1f,0 22px 44px -22px #9fe8fbaa}
+.swap-gift[hidden]{display:none}
+.swap-gift img{width:52px;height:52px;border-radius:13px;flex:none}
+.swap-gift-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.swap-gift-kicker{font:700 9px/1 var(--font-body,Arial,sans-serif);letter-spacing:.16em;text-transform:uppercase;color:#9fe8fb}
+.swap-gift-title{font:700 16px/1.2 var(--font-body,Arial,sans-serif);color:#fff}
+.swap-gift-title b{color:#9fe8fb;font-weight:800}
+.swap-gift-text{font:400 12px/1.4 var(--font-body,Arial,sans-serif);color:#a3a3a3}
+.swap-gift-arrow{margin-left:auto;padding-left:6px;color:#9fe8fb;font-size:18px;flex:none}
+.pay-gift-note{display:flex;align-items:center;gap:8px;margin:8px 0 0;padding:8px 10px;border:1px solid #9fe8fb40;border-radius:10px;background:#9fe8fb0d;color:#cfeff7;font-size:12px;line-height:1.35}
+.pay-gift-note[hidden]{display:none}
+.pay-gift-note img{width:22px;height:22px;border-radius:6px;flex:none}
+@media(max-width:680px){.swap-gift{margin:22px 0 0;padding:10px 12px 10px 10px;gap:11px;border-radius:16px}.swap-gift img{width:44px;height:44px;border-radius:11px}.swap-gift-title{font-size:14px}.swap-gift-text{font-size:11px}}
+.swap-bar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:10px 20px;background:#0d0d0d;border-bottom:1px solid #9fe8fb40;color:#e1e1e1;font:500 11px var(--font-body,Arial,sans-serif);letter-spacing:.03em;text-align:center;text-decoration:none}
+.swap-bar[hidden]{display:none}
+.swap-bar img{width:18px;height:18px;border-radius:5px}
+.swap-bar strong{color:#0d0d0d;background:#9fe8fb;padding:3px 7px;border-radius:999px;font-size:9px;letter-spacing:.14em}
+.swap-bar b{color:#9fe8fb}
+.swap-bar-go{color:#9fe8fb;font-weight:700}
+body.cyber-active .swap-bar{display:none}
+@media(max-width:680px){.swap-bar{gap:8px;padding:9px 14px;font-size:10px}.swap-bar-go{display:none}}

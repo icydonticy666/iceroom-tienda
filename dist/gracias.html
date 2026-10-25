@@ -34,6 +34,11 @@ a.btn,button.btn{display:block;margin-top:1rem;background:#fff;color:#000;text-d
 .addon-offer h2{font-size:1rem;margin-bottom:.35rem}.addon-offer p{font-size:.88rem}
 .addon-code{margin:.8rem 0;padding:.75rem;border:1px dashed var(--line);border-radius:12px;font-family:ui-monospace,monospace;text-align:center;letter-spacing:.08em}
 .addon-offer .btn{margin-top:.7rem}.addon-note{margin-top:.55rem;font-size:.76rem;color:var(--text-2)}
+.swap-gift{margin-top:1.4rem;padding:1rem;border:1px solid rgba(159,232,251,.45);border-radius:16px;background:rgba(159,232,251,.07)}
+.swap-head{display:flex;align-items:center;gap:.8rem;margin-bottom:.5rem}.swap-head img{width:44px;height:44px;border-radius:11px}
+.swap-gift h2{font-size:1rem}.swap-gift h2 b{color:#9fe8fb}.swap-gift p{font-size:.88rem}
+.swap-dl{display:grid;gap:.5rem;margin-top:.8rem}.swap-dl a.btn{margin-top:0}
+.swap-dl a.btn.alt{background:transparent;color:#9fe8fb;border:1px solid rgba(159,232,251,.5)}
 </style>
 <!-- Meta Pixel (ICEROOM - Payhip). Purchase se dispara en gracias.js con el mismo eventID que la API de conversiones. -->
 <script>
@@ -64,8 +69,18 @@ fbq('track','PageView');
     <a class="btn" id="addon-go" target="_blank" rel="noopener">Agregar plugins con descuento</a>
     <p class="addon-note">En Payhip abre “Add coupon” y pega este código. Es distinto al código de descarga y también es de un solo uso.</p>
   </section>
+  <section class="swap-gift" id="swap-gift" hidden>
+    <div class="swap-head"><img src="/img/swap.png?v=20261025a" alt="" width="44" height="44"><h2>Tu regalo: <b>swap</b></h2></div>
+    <p>Abre la plantilla en tu versión de FL Studio o Ableton y pasa tus plugins VST2 a VST3. Hace una copia: el original no se toca.</p>
+    <div class="swap-dl">
+      <a class="btn" id="swap-win" rel="noopener">Descargar para Windows</a>
+      <a class="btn alt" id="swap-mac" rel="noopener">Mac (M1, M2, M3, M4)</a>
+      <a class="btn alt" id="swap-intel" rel="noopener">Mac Intel</a>
+    </div>
+    <p class="addon-note">Si Windows dice "Windows protegió su PC": Más información → Ejecutar de todas formas. En Mac, la primera vez: Ajustes del Sistema → Privacidad y seguridad → Abrir igualmente.</p>
+  </section>
   <a class="back" href="/">Volver a la tienda</a>
 </main>
-<script src="/gracias.js?v=20261013a" defer></script>
+<script src="/gracias.js?v=20261025a" defer></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-import { CYBER, cyberActive, cyberPrice, USD_CENTS } from '../_lib/campaign.js';
+import { CYBER, cyberActive, cyberPrice, SWAP_GIFT, swapGiftActive, USD_CENTS } from '../_lib/campaign.js';
 import { PRODUCTS, priceOf } from '../_lib/catalog.js';
 import { json } from '../_lib/http.js';
 
@@ -12,5 +12,6 @@ export function onRequestGet() {
       clp: priceOf(PRODUCTS[key], now), regularClp: PRODUCTS[key].clp,
     };
   }
-  return json({ ...CYBER, active, serverTime: now.toISOString(), products });
+  const gift = swapGiftActive(now) ? { name: 'swap', version: SWAP_GIFT.version, downloads: SWAP_GIFT.downloads } : null;
+  return json({ ...CYBER, active, serverTime: now.toISOString(), products, gift });
 }

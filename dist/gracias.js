@@ -14,6 +14,17 @@
   var addonGo = document.getElementById("addon-go");
   var addonPrice = document.getElementById("addon-price");
   var tries = 0;
+  // Regalo swap: los links vienen de /api/promotion, así se apaga desde el servidor.
+  function showGift() {
+    fetch("/api/promotion", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (data) {
+      var gift = data && data.gift; var box = document.getElementById("swap-gift");
+      if (!gift || !box) return;
+      document.getElementById("swap-win").href = gift.downloads.windows;
+      document.getElementById("swap-mac").href = gift.downloads.macSilicon;
+      document.getElementById("swap-intel").href = gift.downloads.macIntel;
+      box.hidden = false;
+    }).catch(function () {});
+  }
 
   function copyCode(text) {
     if (navigator.clipboard && window.isSecureContext) {
@@ -59,6 +70,7 @@
         addonGo.href = data.addonUrl;
         addonOffer.hidden = false;
       }
+      showGift();
       return true;
     }
     if (data.status === "rejected") {

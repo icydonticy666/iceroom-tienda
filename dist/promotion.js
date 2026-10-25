@@ -34,6 +34,7 @@
     document.querySelectorAll('[data-cyber-end]').forEach(el => {
       el.textContent='Hasta el '+new Intl.DateTimeFormat('es-CL',{timeZone:'America/Santiago',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(state.endsAt))+' · hora de Chile';
     });
+    document.querySelectorAll('[data-swap-gift]').forEach(el => {el.hidden = !state.gift;});
     window.dispatchEvent(new Event('iceroom:promotion'));
   }
   function tick() {
