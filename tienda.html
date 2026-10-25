@@ -270,7 +270,7 @@ footer .note{margin-top:1.5rem;display:inline-block;font-size:.72rem;color:var(-
 <link rel="stylesheet" href="/product-art.css?v=20261004a">
 <link rel="stylesheet" href="/collection-explorer.css?v=20261004a">
 <link rel="stylesheet" href="/brand-experience.css?v=20261004c">
-<link rel="stylesheet" href="/promotion.css?v=20261025a">
+<link rel="stylesheet" href="/promotion.css?v=20261025c">
 <!-- Meta Pixel (ICEROOM - Payhip). Purchase se dispara en gracias.js con el mismo eventID que la API de conversiones. -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -281,7 +281,7 @@ fbq('track','PageView');
 </script>
 </head>
 <body>
-<a class="swap-bar" data-swap-gift href="#plantillas"><img src="/img/swap.png?v=20261025a" alt="" width="18" height="18"><strong>REGALO</strong><span><b>swap</b> gratis con cualquier compra · Windows y Mac</span><span class="swap-bar-go">Ver productos ↗</span></a>
+<a class="swap-bar" data-swap-gift href="#swap"><img src="/img/swap.png?v=20261025a" alt="" width="18" height="18"><strong>REGALO</strong><span><b>swap</b> gratis con cualquier compra · Windows y Mac</span><span class="swap-bar-go">Ver productos ↗</span></a>
 <a class="cyber-bar" data-cyber hidden href="#plantillas"><strong>MITAD DE PRECIO</strong><span>50% en toda la tienda · solo 24 horas</span><span class="cyber-timer">Termina en <time data-cyber-clock>24:00:00</time> ↗</span></a>
 <a href="#contenido" class="skip-link">Ir al contenido</a>
 
@@ -340,7 +340,6 @@ fbq('track','PageView');
     <h1 class="hero-lockup" aria-label="iceroom"><svg class="brand-mark" viewBox="0 0 84 81" aria-hidden="true" focusable="false"><path d="M16 0H68L84 26L42 81L0 26Z" fill="currentColor"/></svg><span class="hero-word" aria-hidden="true">iceroom</span></h1>
     <p>Plantillas, plugins y mezcla del productor detrás de <strong style="color:var(--text)">8M+ streams</strong>. Graba y suena profesional desde tu home studio.</p>
     <div class="cyber-offer" data-cyber hidden><h2><strong>50% menos.</strong> Solo 24 horas.</h2><p>Plantillas, plugins, cursos y servicios a mitad de precio. El descuento ya viene aplicado: sin código.</p><small data-cyber-end></small></div>
-    <a class="swap-gift" href="#plantillas" data-swap-gift aria-label="swap gratis con cualquier compra: ver productos"><img src="/img/swap.png?v=20261025a" width="52" height="52" alt="" decoding="async"><span class="swap-gift-copy"><span class="swap-gift-kicker">Regalo con tu compra</span><span class="swap-gift-title"><b>swap</b> gratis con cualquier producto</span><span class="swap-gift-text">Abre la plantilla en tu versión de FL Studio o Ableton y pasa tus plugins VST2 a VST3. Windows y Mac.</span></span><span class="swap-gift-arrow" aria-hidden="true">↗</span></a>
     <div class="hero-cta">
       <a class="buy" href="#plantilla-fl">Ver la plantilla más vendida <span aria-hidden="true">↗</span></a>
       <a class="buy ghost" href="#plugins">Explorar plugins Pritti</a>
@@ -353,6 +352,28 @@ fbq('track','PageView');
     <div class="hero-trust"><span>✓ Descarga inmediata</span><span>✓ Paga con tarjeta o PayPal — sin crear cuenta</span><span>✓ +130 productores ya compraron</span></div>
     <button type="button" id="hero-motion" class="hero-motion" hidden aria-pressed="false" aria-label="Pausar animación del fondo"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="motion-pause" d="M4 3h3v10H4zM10 3h3v10h-3z"/><path class="motion-play" d="m4 2 10 6-10 6z"/></svg><span>Animación</span></button>
   </div>
+
+  <!-- REGALO SWAP (25-oct-2026): swap gratis con la plantilla y con cualquier producto. Se oculta si SWAP_GIFT está apagado. -->
+  <section class="cat swap-section" id="swap" data-swap-gift>
+    <div class="grid">
+      <article class="card template-feature swap-feature">
+        <div class="card-media feature-media swap-media">
+          <img class="swap-shot" src="/img/swap-app.webp?v=20261025b" width="720" height="933" alt="Ventana de swap: pestañas Cambiar versión y Arreglar plugins, detecta FL 25.2 y Live 12.3 y tiene una zona para soltar el proyecto" loading="lazy" decoding="async">
+          <span class="swap-stamp">GRATIS</span>
+        </div>
+        <div class="card-body feature-body">
+          <span class="by">REGALO CON TU COMPRA</span>
+          <h3 class="swap-title"><img src="/img/swap.png?v=20261025a" alt="" width="40" height="40">swap</h3>
+          <p class="feature-lead">Gratis al agregar tu plantilla.</p>
+          <p>La app que hace que la plantilla abra en tu equipo. Si tienes otra versión de FL Studio o Ableton, o tus plugins no aparecen, swap hace una copia lista para tu PC. El original no se toca.</p>
+          <ul class="feature-points"><li>Cambia la versión: abre en tu FL o tu Live</li><li>Arregla plugins: de VST2 a VST3, con tus ajustes</li><li>Convierte cadenas de Ableton en presets de FL</li><li>Windows y Mac · se actualiza sola</li></ul>
+          <div class="feature-purchase"><div class="swap-free-row"><span class="swap-free">GRATIS</span><span class="swap-free-note">con la plantilla, y con cualquier producto de la tienda</span></div>
+          <a class="buy payhip-buy-button" data-theme="none" data-product="0QEeV" href="https://payhip.com/b/0QEeV" data-mp="0QEeV" data-addon="xNaVU" data-addon-usd="$15.98" data-addon-href="/api/paypal-checkout?product=xNaVU">Agregar plantilla + swap gratis <span aria-hidden="true">↗</span></a>
+          <p class="feature-compat">swap v0.11 beta · FL Studio 11+ y Ableton Live 9+. <a href="#plantillas">¿Usas Ableton? Ver todas las plantillas</a></p></div>
+        </div>
+      </article>
+    </div>
+  </section>
 
   <!-- PLANTILLAS -->
   <section class="cat" id="plantillas">

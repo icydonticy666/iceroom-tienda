@@ -68,3 +68,27 @@
 .swap-bar-go{color:#9fe8fb;font-weight:700}
 body.cyber-active .swap-bar{display:none}
 @media(max-width:680px){.swap-bar{gap:8px;padding:9px 14px;font-size:10px}.swap-bar-go{display:none}}
+
+/* Tarjeta grande de swap (mismo formato que la Plantilla de Grabación). */
+.swap-section{padding-top:8px}
+.swap-section[hidden]{display:none}
+.swap-feature{border-color:#9fe8fb59;background:linear-gradient(125deg,#0e1618,#0b0b0b 60%);box-shadow:0 0 0 1px #9fe8fb14,0 40px 80px -50px #9fe8fb66}
+.swap-media{position:relative;display:flex;align-items:center;justify-content:center;padding:7% 10%;overflow:hidden;background:radial-gradient(75% 55% at 50% 42%,#9fe8fb2b,transparent 72%),#070a0b;border-right-color:#9fe8fb26}
+.swap-shot{display:block;width:auto;height:auto;max-width:100%;max-height:100%;border-radius:12px;border:1px solid #9fe8fb3d;box-shadow:0 34px 70px -34px #9fe8fbaa,0 10px 30px -10px #000}
+.swap-stamp{position:absolute;top:18px;left:18px;padding:8px 13px;border-radius:999px;background:#9fe8fb;color:#050505;font:800 11px/1 var(--font-body,Arial,sans-serif);letter-spacing:.18em}
+.swap-feature .by{color:#9fe8fb}
+.swap-title{display:flex;align-items:center;gap:12px;font-size:clamp(2rem,4vw,2.8rem);letter-spacing:-.03em}
+.swap-title img{width:40px;height:40px;border-radius:10px;flex:none}
+.swap-feature .feature-lead{color:#fff}
+.swap-free-row{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.swap-free{font:800 2.2rem/1 var(--font-body,Arial,sans-serif);letter-spacing:-.03em;color:#9fe8fb}
+.swap-free-note{color:#a3a3a3;font-size:.82rem}
+.swap-feature a.buy{background:#9fe8fb;color:#050505;border-color:#9fe8fb}
+.swap-feature a.buy:hover{background:#c4f2fd}
+@media(max-width:680px){.swap-media{padding:9% 14%}.swap-stamp{top:12px;left:12px;font-size:10px;padding:7px 11px}.swap-title img{width:34px;height:34px}}
+.swap-feature .feature-purchase{display:flex;flex-direction:column;align-items:stretch;gap:0}
+.swap-feature .feature-purchase a.buy{width:100%;justify-content:center;text-align:center;writing-mode:horizontal-tb}
+.swap-feature .feature-compat{margin-top:12px}
+@media(max-width:680px){.swap-feature{flex-direction:column}.swap-media{width:100%;aspect-ratio:auto;height:auto;padding:46px 16% 26px;border-right:0;border-bottom:1px solid #9fe8fb26}.swap-shot{max-height:none}}
+.swap-feature .swap-media .swap-shot{position:relative;inset:auto;padding:0;width:auto;height:auto;max-width:100%;object-fit:contain;transform:none}
+@media(min-width:681px){.swap-feature .swap-media .swap-shot{max-height:100%}}
