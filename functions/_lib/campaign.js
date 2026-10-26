@@ -31,16 +31,16 @@ export const USD_CENTS = {
 // Regalo: la app swap gratis con cualquier compra (pedido por el usuario el 25-oct-2026).
 // Sin `endsAt` sigue activo hasta que se apague con `enabled: false` o se le ponga término.
 // Las descargas son las del repo público icydonticy666/swap-releases (swap se actualiza solo).
-const SWAP_RELEASE = 'https://github.com/icydonticy666/swap-releases/releases/download/v0.11.1/';
+const SWAP_RELEASE = 'https://github.com/icydonticy666/swap-releases/releases/download/v0.11.2/';
 export const SWAP_GIFT = {
   enabled: true,
   startsAt: '2026-10-25T03:00:00.000Z',
   endsAt: '',
-  version: '0.11.1',
+  version: '0.11.2',
   downloads: {
-    windows: SWAP_RELEASE + 'swap-0.11.1-windows-instalador.exe',
-    macSilicon: SWAP_RELEASE + 'swap-0.11.1-mac-apple-silicon.dmg',
-    macIntel: SWAP_RELEASE + 'swap-0.11.1-mac-intel.dmg',
+    windows: SWAP_RELEASE + 'swap-0.11.2-windows-instalador.exe',
+    macSilicon: SWAP_RELEASE + 'swap-0.11.2-mac-apple-silicon.dmg',
+    macIntel: SWAP_RELEASE + 'swap-0.11.2-mac-intel.dmg',
   },
 };
 
