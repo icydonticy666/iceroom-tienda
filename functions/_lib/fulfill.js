@@ -2,6 +2,7 @@ import { PRODUCTS, allowedPrices, amountOk, bundleCollection, formatClp, isBundl
 import { couponCode } from "./coupon.js";
 import { SWAP_GIFT, swapGiftActive } from "./campaign.js";
 import { bindPayment, getIntent, paymentMatchesIntent } from "./intents.js";
+import { avisarLicencia, daSwapPro, proveedorDe } from "./swap-licencia.js";
 
 const ADDON_BASE_PRODUCT = "0QEeV";
 const ADDON_PRODUCT = PRODUCTS.xNaVU;
@@ -314,6 +315,9 @@ export async function fulfill(env, payment, extras = {}) {
     record.refundActionRequired = Boolean(record.code);
     record.status = "refunded";
     await kvPut(env, kvKey, record);
+    if (daSwapPro(product)) {
+      await avisarLicencia(env, { email: payerEmail(payment), pago: id, proveedor: proveedorDe(id), estado: "cancelado" });
+    }
     return { status: "refunded", name: product.name, kind: product.kind, clp: ref.clp, coupon: "", redeemUrl: "" };
   }
 
@@ -345,6 +349,10 @@ export async function fulfill(env, payment, extras = {}) {
   catch (error) { console.error(JSON.stringify({ addon_coupon_error: String(error?.message || error), payment: id })); }
 
   const email = payerEmail(payment);
+  if (daSwapPro(product) && !record.swapSent) {
+    record.swapSent = await avisarLicencia(env, { email, pago: id, proveedor: proveedorDe(id), estado: "completado" });
+    if (record.swapSent) await kvPut(env, kvKey, record);
+  }
   if (env.ORDERS && !record.emailSent) {
     record.emailSent = await sendEmail(env, {
       to: email,
@@ -383,6 +391,9 @@ async function fulfillWithDb(env, payment, extras, intent, product, ref) {
     ).bind(id, intent.claim).run();
     await db.prepare("UPDATE payment_fulfillments SET refunded = 1, state = 'refunded', refund_action_required = CASE WHEN code != '' THEN 1 ELSE 0 END WHERE claim = ?")
       .bind(intent.claim).run();
+    if (daSwapPro(product)) {
+      await avisarLicencia(env, { email: intent.email || payerEmail(payment), pago: id, proveedor: proveedorDe(id), estado: "cancelado" });
+    }
     return { status: "refunded", name: product.name, kind: product.kind, clp: ref.clp, coupon: "", redeemUrl: "" };
   }
   if (payment.status !== "approved") {
@@ -432,6 +443,10 @@ async function fulfillWithDb(env, payment, extras, intent, product, ref) {
   try { addon = await addonOffer(env, product, id, extras.origin); }
   catch (error) { console.error(JSON.stringify({ addon_coupon_error: String(error?.message || error), payment: id })); }
   const email = payerEmail(payment) || intent.email || "";
+  if (daSwapPro(product)) {
+    // Idempotente en el servidor de licencias (proveedor + pago): repetir el aviso no duplica nada.
+    await avisarLicencia(env, { email: intent.email || email, pago: id, proveedor: proveedorDe(id), estado: "completado" });
+  }
   let emailSent = Boolean(fresh.email_sent);
   if (!emailSent && await sendEmail(env, { to: email, product, code, url: redeemUrl(product, code), clp: ref.clp, addon })) {
     await db.prepare("UPDATE payment_fulfillments SET email_sent = 1 WHERE payment_id = ?").bind(id).run();
