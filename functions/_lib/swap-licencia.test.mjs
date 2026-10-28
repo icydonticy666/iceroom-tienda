@@ -56,6 +56,15 @@ test('webhook de Payhip: ignora otros productos, cupones al 100% y reembolsos pa
   assert.equal(avisos[0].estado, 'cancelado');
 });
 
+test('invitación a productores: el producto gratis yp9EL sí activa Pro (y nada más gratis lo hace)', async () => {
+  avisos = [];
+  await webhook(venta({ id: 'INV1', price: 0, items: [{ product_key: 'yp9EL' }] }));
+  assert.deepEqual(avisos, [{ auth: 'Bearer t-licencias', email: 'cliente@gmail.com', pago: 'INV1', proveedor: 'invitacion', estado: 'completado' }]);
+  avisos = [];
+  await webhook(venta({ id: 'X', price: 0, items: [{ product_key: '0QEeV' }] }));
+  assert.equal(avisos.length, 0);
+});
+
 test('Mercado Pago aprobado y luego reembolsado: activa y quita Pro con el mismo pago', async () => {
   avisos = [];
   const pago = { id: 123456, status: 'approved', currency_id: 'CLP', transaction_amount: 9500,

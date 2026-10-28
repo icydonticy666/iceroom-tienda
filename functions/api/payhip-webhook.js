@@ -24,6 +24,11 @@ function clavesSwapPro() {
   return new Set(Object.values(PRODUCTS).filter(daSwapPro).map(payhipKey));
 }
 
+// Invitaciones a productores: producto gratis y oculto de Payhip («swap Pro — Producer Preview»,
+// limitado en cantidad). Es la única compra de $0 que da Pro; se registra como proveedor
+// «invitacion» para distinguirla de las ventas.
+export const INVITACIONES = new Set(["yp9EL"]);
+
 export async function onRequestPost({ request, env }) {
   if (!env.PAYHIP_API_KEY || !env.PAYHIP_WEBHOOK_KEY) return new Response(null, { status: 503 });
   const k = new URL(request.url).searchParams.get("k") || "";
@@ -34,13 +39,15 @@ export async function onRequestPost({ request, env }) {
   }
   const estado = body.type === "paid" ? "completado" : body.type === "refunded" ? "cancelado" : "";
   const claves = clavesSwapPro();
-  const daPro = (body.items || []).some((item) => claves.has(String(item?.product_key || "")));
-  if (!estado || !daPro || !(Number(body.price) > 0)) return new Response(null, { status: 200 });
+  const llaves = (body.items || []).map((item) => String(item?.product_key || ""));
+  const invitacion = estado === "completado" && llaves.some((k) => INVITACIONES.has(k));
+  const daPro = invitacion || llaves.some((k) => claves.has(k));
+  if (!estado || !daPro || (!invitacion && !(Number(body.price) > 0))) return new Response(null, { status: 200 });
   // Un reembolso parcial no quita Pro; solo el total.
   if (estado === "cancelado" && Number(body.amount_refunded) < Number(body.price)) return new Response(null, { status: 200 });
   const ok = await avisarLicencia(env, {
     email: String(body.email || "").trim().toLowerCase(), pago: String(body.id || ""),
-    proveedor: "payhip", estado,
+    proveedor: invitacion ? "invitacion" : "payhip", estado,
   });
   return new Response(null, { status: ok ? 200 : 500 });  // 500: Payhip reintenta
 }
