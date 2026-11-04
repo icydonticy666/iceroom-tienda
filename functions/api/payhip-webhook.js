@@ -4,8 +4,8 @@ import { avisarLicencia, daSwapPro } from "../_lib/swap-licencia.js";
 // Webhook de Payhip (Settings → Developer → Webhooks), para lo que se cobra dentro de Payhip
 // (PayPal y tarjeta). URL: https://iceroom.cl/api/payhip-webhook?k=<PAYHIP_WEBHOOK_KEY>
 // La «signature» de Payhip es sha256 de la API key, fija para toda notificación: por eso se
-// exige además la clave secreta de la URL. Solo cuenta lo pagado (price > 0): las compras con
-// el cupón 100% que entrega la tienda tras Mercado Pago/Flow ya se avisaron en fulfill.js.
+// exige además la clave secreta de la URL. Lo pagado da Pro; lo de $0 da Pro si es invitación o
+// regalo (cupón hecho a mano), no si es la entrega de un pago de la tienda (ver esEntregaDeLaTienda).
 
 async function sha256(text) {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
@@ -29,6 +29,21 @@ function clavesSwapPro() {
 // «invitacion» para distinguirla de las ventas.
 export const INVITACIONES = new Set(["yp9EL"]);
 
+// Una orden de $0 de un producto con swap Pro puede ser (a) la entrega de un pago hecho en la
+// tienda (Mercado Pago/Flow → cupón 100% «CL…»), que fulfill.js ya avisó con el id de ese pago y
+// cuyo reembolso lo quita, o (b) un regalo: un cupón 100% creado a mano en Payhip (p. ej. «JK_37»).
+// Payhip no manda el código del cupón, así que se distingue por la tienda: si el correo tiene un
+// pago aprobado de un producto swap Pro, es entrega y no se duplica; si no, es regalo y da Pro.
+async function esEntregaDeLaTienda(env, email) {
+  if (!env.PAYMENTS_DB) return false;
+  const productos = Object.values(PRODUCTS).filter(daSwapPro).map((p) => p.key);
+  const marcas = productos.map((_, i) => `?${i + 2}`).join(", ");
+  const fila = await env.PAYMENTS_DB.prepare(
+    `SELECT 1 FROM payment_intents WHERE lower(email) = ?1 AND state = 'approved' AND product_key IN (${marcas}) LIMIT 1`
+  ).bind(email, ...productos).first().catch(() => null);
+  return Boolean(fila);
+}
+
 export async function onRequestPost({ request, env }) {
   if (!env.PAYHIP_API_KEY || !env.PAYHIP_WEBHOOK_KEY) return new Response(null, { status: 503 });
   const k = new URL(request.url).searchParams.get("k") || "";
@@ -42,12 +57,17 @@ export async function onRequestPost({ request, env }) {
   const llaves = (body.items || []).map((item) => String(item?.product_key || ""));
   const invitacion = estado === "completado" && llaves.some((k) => INVITACIONES.has(k));
   const daPro = invitacion || llaves.some((k) => claves.has(k));
-  if (!estado || !daPro || (!invitacion && !(Number(body.price) > 0))) return new Response(null, { status: 200 });
+  if (!estado || !daPro) return new Response(null, { status: 200 });
+  const email = String(body.email || "").trim().toLowerCase();
+  const gratis = !(Number(body.price) > 0);
+  let proveedor = invitacion ? "invitacion" : "payhip";
+  if (gratis && !invitacion) {
+    // Reembolsar una orden de $0 no tiene sentido; y una entrega de la tienda ya está avisada.
+    if (estado !== "completado" || await esEntregaDeLaTienda(env, email)) return new Response(null, { status: 200 });
+    proveedor = "regalo";
+  }
   // Un reembolso parcial no quita Pro; solo el total.
   if (estado === "cancelado" && Number(body.amount_refunded) < Number(body.price)) return new Response(null, { status: 200 });
-  const ok = await avisarLicencia(env, {
-    email: String(body.email || "").trim().toLowerCase(), pago: String(body.id || ""),
-    proveedor: invitacion ? "invitacion" : "payhip", estado,
-  });
+  const ok = await avisarLicencia(env, { email, pago: String(body.id || ""), proveedor, estado });
   return new Response(null, { status: ok ? 200 : 500 });  // 500: Payhip reintenta
 }

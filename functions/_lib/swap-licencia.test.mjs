@@ -46,14 +46,28 @@ test('webhook de Payhip: venta pagada de swap Pro activa Pro con el correo del c
   assert.deepEqual(avisos, [{ auth: 'Bearer t-licencias', email: 'cliente@gmail.com', pago: 'PH1', proveedor: 'payhip', estado: 'completado' }]);
 });
 
-test('webhook de Payhip: ignora otros productos, cupones al 100% y reembolsos parciales', async () => {
+test('webhook de Payhip: ignora otros productos y reembolsos parciales', async () => {
   avisos = [];
   await webhook(venta({ items: [{ product_key: '0QEeV' }] }));
-  await webhook(venta({ price: 0 }));
   await webhook(venta({ type: 'refunded', amount_refunded: 300 }));
   assert.equal(avisos.length, 0);
   await webhook(venta({ type: 'refunded', amount_refunded: 999 }));
   assert.equal(avisos[0].estado, 'cancelado');
+});
+
+test('cupón 100% hecho a mano (regalo) activa Pro; la entrega de un pago de la tienda no se duplica', async () => {
+  // D1 falso: solo pagador@gmail.com tiene un pago aprobado de un producto swap Pro en la tienda.
+  const db = { prepare: () => ({ bind: (email) => ({ first: async () => (email === 'pagador@gmail.com' ? {} : null) }) }) };
+  const envDb = { ...env, PAYMENTS_DB: db };
+  const hook = (body) => payhipWebhook({ env: envDb, request: new Request('https://iceroom.cl/api/payhip-webhook?k=k-secreta', {
+    method: 'POST', body: JSON.stringify(body) }) });
+  avisos = [];
+  await hook(venta({ id: 'QW90', email: 'Regalo.Prueba@Example.com', price: 0 }));
+  assert.deepEqual(avisos, [{ auth: 'Bearer t-licencias', email: 'regalo.prueba@example.com', pago: 'QW90', proveedor: 'regalo', estado: 'completado' }]);
+  avisos = [];
+  await hook(venta({ id: 'ENT1', email: 'pagador@gmail.com', price: 0 }));
+  await hook(venta({ id: 'QW90', email: 'regalo.prueba@example.com', price: 0, type: 'refunded', amount_refunded: 0 }));
+  assert.equal(avisos.length, 0);
 });
 
 test('invitación a productores: el producto gratis yp9EL sí activa Pro (y nada más gratis lo hace)', async () => {
