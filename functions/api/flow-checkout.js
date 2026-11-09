@@ -37,6 +37,7 @@ export async function onRequestPost({ request, env }) {
     if (String(error?.message || "").startsWith("coupon-") || error?.message === "offer-no-coupon") return json({ error: "Esta oferta ya tiene aplicado el descuento máximo." }, 400);
     return json({ error: "No se pudo preparar el descuento." }, 503);
   }
+  if (!intent) return json({ error: "Producto no disponible." }, 400);
   const price = intent.amount;
   const claim = intent.claim;
 

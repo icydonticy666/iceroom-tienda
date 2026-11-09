@@ -15,8 +15,8 @@ test("el precio CLP es el mismo precio de lista en USD × 1.000 (sin promos auto
   // Promo 50% de 24 h (23-oct 12:00 a 24-oct 12:00 CL): mitad de precio y después vuelve a lista.
   assert.equal(priceOf(studio, new Date("2026-10-23T18:00:00.000Z")), 14995);
   assert.equal(priceOf(studio, new Date("2026-10-24T15:00:00.000Z")), 29990);
-  // Lista, promo sitewide (50%), promo pública, oferta Meta Chile y oferta Meta internacional.
-  assert.deepEqual(allowedPrices(studio), [29990, 14995, 14990, 14990, 14990]);
+  // Lista, promo sitewide (50%), promo pública, oferta Meta Chile, relanzamiento de nov y oferta Meta internacional.
+  assert.deepEqual(allowedPrices(studio), [29990, 14995, 14990, 14990, 19990, 14990]);
   // Una promo debe vencer; `limit` es opcional para una venta flash sin stock artificial.
   for (const product of Object.values(PRODUCTS)) {
     if (product.promo) assert.ok(Date.parse(product.promo.until) && (!product.promo.limit || product.promo.limit > 0), product.key);
@@ -32,10 +32,27 @@ test("la oferta Meta de Pritti Studio solo funciona con su enlace y vence con la
   assert.equal(directOffer(studio, "meta-studio-1499", new Date("2026-10-26T02:59:00Z")), null);
   assert.ok(allowedPrices(studio).includes(14990));
   let saved;
-  const env = { PAYMENTS_DB: { prepare() { return { bind(...args) { saved = args; return { async run() {} }; } }; } } };
+  // Desde el 5-nov Studio trae swap Pro: solo se vende con la entrega Pro lista.
+  const env = { SWAP_PRO_DELIVERY_READY: "1", SWAP_STUDIO_PRODUCT_KEY: "QLfl6",
+    PAYMENTS_DB: { prepare() { return { bind(...args) { saved = args; return { async run() {} }; } }; } } };
   const intent = await createIntent(env, "QLfl6", "mp", "", "", {}, "meta-studio-1499");
   assert.equal(intent.amount, 14990);
   assert.equal(saved[3], 14990);
+});
+
+test("el relanzamiento de Studio a $19.990 solo vale con su enlace y vence el 15-nov", async (t) => {
+  t.mock.timers.enable({ apis: ["Date"], now: new Date("2026-11-07T15:00:00Z") });
+  const studio = PRODUCTS.QLfl6;
+  assert.equal(directOffer(studio, "meta-studio-1999").clp, 19990);
+  assert.equal(directOffer(studio, "meta-studio-1999", new Date("2026-11-16T02:59:00Z")), null);
+  assert.equal(directOffer(PRODUCTS["0QEeV"], "meta-studio-1999"), null);
+  assert.ok(allowedPrices(studio).includes(19990));
+  let saved;
+  const env = { SWAP_PRO_DELIVERY_READY: "1", SWAP_STUDIO_PRODUCT_KEY: "QLfl6",
+    PAYMENTS_DB: { prepare() { return { bind(...args) { saved = args; return { async run() {} }; } }; } } };
+  assert.equal((await createIntent(env, "QLfl6", "flow", "", "", {}, "meta-studio-1999")).amount, 19990);
+  assert.equal(saved[3], 19990);
+  assert.equal((await createIntent(env, "QLfl6", "flow", "", "", {}, "")).amount, 29990);
 });
 
 test("la referencia del pago solo acepta productos del catálogo", () => {

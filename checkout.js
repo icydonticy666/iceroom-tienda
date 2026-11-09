@@ -23,6 +23,16 @@
     xNaVU: { clp: 13980, before: 15980, paypal: "$15.98", ends: todayEnds, title: "Solo hoy · plantilla + 3 plugins Pritti",
       note: "Solo hoy: plantilla $9.990 + plugins Pritti $3.990", badge: "" },
   };
+  // Anuncio de Studio (aprobado el 6-nov-2026): $19.990 en pesos solo con su enlace, hasta el 15-nov 23:59 CL.
+  // PayPal queda visible al precio normal. El servidor valida el mismo código en DIRECT_OFFERS.
+  if (offerCode === "meta-studio-1999") {
+    CLP_PROMOS.QLfl6 = { clp: 19990, before: 29990, paypal: "$29.99", ends: Date.parse("2026-11-16T02:59:00.000Z"),
+      title: "Precio del anuncio · pack Pritti Studio", note: "Precio exclusivo de este anuncio, hasta el 15 de noviembre",
+      badge: "Precio del anuncio · $19.990",
+      // 6-nov: el anuncio habla de la plantilla; el nombre y lo que incluye van antes del precio (en el celular, arriba).
+      name: "Plantillas de grabación FL + Ableton + plugins Pritti",
+      summary: "Abres y grabas: plantillas FL Studio y Ableton · Pritti Vocals, Backroom, Eco y Grip · swap Pro." };
+  }
   function clpPromo(key) { var promo = CLP_PROMOS[key]; return promo && Date.now() < promo.ends ? promo : null; }
   function cookie(name) {
     var match = document.cookie.split(";").map(function (part) { return part.trim(); })
@@ -63,7 +73,7 @@
     '<div class="pay-sheet-body"><section class="pay-overview" aria-label="Información del producto"><p class="pay-eyebrow">HECHO PARA TU PRÓXIMA SESIÓN</p><div class="pay-product"><div class="pay-product-art" aria-hidden="true">' + diamond + '</div><div class="pay-product-info"><p class="pay-product-type"></p><h2 id="pay-sheet-title">Tu producto</h2></div></div><p class="pay-product-description"></p><h3 class="pay-includes-title">Lo que recibes</h3><ul class="pay-includes"></ul><p class="pay-requirements"></p><p class="pay-delivery"></p></section><section class="pay-purchase" aria-label="Resumen y medios de pago"><p class="pay-eyebrow">TU PEDIDO</p><div class="pay-total"><div><span class="pay-total-label">Total en USD · PayPal</span><p class="pay-product-usd" id="pay-product-usd"></p><p class="pay-sheet-price" id="pay-sheet-price" aria-live="polite"></p></div><span class="pay-once">Pago único</span></div><p class="pay-selected-extra" hidden></p>' +
     '<p class="pay-cyber-note" hidden>✦ Mitad de precio · 50% aplicado. Sin código.</p>' +
     '<p class="pay-gift-note" hidden><img src="/img/swap.png?v=20261025a" alt="" width="22" height="22"><span>+ <b>swap</b> gratis con tu compra: abre la plantilla en tu versión de FL o Ableton. Windows y Mac.</span></p>' +
-    '<button type="button" class="pay-addon" data-action="toggle-addon" hidden aria-pressed="false"><span class="pay-addon-check">+</span><span><span class="pay-addon-label">EXTRA OPCIONAL</span><b>Agrega 3 plugins Pritti <em>+ US$2.99</em></b><small>Grip + Backroom + Eco Delay. Se suman a tu plantilla y al total.</small></span></button>' +
+    '<button type="button" class="pay-addon" data-action="toggle-addon" hidden aria-pressed="false"><span class="pay-addon-check">+</span><span><span class="pay-addon-label">EXTRA OPCIONAL</span><b><span class="pay-addon-title">Agrega 3 plugins Pritti</span> <em>+ US$2.99</em></b><small class="pay-addon-detail">Grip + Backroom + Eco Delay. Se suman a tu plantilla y al total.</small></span></button>' +
     '<details class="pay-coupon"><summary>¿Tienes un cupón? <span aria-hidden="true">+</span></summary><label class="pay-sr-only" for="pay-coupon-code">Código de descuento</label><div class="pay-coupon-entry"><input id="pay-coupon-code" type="text" autocomplete="off" maxlength="40" placeholder="Código de descuento"><button type="button" data-action="apply-coupon">Aplicar</button></div><p id="pay-coupon-result" aria-live="polite"></p><small class="pay-coupon-hint">Para tarjeta y Webpay. En PayPal, aplícalo al continuar.</small></details>' +
     '<div id="pay-methods"><div class="pay-methods-heading"><h3>Elige cómo pagar</h3><span>CLP / USD</span></div><button type="button" class="pay-choice pay-method ghost" data-action="flow" hidden><span class="pay-method-icon">' + icon('<path d="m3 9 9-5 9 5M5 10h14M6 10v8m6-8v8m6-8v8M3 20h18"/>') + '</span><span class="pay-method-copy"><b>Webpay · Redcompra</b><small>Débito, crédito o prepago · pesos chilenos</small></span>' + arrow + '</button>' +
     '<button type="button" class="pay-choice pay-method ghost" data-action="wallet" hidden><span class="pay-method-icon">' + icon('<path d="M4 7a2 2 0 0 1 2-2h11v4"/><rect x="3" y="9" width="18" height="11" rx="2.5"/><path d="M16 14.5h.01"/>') + '</span><span class="pay-method-copy"><b>Cuenta Mercado Pago</b><small>Entra a tu cuenta: saldo o tarjetas guardadas</small></span>' + arrow + '</button>' +
@@ -111,6 +121,7 @@
   var localReady = false;
   var cardReady = false;
   var flowReady = false;
+  var abroad = false;   // visitante fuera de Chile (según /api/geo): solo PayPal
   var pricesLoaded = false;
   var currentClp = true;
   var appliedCoupon = "";
@@ -119,31 +130,46 @@
   // Product facts from the published catalog. Do not infer OS, formats or licences.
   var productInfo = {
     '0QEeV': { name:'Plantilla de Grabación — FL Studio', type:'PLANTILLA · PREMIUM', description:'Abre una sesión lista para grabar, en lugar de empezar desde cero.', includes:['Sesión .flp con cadenas de voz y ruteos configurados','Guía de uso y presets de efectos','Pritti Vocals incluido'], requirements:'FL Studio 20 o superior. Requiere plugins externos de pago, no incluidos. Grip, Backroom y Eco Delay se venden aparte.' },
+    'UVYyl': { name:'Full Stack — SWAP Pro + Plantillas FL y Ableton + 5 plugins Pritti', type:'SWAP PRO + 2 PLANTILLAS + 5 PLUGINS', description:'Las dos plantillas, SWAP Pro y cinco plugins Pritti: Vocals, Backroom, Eco, Grip y Riri fx.', includes:['Plantillas de Grabación FL Studio y Ableton Live + guías de uso','Pritti Vocals, Backroom, Eco, Grip (beta) y Riri fx','swap Pro para Windows y Mac: se activa con el correo de tu compra'], requirements:'Necesitas FL Studio 20 o superior o Ableton Live. La plantilla FL Premium requiere además plugins externos de pago; este bundle no incluye esas licencias.' },
+    'saPdL': { name:'Pack swap Pro — Plantilla Ableton + swap Pro', type:'PLANTILLA + PLUGINS + SWAP PRO', description:'La sesión de grabación de Ableton Live lista para cantar, y swap Pro para llevar tus plugins, plantillas y proyectos entre Ableton y FL Studio.', includes:['Plantilla de Grabación Ableton Live + guía de uso','Pritti Vocals, Pritti Backroom y Pritti Riri fx','swap Pro para Windows y Mac: se activa con el correo de tu compra'], requirements:'Necesitas Ableton Live. La compra no incluye una licencia del programa.' },
+    '8zVP2': { name:'Pack swap Pro — Plantilla FL + swap Pro', type:'PLANTILLA + PLUGINS + SWAP PRO', description:'La sesión de grabación de FL Studio lista para cantar, y swap Pro para llevar tus plugins, plantillas y proyectos entre FL Studio y Ableton.', includes:['Plantilla de Grabación FL Studio + guía de uso','Pritti Vocals, Pritti Backroom y Pritti Riri fx','swap Pro para Windows y Mac: se activa con el correo de tu compra'], requirements:'FL Studio 20 o superior. La plantilla requiere además plugins externos de pago; este pack no incluye esas licencias.' },
     'xNaVU': { name:'Plantilla FL + 3 plugins Pritti', type:'PLANTILLA + PLUGINS', description:'La sesión de grabación FL con tres herramientas más para trabajar tu voz.', includes:['Plantilla FL Premium + guía de uso','Pritti Vocals incluido con la plantilla','Pritti Grip, Backroom y Eco Delay'], requirements:'FL Studio 20 o superior. La plantilla requiere además plugins externos de pago; este pack no incluye esas licencias.' },
     '34vZU': { name:'Plantilla FL — Plugins Nativos', type:'PLANTILLA · NATIVA', description:'Abre, canta y graba con los efectos que ya vienen en FL Studio.', includes:['Sesión .flp de grabación','Cadena con plugins nativos de FL Studio','Guía de uso'], requirements:'Necesitas FL Studio. No requiere instalar plugins externos de pago.' },
     '3j8In': { name:'Plantilla de Grabación — Ableton Live', type:'PLANTILLA · ABLETON', description:'Empieza a grabar tus voces con los racks y ruteos preparados.', includes:['Plantilla de grabación para Ableton Live','Racks nativos y ruteos de voz','Pritti Vocals de regalo'], requirements:'Necesitas Ableton Live. La compra no incluye una licencia del programa.' },
     'h32nW': { name:'Plantilla Ableton + 3 plugins Pritti', type:'PLANTILLA + PLUGINS', description:'La sesión de grabación de Ableton con tres herramientas más para trabajar tu voz.', includes:['Plantilla de grabación para Ableton Live','Pritti Vocals de regalo','Pritti Grip, Backroom y Eco Delay'], requirements:'Necesitas Ableton Live. La compra no incluye una licencia del programa.' },
     '8Ljoq': { name:'Pack de Plantillas — FL + Ableton', type:'PACK · 2 PLANTILLAS', description:'Tu flujo de grabación, preparado para trabajar en ambos DAW.', includes:['Plantilla de grabación FL Studio','Plantilla de grabación Ableton Live','Pritti Vocals de regalo'], requirements:'Necesitas el DAW correspondiente. La plantilla FL Premium requiere plugins externos de pago, no incluidos.' },
-    'QLfl6': { name:'Pritti Studio', type:'PLANTILLAS + PLUGINS', description:'La sesión y las herramientas Pritti, reunidas en un mismo pack.', includes:['Plantillas de grabación FL Studio y Ableton','Pritti Vocals, Backroom y Eco','Pritti Grip beta + próximos plugins Pritti'], requirements:'Necesitas el DAW correspondiente. Los plugins externos de pago que requiere la plantilla FL Premium no están incluidos.' },
+    'QLfl6': { name:'Pritti Studio', type:'PLANTILLAS + PLUGINS + SWAP PRO', description:'La sesión, las herramientas Pritti y SWAP Pro, reunidas en un mismo pack.', includes:['Plantillas de grabación FL Studio y Ableton','Pritti Vocals, Backroom y Eco','Pritti Grip beta + próximos plugins Pritti','swap Pro para Windows y Mac: se activa con el correo de tu compra'], requirements:'Necesitas el DAW correspondiente. Los plugins externos de pago que requiere la plantilla FL Premium no están incluidos.' },
+    '95wzC': { name:'Full Pritti Studio', type:'PACK SWAP PRO + TODA LA FAMILIA PRITTI', description:'Tu Pack SWAP Pro con toda la familia Pritti: las dos plantillas, los cinco plugins y los que vienen.', includes:['Plantillas de Grabación FL Studio y Ableton Live + guías','Pritti Vocals, Backroom, Eco Delay, Grip (beta) y Riri fx','Los próximos plugins Pritti, cuando salgan','swap Pro para Windows y Mac: se activa con el correo de tu compra'], requirements:'Necesitas FL Studio 20 o superior o Ableton Live. La plantilla FL Premium requiere además plugins externos de pago; sus licencias no están incluidas.' },
     'Vo0Sq': { name:'Pritti Grip', type:'PLUGIN · BETA v0.9', description:'Compresión vocal con carácter para llevar la voz al frente.', includes:['Compresor vocal Pritti Grip beta','4 estilos: vocals, bus, hard y aggressive','Color de cinta, válvula y FET'], requirements:'Es un plugin para usar dentro de tu DAW. Esta versión está en beta.' },
     'SQti3': { name:'Pritti Backroom', type:'PLUGIN · REVERB', description:'Dale espacio a la voz: de un ambiente íntimo a una reverb profunda.', includes:['Plugin Pritti Backroom','Reverb para dar ambiente y profundidad a la voz'], requirements:'Es un plugin para usar dentro de tu DAW.' },
     'Nqvbs': { name:'Pritti Vocals', type:'PLUGIN · VOCES', description:'Un punto de partida rápido para encontrar el brillo y la presencia de tu voz.', includes:['Plugin Pritti Vocals','Procesamiento enfocado en voces'], requirements:'Es un plugin para usar dentro de tu DAW.' },
+    'i5fkg': { name:'Pritti Riri fx', type:'PLUGIN · RISER', description:'Risers vocales y reverse reverb con tu propia voz, alineados al compás.', includes:['Plugin Pritti Riri fx (VST3 / AU, Windows y Mac)','Reverse reverb y vocal riser para voces'], requirements:'Es un plugin para usar dentro de tu DAW.' },
     '5JbVN': { name:'Pritti Eco', type:'PLUGIN · DELAY', description:'Ecos con carácter, de un slap sutil a estelas largas con modulación.', includes:['Plugin Pritti Eco Delay','Delay con modulación para voces'], requirements:'Es un plugin para usar dentro de tu DAW.' },
-    'G5U1r': { name:'Pritti Bundle', type:'PACK · PLUGINS', description:'El ecosistema Pritti en una sola compra.', includes:['Pritti Vocals, Backroom y Eco','Pritti Grip en beta','Acceso a próximos plugins Pritti'], requirements:'Plugins para usar dentro de tu DAW. No incluye las plantillas de grabación.' },
+    'G5U1r': { name:'Pritti Bundle', type:'PACK · PLUGINS', description:'El ecosistema Pritti en una sola compra.', includes:['Pritti Vocals, Backroom y Eco','Pritti Riri fx (nuevo)','Pritti Grip en beta','Acceso a próximos plugins Pritti'], requirements:'Plugins para usar dentro de tu DAW. No incluye las plantillas de grabación.' },
     'a8IWu': { name:'Masterclass: Mezcla Pro', type:'FORMACIÓN · 2 TEMPORADAS', description:'El proceso de mezcla de icycold, explicado paso a paso con sesiones reales.', includes:['Dos temporadas completas','Grabación, EQ, compresión y balance','Pritti Vocals de regalo'], requirements:'Contenido formativo digital. No incluye una licencia del DAW.' },
     'IiHTG': { name:'The Ultimate Bundle', type:'CURSO + PLANTILLAS + PLUGINS', description:'Aprende el proceso y llévalo a tus sesiones con las plantillas incluidas.', includes:['Masterclass Mezcla Pro completa','Plantillas de grabación FL Studio y Ableton','Pritti Vocals y Pritti Backroom'], requirements:'Necesitas el DAW correspondiente. La plantilla FL Premium requiere plugins externos de pago, no incluidos.' },
+    'JXKg8': { name:'Plantilla a tu voz', type:'SERVICIO · HECHA PARA TI', description:'Me mandas una acapella y te devuelvo tu plantilla de FL Studio o Ableton con la cadena de voz ajustada a tu voz.', includes:['Plantilla de grabación para FL Studio o Ableton Live, ajustada a tu voz','Antes y después en audio de tu voz','1 ronda de ajustes y los plugins Pritti que use','Entrega en 72 horas desde que llega tu acapella'], requirements:'Después de pagar me envías una acapella seca de 30 a 60 segundos. Es un servicio, no una descarga inmediata.' },
     'z6Bgp': { name:'Mezcla + Master — 1 canción', type:'SERVICIO · UNA CANCIÓN', description:'Envía tus pistas y trabajamos la mezcla de voz y beat, más el master.', includes:['Mezcla de voz y beat + master','2 rondas de ajustes','Entrega en 5 días hábiles'], requirements:'Después de pagar debes enviar tus pistas. Es un servicio, no una descarga inmediata.' }
   };
   function renderProductInfo(key) {
-    var info = productInfo[key];
+    var info = productInfo[key] || window.iceroomSwapProducts?.[key];
     if (!info) return;
-    title.textContent = info.name;
+    // Una promo enlazada puede renombrar el producto y resumir lo que incluye junto al precio.
+    var promo = clpPromo(key);
+    title.textContent = promo?.name || info.name;
     var orderName = sheet.querySelector('.pay-order-name');
     if (!orderName) {
       orderName = document.createElement('p'); orderName.className = 'pay-order-name';
       sheet.querySelector('.pay-total').before(orderName);
     }
-    orderName.textContent = info.name;
+    orderName.textContent = promo?.name || info.name;
+    var orderSummary = sheet.querySelector('.pay-order-summary');
+    if (!orderSummary) {
+      orderSummary = document.createElement('p'); orderSummary.className = 'pay-order-summary';
+      orderName.after(orderSummary);
+    }
+    orderSummary.textContent = promo?.summary || '';
+    orderSummary.hidden = !promo?.summary;
     sheet.querySelector('.pay-product-type').textContent = info.type;
     sheet.querySelector('.pay-product-description').textContent = info.description;
     sheet.querySelector('.pay-includes').replaceChildren();
@@ -155,7 +181,7 @@
     requirements.replaceChildren();
     var label = document.createElement('b'); label.textContent = 'Antes de comprar';
     requirements.append(label, document.createTextNode(info.requirements));
-    sheet.querySelector('.pay-delivery').textContent = key === 'z6Bgp' ? 'Recibirás las instrucciones para enviar tu canción después del pago.' : 'Producto digital · acceso después de confirmar el pago.';
+    sheet.querySelector('.pay-delivery').textContent = key === 'z6Bgp' ? 'Recibirás las instrucciones para enviar tu canción después del pago.' : key === 'JXKg8' ? 'Recibirás las instrucciones para grabar y enviar tu voz después del pago.' : 'Producto digital · acceso después de confirmar el pago.';
   }
 
   fetch("/api/prices" + (offerCode ? "?offer=" + encodeURIComponent(offerCode) : "")).then(function (r) { return r.json(); }).then(function (data) {
@@ -164,8 +190,22 @@
     if (studioOffer || intlOffer) prices.QLfl6 = 14990;
     Object.keys(CLP_PROMOS).forEach(function (key) { if (clpPromo(key)) prices[key] = CLP_PROMOS[key].clp; });
     pricesLoaded = true;
+    // Textos y botones de una oferta se muestran solo cuando el servidor la vende (y su alternativa, mientras no).
+    document.querySelectorAll("[data-requires-product]").forEach(function (el) { el.hidden = !prices[el.dataset.requiresProduct]; });
+    document.querySelectorAll("[data-unless-product]").forEach(function (el) { el.hidden = Boolean(prices[el.dataset.unlessProduct]); });
     trackInitiateCheckout();
+    // Si la hoja ya estaba abierta, el extra se oculta cuando el servidor todavía no lo vende.
+    if (current) { addon.hidden = !addonAvailable(current); if (addon.hidden) addonSelected = false; }
     if (current) { showLocalMethods(Boolean(prices[productKey()])); if (!appliedCoupon) refreshSummary(); }
+  }).catch(function () {});
+  // Fuera de Chile, Mercado Pago rechaza al comprador ("la cuenta del vendedor es de otro país") y
+  // Webpay/débito chileno no sirven: se ofrece solo PayPal (acepta tarjeta internacional). 3-nov-2026.
+  // ?pais=AR simula el país del visitante para revisar la hoja (solo cambia qué métodos se muestran).
+  var forcedCountry = new URLSearchParams(location.search).get("pais");
+  (forcedCountry ? Promise.resolve({ country: forcedCountry.toUpperCase() })
+    : fetch("/api/geo").then(function (r) { return r.json(); })).then(function (geo) {
+    abroad = Boolean(geo.country) && geo.country !== "CL";
+    if (current) { showLocalMethods(currentClp); refreshSummary(); }
   }).catch(function () {});
   fetch("/api/methods" + (testKey ? "?prueba=" + encodeURIComponent(testKey) : "")).then(function (r) { if (!r.ok) throw new Error("unavailable"); return r.json(); })
     .then(function (methods) {
@@ -192,12 +232,18 @@
     var cardButton = sheet.querySelector('[data-action="card"]');
     cardButton.classList.toggle("pay-soon", !(cardReady && clp));
     cardButton.setAttribute("aria-disabled", String(!(cardReady && clp)));
+    cardButton.hidden = abroad;
     currentClp = clp;
-    sheet.querySelectorAll('[data-action="flow"]').forEach(function (button) { button.hidden = !(flowReady && clp); });
-    sheet.querySelector('.pay-method[data-action="wallet"]').hidden = !(cardReady && clp);
+    sheet.querySelectorAll('[data-action="flow"]').forEach(function (button) { button.hidden = abroad || !(flowReady && clp); });
+    sheet.querySelectorAll('[data-action="wallet"]').forEach(function (button) { button.hidden = abroad || !(cardReady && clp); });
   }
 
   function money(n) { return "$" + Number(n).toLocaleString("es-CL"); }
+  // El extra se ofrece solo si el servidor lo vende (está en /api/prices): un upgrade sin entrega lista no aparece.
+  function addonAvailable(button) {
+    var key = button?.dataset.addon;
+    return Boolean(key) && pricesLoaded && Boolean(prices[key]);
+  }
   function productKey() {
     return addonSelected && current?.dataset.addon ? current.dataset.addon : current?.getAttribute("data-mp");
   }
@@ -206,7 +252,9 @@
     if (clpPromo(productKey())) return clpPromo(productKey()).paypal;
     var offer = window.iceroomPromotion?.get().products[productKey()];
     if (offer) return '$' + (offer.usd / 100).toFixed(2);
+    // Con el extra elegido manda su precio: data-usd es el del producto base.
     if (addonSelected && current?.dataset.addonUsd) return current.dataset.addonUsd;
+    if (/^\$\d+\.\d{2}$/.test(current?.dataset.usd || '')) return current.dataset.usd;
     var item = current?.closest("article, .bundle-inner, .news-item") || document.body;
     return item.querySelector(".price")?.textContent.trim() || "precio en USD al continuar";
   }
@@ -243,19 +291,20 @@
     couponDetails.hidden = Boolean(linkedOffer || intlLinked || publicPromo || campaign?.active);
     var paypalMethod = sheet.querySelector('.pay-method[data-action="paypal"]');
     paypalMethod.hidden = linkedOffer;
-    // En el anuncio internacional PayPal va primero y destacado; en el resto vuelve al final.
-    sheet.classList.toggle("pay-intl", Boolean(intlLinked));
-    if (intlLinked) methods.insertBefore(paypalMethod, methods.querySelector(".pay-method"));
+    // En el anuncio internacional y fuera de Chile PayPal va primero y destacado; en el resto vuelve al final.
+    sheet.classList.toggle("pay-intl", Boolean(intlLinked || abroad));
+    if (intlLinked || abroad) methods.insertBefore(paypalMethod, methods.querySelector(".pay-method"));
     else methods.appendChild(paypalMethod);
+    if (abroad) price.textContent = "Fuera de Chile se paga con PayPal: acepta tarjeta de débito o crédito internacional.";
     var solo = campaign?.products[current?.getAttribute('data-mp')];
     var combo = campaign?.products[current?.dataset.addon];
     var soloPromo = clpPromo(current?.getAttribute('data-mp'));
     var comboPromo = clpPromo(current?.dataset.addon);
     addon.querySelector('em').textContent = soloPromo && comboPromo ? '+ ' + money(comboPromo.clp - soloPromo.clp)
-      : '+ US$' + (solo && combo ? ((combo.usd-solo.usd)/100).toFixed(2) : '2.99');
+      : '+ US$' + (solo && combo ? ((combo.usd-solo.usd)/100).toFixed(2) : (current?.dataset.addonDelta || '2.99'));
     var extra = sheet.querySelector('.pay-selected-extra');
     extra.hidden = !addonSelected;
-    extra.textContent = '✓ Incluye tu plantilla + Grip, Backroom y Eco Delay';
+    extra.textContent = current?.dataset.addonSelected || '✓ Incluye tu plantilla + Grip, Backroom y Eco Delay';
     if (current) renderProductInfo(key);
   }
   window.addEventListener('iceroom:promotion', function () {
@@ -317,11 +366,11 @@
     var heading = item.querySelector("h3, h2");
     title.textContent = heading ? heading.textContent : "Tu producto";
     var artwork = {
-      '0QEeV': ['fl-logo.webp'], 'xNaVU': ['fl-logo.webp'], '34vZU': ['fl-logo.webp'], 'h32nW': ['ableton-logo.svg'],
+      '0QEeV': ['fl-logo.webp'], 'xNaVU': ['fl-logo.webp'], '8zVP2': ['fl-logo.webp', 'swap-ui.webp'], 'UVYyl': ['ableton-logo.svg', 'swap-ui.webp'], 'saPdL': ['ableton-logo.svg', 'swap-ui.webp'], '34vZU': ['fl-logo.webp'], 'h32nW': ['ableton-logo.svg'],
       '3j8In': ['ableton-logo.svg'], '8Ljoq': ['fl-logo.webp', 'ableton-logo.svg'],
-      'QLfl6': ['fl-logo.webp', 'grip-ui.webp'], 'G5U1r': ['grip-ui.webp', 'eco-ui.webp'],
+      'QLfl6': ['fl-logo.webp', 'grip-ui.webp'], '95wzC': ['swap-ui.webp', 'grip-ui.webp'], 'G5U1r': ['grip-ui.webp', 'eco-ui.webp'],
       'Vo0Sq': ['grip-ui.webp'], 'SQti3': ['backroom-ui.webp'], 'Nqvbs': ['vocals-ui.webp'],
-      '5JbVN': ['eco-ui.webp'], 'a8IWu': ['icycold.webp'], 'IiHTG': ['icycold.webp', 'fl-logo.webp']
+      '5JbVN': ['eco-ui.webp'], 'i5fkg': ['riri-ui.webp'], 'a8IWu': ['icycold.webp'], 'IiHTG': ['icycold.webp', 'fl-logo.webp']
     };
     var images = artwork[product] || [];
     productArt.classList.toggle('pay-art-stack', images.length > 1);
@@ -334,7 +383,10 @@
     });
     appliedCoupon = "";
     addonSelected = false;
-    addon.hidden = !button.dataset.addon;
+    addon.hidden = !addonAvailable(button);
+    // Cada extra trae su texto en el botón; sin atributos queda el combo antiguo de plantilla + 3 plugins.
+    addon.querySelector('.pay-addon-title').textContent = button.dataset.addonTitle || 'Agrega 3 plugins Pritti';
+    addon.querySelector('.pay-addon-detail').textContent = button.dataset.addonDetail || 'Grip + Backroom + Eco Delay. Se suman a tu plantilla y al total.';
     addon.setAttribute("aria-pressed", "false");
     addon.querySelector(".pay-addon-check").textContent = "+";
     couponInput.value = "";
@@ -618,6 +670,15 @@
   if (deepLink) {
     var linkedButton = Array.from(document.querySelectorAll("a.buy[data-mp]"))
       .find(function (button) { return button.getAttribute("data-mp") === deepLink; });
+    // Productos sin tarjeta en la página (Pritti Studio para el anuncio): botón oculto con su nombre.
+    if (!linkedButton && productInfo[deepLink]) {
+      var holder = document.createElement("article"); holder.hidden = true;
+      var name = document.createElement("h3"); name.textContent = productInfo[deepLink].name;
+      linkedButton = document.createElement("a"); linkedButton.className = "buy payhip-buy-button";
+      linkedButton.href = "https://payhip.com/b/" + deepLink; linkedButton.setAttribute("data-mp", deepLink);
+      if (clpPromo(deepLink)) linkedButton.dataset.usd = clpPromo(deepLink).paypal;
+      holder.append(name, linkedButton); document.body.appendChild(holder);
+    }
     if (linkedButton) openSheet(linkedButton);
   }
 })();

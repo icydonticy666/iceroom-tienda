@@ -2,6 +2,7 @@ import { PRODUCTS, directOffer, priceOf, sellableInClp } from "./catalog.js";
 import { couponQuote, normalizeCoupon } from "./discounts.js";
 import { randomClaim } from "./http.js";
 import { reserveLimitedCoupon, settleCouponReservation } from "./coupon-reservations.js";
+import { swapProductReady } from './swap-commerce.js';
 
 export function requireDb(env) {
   if (!env.PAYMENTS_DB) throw new Error("payment-db-missing");
@@ -42,7 +43,7 @@ export async function currentPrice(env, product, offerCode = "") {
 
 export async function createIntent(env, productKey, provider, email = "", rawCoupon = "", rawAttribution = {}, rawOffer = "") {
   const product = PRODUCTS[productKey];
-  if (!sellableInClp(product) || !["mp", "flow"].includes(provider)) return null;
+  if (!sellableInClp(product) || !swapProductReady(env, product) || !["mp", "flow"].includes(provider)) return null;
   const claim = randomClaim();
   const linkedOffer = directOffer(product, rawOffer);
   if (linkedOffer && normalizeCoupon(rawCoupon)) throw new Error("offer-no-coupon");

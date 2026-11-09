@@ -3,10 +3,14 @@ import { cyberActive, cyberPrice } from './campaign.js';
 /** Precios CLP fijados en el servidor. El navegador no puede mandar el monto. */
 export const PRODUCTS = {
   z6Bgp: { key: "z6Bgp", name: "Mezcla + Master — 1 canción", clp: 69990, kind: "service", checkout: "b" },
+  // Plantilla a tu voz (8-nov-2026, pedido del usuario): servicio de lanzamiento a US$29.99, Payhip limita a 10 ventas.
+  JXKg8: { key: "JXKg8", name: "Plantilla a tu voz", clp: 29990, kind: "service", checkout: "b" },
   SQti3: { key: "SQti3", name: "Pritti Backroom", clp: 4990, kind: "download", checkout: "b" },
   Nqvbs: { key: "Nqvbs", name: "Pritti Vocals", clp: 3990, kind: "download", checkout: "b" },
   "5JbVN": { key: "5JbVN", name: "Pritti Eco", clp: 4990, kind: "download", checkout: "b" },
   Vo0Sq: { key: "Vo0Sq", name: "Pritti Grip (Beta)", clp: 6990, kind: "download", checkout: "b" },
+  // Pritti Riri fx (8-nov-2026, US$9.99 pedido por el usuario). También va dentro de los bundles 8zVP2, saPdL, UVYyl y 95wzC.
+  i5fkg: { key: "i5fkg", name: "Pritti Riri fx", clp: 9990, kind: "download", checkout: "b" },
   G5U1r: { key: "G5U1r", name: "Pritti Bundle", clp: 19990, kind: "download", checkout: "order" },
   "34vZU": { key: "34vZU", name: "Plantilla FL — Plugins Nativos", clp: 2990, kind: "download", checkout: "b" },
   "0QEeV": { key: "0QEeV", name: "Plantilla de Grabación — FL Studio", clp: 12990, kind: "download", checkout: "b",
@@ -28,9 +32,28 @@ export const PRODUCTS = {
     checkout: "order",
     // Promo pública en pesos, pedida por el usuario el 14-oct-2026; vence junto con la oferta del anuncio.
     promo: { clp: 14990, from: "2026-10-14T03:00:00.000Z", until: "2026-10-19T02:59:00.000Z" },
+    // 5-nov-2026: el bundle QLfl6 de Payhip incluye swap Pro (0xES9). Se vende con SWAP_STUDIO_PRODUCT_KEY=QLfl6.
+    swapAccess: "pro",
+    swapPlan: "studio",
   },
+  // Full Pritti Studio (bundle oculto de Payhip 95wzC, 5-nov-2026): el upgrade de US$5 desde el Pack SWAP Pro
+  // (US$19.99 → US$24.99). Mismo contenido que QLfl6: plantillas FL y Ableton, Vocals, Backroom, Eco, Grip y
+  // swap Pro, más los próximos Pritti. Solo se vende con SWAP_UPGRADE_PRODUCT_KEY=95wzC (precio verificado en Payhip).
+  "95wzC": { key: "95wzC", name: "Full Pritti Studio — Pack SWAP Pro + toda la familia Pritti", clp: 24990, kind: "download", checkout: "order", swapAccess: "pro", swapPlan: "studio-upgrade" },
   a8IWu: { key: "a8IWu", name: "Masterclass: Mezcla Pro", clp: 29990, kind: "download", checkout: "b" },
   IiHTG: { key: "IiHTG", name: "The Ultimate Bundle", clp: 59990, kind: "download", checkout: "order" },
+  // swap Pro (Payhip 0xES9, unlisted hasta publicar swap 0.12 con login). Se vende solo con
+  // SWAP_PRO_DELIVERY_READY=1 y SWAP_PRO_PRODUCT_KEY=0xES9; la compra activa Pro (swap-licencia.js).
+  "0xES9": { key: "0xES9", name: "swap Pro", clp: 9990, kind: "download", checkout: "b", swapAccess: "pro", swapPlan: "pro" },
+  // Pack swap Pro (bundle Payhip 8zVP2, 31-oct-2026, pedido por el usuario a US$19.99): Plantilla de
+  // Grabación FL + swap Pro + Pritti Vocals y Backroom. Se vende con SWAP_PACK_PRODUCT_KEY=8zVP2.
+  "8zVP2": { key: "8zVP2", name: "Pack swap Pro — Plantilla FL + swap Pro + Pritti Vocals y Backroom", clp: 19990, kind: "download", checkout: "order", swapAccess: "pro", swapPlan: "bundle" },
+  // FULL STACK (bundle Payhip UVYyl, 31-oct-2026, pedido por el usuario a US$29.99): swap Pro + Plantillas de
+  // Grabación FL y Ableton + Pritti Vocals, Backroom, Eco y Grip. Se vende con SWAP_FULLSTACK_PRODUCT_KEY=UVYyl.
+  UVYyl: { key: "UVYyl", name: "Full Stack — SWAP Pro + Plantillas FL y Ableton + 5 plugins Pritti", clp: 29990, kind: "download", checkout: "order", swapAccess: "pro", swapPlan: "fullstack" },
+  // Pack swap Pro, versión Ableton (bundle Payhip saPdL, 31-oct-2026, mismo precio que el de FL): Plantilla de
+  // Grabación Ableton + swap Pro + Pritti Vocals y Backroom. Se vende con SWAP_PACK_ABLETON_PRODUCT_KEY=saPdL.
+  saPdL: { key: "saPdL", name: "Pack swap Pro — Plantilla Ableton + swap Pro + Pritti Vocals y Backroom", clp: 19990, kind: "download", checkout: "order", swapAccess: "pro", swapPlan: "bundle-ableton" },
   // Solo para compras de prueba con la clave TEST_KEY; entrega la Plantilla FL — Plugins Nativos.
   PRUEBA350: { key: "PRUEBA350", payhip: "34vZU", name: "Prueba de pago (Plantilla FL)", clp: 350, kind: "download", testOnly: true },
 };
@@ -43,6 +66,14 @@ export const DIRECT_OFFERS = {
     clp: 14990,
     usd: 1499,
     endsAt: "2026-10-26T02:59:00.000Z",
+  },
+  // Relanzamiento del anuncio de Studio (aprobado el 6-nov-2026): $19.990 en pesos solo con su enlace, hasta el
+  // 15-nov 23:59 CL. PayPal sigue al precio normal de Payhip (US$29.99).
+  "meta-studio-1999": {
+    product: "QLfl6",
+    clp: 19990,
+    usd: 2999,
+    endsAt: "2026-11-16T02:59:00.000Z",
   },
   // Anuncio internacional (España, EE.UU., México…), aprobado el 18-oct-2026: PayPal a US$14.99 y, en pesos, $14.990.
   "meta-studio-intl": {
@@ -102,6 +133,10 @@ export const BUNDLE_COLLECTIONS = {
   QLfl6: "a6zYD8PkWq",
   xNaVU: "91zw9dAoGL",
   h32nW: "91zwPovqBL", // "Entrega - Plantilla Ableton y Plugins Pritti", oculta, creada el 15-oct-2026
+  "8zVP2": "3ZGXK4wmBq", // "Entrega - Pack swap Pro", oculta, creada el 31-oct-2026
+  UVYyl: "PVBrvk0yB8", // "Entrega - FULL STACK", oculta, creada el 31-oct-2026
+  saPdL: "lKzyxdvNWX", // "Entrega - Pack swap Pro Ableton", oculta, creada el 31-oct-2026
+  "95wzC": "91zwOV2bzL", // "Entrega - Full Pritti Studio", creada el 5-nov-2026 (solo contiene 95wzC)
 };
 
 /** Colecciones comerciales conocidas; permite respetar cupones de colección en el checkout local. */

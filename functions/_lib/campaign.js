@@ -25,22 +25,24 @@ export const USD_CENTS = {
   '0QEeV': 1299, xNaVU: 1598, '34vZU': 300, '3j8In': 1299, h32nW: 1598,
   '8Ljoq': 1999, QLfl6: 2999, Vo0Sq: 699, SQti3: 499,
   Nqvbs: 399, '5JbVN': 499, G5U1r: 1999, a8IWu: 2999,
-  IiHTG: 5999, z6Bgp: 6999,
+  IiHTG: 5999, z6Bgp: 6999, '0xES9': 999, i5fkg: 999, JXKg8: 2999, '8zVP2': 1999, UVYyl: 2999, saPdL: 1999,
+  '95wzC': 2499, // Full Pritti Studio: Pack SWAP Pro (US$19.99) + US$5
 };
 
-// Regalo: la app swap gratis con cualquier compra (pedido por el usuario el 25-oct-2026).
-// Sin `endsAt` sigue activo hasta que se apague con `enabled: false` o se le ponga término.
+// Campaña anterior: swap completo gratis con cualquier compra (25-oct-2026).
+// Se apaga al separar swap Free de swap Pro el 27-oct-2026. Las rutas estables se
+// conservan para no romper los correos ni las descargas entregadas anteriormente.
 // Las descargas son las del repo público icydonticy666/swap-releases (swap se actualiza solo).
-const SWAP_RELEASE = 'https://github.com/icydonticy666/swap-releases/releases/download/v0.11.2/';
+const SWAP_RELEASE = 'https://github.com/icydonticy666/swap-releases/releases/download/v0.12.1/';
 export const SWAP_GIFT = {
-  enabled: true,
+  enabled: false,
   startsAt: '2026-10-25T03:00:00.000Z',
   endsAt: '',
-  version: '0.11.2',
+  version: '0.12.1',
   downloads: {
-    windows: SWAP_RELEASE + 'swap-0.11.2-windows-instalador.exe',
-    macSilicon: SWAP_RELEASE + 'swap-0.11.2-mac-apple-silicon.dmg',
-    macIntel: SWAP_RELEASE + 'swap-0.11.2-mac-intel.dmg',
+    windows: SWAP_RELEASE + 'swap-0.12.1-windows-instalador.exe',
+    macSilicon: SWAP_RELEASE + 'swap-0.12.1-mac-apple-silicon.dmg',
+    macIntel: SWAP_RELEASE + 'swap-0.12.1-mac-intel.dmg',
   },
 };
 

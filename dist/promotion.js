@@ -70,3 +70,30 @@
 
   document.addEventListener('visibilitychange',()=>{if (!document.hidden) tick();});
 })();
+
+// Elige tu setup (31-oct-2026): en la plantilla y en el Pack swap Pro se elige FL Studio o Ableton antes de pagar.
+// Cambia el producto del botón (data-mp/href) y las filas de la lista. Corre antes que checkout.js, así
+// ?checkout=<clave Ableton> deja la tarjeta en Ableton y abre la hoja correcta.
+(() => {
+  const names = {fl: 'Plantilla de Grabación FL Studio', ableton: 'Plantilla de Grabación Ableton Live'};
+  const linked = new URLSearchParams(location.search).get('checkout');
+  document.querySelectorAll('.setup-card[data-daw-keys]').forEach(card => {
+    let keys;
+    try { keys = JSON.parse(card.dataset.dawKeys); } catch { return; }
+    const buy = card.querySelector('a.buy');
+    const main = card.querySelector('[data-daw-item="main"]');
+    const other = card.querySelector('[data-daw-item="other"]');
+    const buttons = [...card.querySelectorAll('[data-daw]')];
+    const set = daw => {
+      const [key, href] = keys[daw] || [];
+      if (!key) return;
+      buy.setAttribute('data-mp', key);
+      buy.setAttribute('href', href);
+      if (main) main.textContent = names[daw] + ' + guía';
+      if (other) other.textContent = names[daw === 'fl' ? 'ableton' : 'fl'];
+      buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.daw === daw)));
+    };
+    buttons.forEach(b => b.addEventListener('click', () => set(b.dataset.daw)));
+    if (linked && keys.ableton && linked === keys.ableton[0]) set('ableton');
+  });
+})();

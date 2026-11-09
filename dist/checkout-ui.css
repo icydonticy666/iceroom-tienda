@@ -122,3 +122,11 @@
 @media(max-width:680px){.pay-linked-offer .pay-sheet-body{display:flex;flex-direction:column}.pay-linked-offer .pay-purchase{order:-1;border-bottom:1px solid #ffffff10}.pay-linked-offer .pay-overview{border-bottom:0}}
 /* Anuncio internacional: PayPal destacado en vez de Webpay. */
 .pay-sheet.pay-intl .pay-method[data-action=flow]{background:#27262c;border-color:#ffffff19}.pay-sheet.pay-intl .pay-method[data-action=paypal]{background:#9484fc12;border-color:#9484fc4d}.pay-sheet.pay-intl .pay-method[data-action=paypal]:hover{background:#9484fc21;border-color:#9484fc}
+
+/* Resumen de lo que incluye una promo enlazada (anuncio de Studio, 6-nov-2026): va bajo el nombre y antes del precio. */
+.pay-order-name:has(+ .pay-order-summary:not([hidden])){margin-bottom:6px}
+.pay-order-summary{margin:0 0 18px;color:#c2bccf;font-size:12px;line-height:1.5}
+.pay-sheet-card[data-step=methods] .pay-order-summary{display:none}
+/* Con precio de anuncio, el nombre y lo que incluye se ven también en el paso de medios (es lo primero en el celular). */
+.pay-sheet-card.pay-linked-offer[data-step=methods] .pay-order-name{display:block}
+.pay-sheet-card.pay-linked-offer[data-step=methods] .pay-order-summary:not([hidden]){display:block}

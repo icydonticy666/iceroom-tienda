@@ -183,7 +183,7 @@ async function sendEmail(env, { to, product, code, url, clp, addon }) {
   if (!env.RESEND_API_KEY || !env.EMAIL_FROM || !to) return false;
   const steps = `1. Abre el enlace.\n2. Toca "Add coupon" y pega el código ${code}. El total queda en US$0.\n3. Escribe tu correo y confirma.`;
   const download = product.kind === "service"
-    ? `${steps}\n\nDespués escríbeme por Instagram @iceroomcl para coordinar la mezcla.`
+    ? `${steps}\n\nPayhip te da un PDF con las instrucciones. Después escríbeme por Instagram @iceroomcl para coordinar tu pedido.`
     : `${steps}\n\nPayhip te muestra la descarga al tiro y te la manda a tu correo.`;
   const addonText = addon?.code
     ? `\n\n¿Quieres agregar los 3 plugins Pritti por ${addon.price}?\nUsa este código post-compra (un solo uso): ${addon.code}\n${addon.url}\nEn Payhip, abre "Add coupon" y pega ese código.\n`

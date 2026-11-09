@@ -26,7 +26,7 @@ test('la campaña dura 24 horas y respeta ambos límites del servidor', t => {
 
 test('todos los productos reales reciben el porcentaje de la campaña', t => {
   duringCampaign(t);
-  assert.equal(Object.keys(USD_CENTS).length,15); // +h32nW (pack Ableton + plugins, 15-oct)
+  assert.equal(Object.keys(USD_CENTS).length,22); // +h32nW (pack Ableton + plugins, 15-oct), +0xES9 (swap Pro, 28-oct), +8zVP2 y saPdL (pack swap Pro FL y Ableton) y UVYyl (FULL STACK, 31-oct), +95wzC (Full Pritti Studio, 5-nov), +Riri fx (8-nov)
   for (const product of Object.values(PRODUCTS).filter(p=>!p.testOnly)) {
     assert.ok(USD_CENTS[product.key]);
     assert.equal(priceOf(product),product.clp-Math.round(product.clp*CYBER.percent/100));
@@ -67,15 +67,9 @@ test('al vencer se oculta la campaña y vuelven los importes normales', async t 
   assert.equal(offer.products.xNaVU.usd,1598);
 });
 
-test('el regalo swap se activa desde su inicio y se apaga con enabled o endsAt', () => {
+test('la campaña antigua de swap completo gratis está apagada y conserva sus enlaces históricos', () => {
   const start = Date.parse(SWAP_GIFT.startsAt);
   assert.equal(swapGiftActive(start - 1), false);
-  assert.equal(swapGiftActive(start), true);
-  const { enabled, endsAt } = SWAP_GIFT;
-  SWAP_GIFT.endsAt = new Date(start + 1000).toISOString();
-  assert.equal(swapGiftActive(start + 1000), false);
-  SWAP_GIFT.endsAt = endsAt; SWAP_GIFT.enabled = false;
   assert.equal(swapGiftActive(start), false);
-  SWAP_GIFT.enabled = enabled;
   for (const url of Object.values(SWAP_GIFT.downloads)) assert.match(url, /^https:\/\/github\.com\/icydonticy666\/swap-releases\/releases\/download\//);
 });

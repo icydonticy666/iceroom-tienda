@@ -1,3 +1,14 @@
+# Seguridad para todo el sitio (9-nov-2026).
+# HSTS: el navegador solo usa HTTPS (sin includeSubDomains por si algún subdominio no tiene certificado).
+# frame-ancestors / X-Frame-Options: nadie puede meter la tienda o el checkout dentro de otra página.
+# No hay CSP de scripts: Mercado Pago y la validación 3DS de los bancos cargan iframes de dominios variables.
+/*
+  Strict-Transport-Security: max-age=15552000
+  Content-Security-Policy: frame-ancestors 'self'; base-uri 'self'; object-src 'none'
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), usb=(), interest-cohort=()
 /
   Cache-Control: no-store, max-age=0
 
@@ -11,4 +22,16 @@
   Cache-Control: no-store, max-age=0
 
 /checkout.js
+  Cache-Control: no-store, max-age=0
+
+/swap
+  Cache-Control: no-store, max-age=0
+
+/swap.html
+  Cache-Control: no-store, max-age=0
+
+/pritti
+  Cache-Control: no-store, max-age=0
+
+/pritti.html
   Cache-Control: no-store, max-age=0

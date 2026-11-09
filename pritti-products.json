@@ -1,0 +1,171 @@
+[
+  {
+    "id": "vocals",
+    "name": "Vocals",
+    "family": "Vocal channel strip",
+    "key": "Nqvbs",
+    "usd": 399,
+    "accent": "#f06a99",
+    "ink": "#ff8cb2",
+    "wash": "#20131a",
+    "image": "/img/art/vocals-ui.webp",
+    "number": "01",
+    "headline": "Tu voz, en su sitio.",
+    "short": "Presencia, color y control. Tu cadena vocal, en una sola ventana.",
+    "description": "De la primera toma a una voz con intención. Vocals reúne ganancia de entrada, preamplificador, ecualización y compresión para que construyas el carácter de la voz sin saltar entre cuatro ventanas.",
+    "use": "Para empezar una cadena vocal, dar cuerpo a una toma o encontrar presencia antes de añadir espacio y efectos.",
+    "controls": [
+      {
+        "name": "Preamp",
+        "text": "Drive para añadir carácter. Elige Tube o FET y decide cuánta coloración quieres."
+      },
+      {
+        "name": "Equalizer",
+        "text": "HPF para limpiar graves, Low para el cuerpo, Presence para la definición y Air para el brillo."
+      },
+      {
+        "name": "Compressor",
+        "text": "Amount y Makeup, tres modos —Soothe, Mid y Heavy— y opción Auto para compensar nivel."
+      }
+    ],
+    "more": [
+      "Ganancia de entrada y salida independientes para ajustar la señal de la cadena.",
+      "Visualizador de espectro y curva de EQ: una referencia visual para acompañar lo que escuchas.",
+      "Activa o desactiva los módulos para comparar y construir tu propio punto de partida."
+    ],
+    "result": "Presencia",
+    "next": "Después, decide cuánta dinámica quieres conservar con Grip.",
+    "badge": "VOZ"
+  },
+  {
+    "id": "grip",
+    "name": "Grip",
+    "family": "Compresor vocal",
+    "key": "Vo0Sq",
+    "usd": 699,
+    "accent": "#a393ff",
+    "ink": "#c1b0ff",
+    "wash": "#1b1728",
+    "image": "/img/art/grip-ui.webp",
+    "number": "02",
+    "headline": "Al frente. Con carácter.",
+    "short": "Controla la dinámica sin perder la intención de la toma.",
+    "description": "Para esa voz que salta entre frases o se pierde cuando entra el beat. Grip permite trabajar desde una compresión contenida hasta una respuesta más firme, con controles visibles y color a elección.",
+    "use": "Para mantener una voz presente, sujetar picos o dar cohesión a un bus vocal. Es una beta: consulta los detalles de la versión antes de comprar.",
+    "controls": [
+      {
+        "name": "Threshold + Ratio",
+        "text": "Decide desde qué nivel actúa el compresor y con qué intensidad reduce la dinámica."
+      },
+      {
+        "name": "Attack + Release",
+        "text": "Ajusta cómo entra y sale la compresión. Cambia el agarre y la sensación de movimiento."
+      },
+      {
+        "name": "Color + Mix",
+        "text": "Explora cinta, válvula o FET. Mezcla la señal procesada con la original para trabajar en paralelo."
+      }
+    ],
+    "more": [
+      "Knee suaviza la transición de la compresión; Range limita cuánta reducción puede aplicar.",
+      "Makeup ajusta el nivel después de comprimir. La interfaz muestra la reducción de ganancia.",
+      "Cuatro estilos: Vocals, Bus, Hard y Aggressive. Úsalos como punto de partida y ajusta según la toma."
+    ],
+    "result": "Control",
+    "next": "Con la dinámica en su sitio, abre el espacio con Backroom.",
+    "badge": "BETA"
+  },
+  {
+    "id": "backroom",
+    "name": "Backroom",
+    "family": "Reverb atmosférica",
+    "key": "SQti3",
+    "usd": 499,
+    "accent": "#c86ce1",
+    "ink": "#dd9ff0",
+    "wash": "#1d1524",
+    "image": "/img/art/backroom-ui.webp",
+    "number": "03",
+    "headline": "Dale un lugar a la voz.",
+    "short": "De un ambiente cercano a una cola que se queda contigo.",
+    "description": "La profundidad cambia la forma de sentir una voz. Backroom concentra el trabajo en Space, Dry/Wet y el tipo de reverb: encuentra un ambiente que acompañe la interpretación sin convertir cada ajuste en una búsqueda.",
+    "use": "Para acercar o alejar voces, dar ambiente a un ad-lib y crear contraste entre una estrofa íntima y un coro abierto.",
+    "controls": [
+      {
+        "name": "Space",
+        "text": "El macro principal para explorar el tamaño y carácter del espacio."
+      },
+      {
+        "name": "Dry / Wet",
+        "text": "Encuentra el balance entre la voz directa y la reverberación."
+      },
+      {
+        "name": "Type",
+        "text": "Dark Room, Plate, Backroom y Hall: diferentes puntos de partida para la atmósfera."
+      }
+    ],
+    "more": [
+      "La interfaz reacciona al tipo y a la profundidad del espacio con el lenguaje de color de Pritti.",
+      "Compara el efecto con el control de encendido y conserva la voz directa como referencia.",
+      "Empieza con una mezcla moderada; escucha también las pausas para decidir cuánto debe durar la sensación de espacio."
+    ],
+    "result": "Profundidad",
+    "next": "Completa el movimiento entre frases con Eco Delay.",
+    "badge": "ESPACIO"
+  },
+  {
+    "id": "eco",
+    "name": "Eco Delay",
+    "family": "Delay + carácter",
+    "key": "5JbVN",
+    "usd": 499,
+    "accent": "#e667c4",
+    "ink": "#f598da",
+    "wash": "#22141f",
+    "image": "/img/art/eco-ui.webp",
+    "number": "04",
+    "headline": "Que el silencio responda.",
+    "short": "Repeticiones al tempo, throws y texturas para llenar los huecos.",
+    "description": "Una palabra puede seguir cantando después de terminar. Eco Delay combina repeticiones sincronizadas y cuatro sabores que puedes combinar para llevar el eco desde una respuesta discreta hasta una estela con identidad.",
+    "use": "Para finales de frase, throws vocales, ad-libs y repeticiones que dialogan con el ritmo de la canción.",
+    "controls": [
+      {
+        "name": "Time + Feedback",
+        "text": "Elige 1/16, 1/8, 1/4 o 1/2 al tempo del host y ajusta cuánto se repite la señal."
+      },
+      {
+        "name": "Mix + 100% Wet",
+        "text": "Integra el efecto con la voz o usa la salida húmeda para trabajar mediante un envío."
+      },
+      {
+        "name": "Flavor",
+        "text": "Combina Radio, Space, Wide y Analog. El control Amount ajusta la cantidad de espacio."
+      }
+    ],
+    "more": [
+      "Radio, Space, Wide y Analog se activan de forma independiente: elige un sabor o construye una combinación.",
+      "El procesamiento de las macros actúa sobre la ruta del efecto; la voz directa conserva su papel en la mezcla.",
+      "Prueba un throw en la última palabra de una frase y escucha cómo conversa con la siguiente entrada."
+    ],
+    "result": "Movimiento",
+    "next": "El próximo paso de la familia prepara lo que ocurre antes de la frase: Riri fx.",
+    "badge": "RITMO"
+  },
+  {
+    "id": "riri",
+    "name": "Riri fx",
+    "family": "Vocal riser · reverse reverb",
+    "key": null,
+    "usd": null,
+    "accent": "#d469d7",
+    "ink": "#e99ceb",
+    "wash": "#201522",
+    "image": "/img/pritti/riri-preview.jpg",
+    "number": "05",
+    "headline": "La entrada empieza antes.",
+    "short": "Convierte un fragmento vocal en la subida que anuncia lo que viene.",
+    "description": "Riri fx, en beta, explora risers vocales y reverse reverb a partir de tu propia voz. Un flujo pensado para capturar o importar, dar forma a la subida, preescuchar y llevar el resultado al arreglo.",
+    "result": "Anticipación",
+    "badge": "BETA"
+  }
+]

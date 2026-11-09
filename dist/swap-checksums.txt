@@ -1,0 +1,4 @@
+127e7a2827f265ad20df18b42edefe08116da67463cafa35cd357bc06411ea43  swap-0.12.1-mac-apple-silicon.dmg
+ef8d4d28bf5c922325fadb7f9b2a4ef35e279f2114fbc7bd3e858b004b3a624c  swap-0.12.1-mac-intel.dmg
+b164d542beb8d765df4e07afbce00dd63e608b941b915c0c037d928fe7edfd5d  swap-0.12.1-windows-instalador.exe
+9cb104dd29122a4386ed3e906d99ce372810db90f2d52884122fb8a60d4f82c2  swap-0.12.1-windows-portable.zip

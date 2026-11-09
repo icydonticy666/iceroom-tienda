@@ -109,3 +109,42 @@ body.cyber-active .swap-bar{display:none}
 @media(max-width:900px){.swap-main{grid-template-columns:1fr;gap:18px;padding:26px 22px}.swap-stage{height:330px}.swap-more summary{padding:16px 22px}.swap-info{padding:4px 22px 26px}.swap-features{grid-template-columns:1fr;gap:18px}.swap-features>div,.swap-features>div+div{padding:0;border-left:0}.swap-presets{grid-template-columns:1fr}.swap-presets img{max-width:240px}}
 @media(max-width:680px){.swap-section{padding:22px 12px 4px}.swap-stage{height:300px}.swap-win{width:min(210px,62%)}.swap-section a.swap-cta{width:100%}}
 @media(prefers-reduced-motion:reduce){.swap-win,.swap-more-icon{transition:none}}
+
+/* FULL STACK (31-oct-2026): el titulo del arte es mas largo que SWAP PRO; en una linea para que no lo tape el tablero. */
+#full-stack .art-heading{font-size:22cqw}
+#full-stack .art-heading span{white-space:nowrap}
+
+/* ELIGE TU SETUP (31-oct-2026): escalera de compra de 3 niveles, el del medio destacado. */
+.setup{margin:10px 0 64px;scroll-margin-top:90px}
+.setup-head{text-align:center;max-width:720px;margin:0 auto 30px}
+.setup-head h2{margin:12px 0 10px;color:#fff;font-family:Manrope,"DM Sans",sans-serif;font-weight:800;font-size:clamp(1.7rem,3.6vw,2.6rem);line-height:1.08;letter-spacing:-.035em}
+.setup-head p{margin:0;color:var(--text-2);font-size:.9rem;line-height:1.5}
+.setup-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+.setup-card{position:relative;display:flex;flex-direction:column;gap:14px;padding:28px 24px 24px;border:1px solid var(--border);border-radius:22px;background:var(--bg-2)}
+.setup-card.is-featured{border-color:#9484fc;background:radial-gradient(ellipse at 50% 0%,#9484fc24,transparent 62%),#131218;box-shadow:0 34px 70px -46px #9484fc}
+.setup-badge{position:absolute;top:-12px;left:50%;translate:-50% 0;padding:7px 13px;border-radius:999px;background:#f5f4f1;color:#0b0b0b;font:800 10px/1 "DM Sans",sans-serif;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+.setup-card.is-featured .setup-badge{background:#9484fc}
+.setup-tier{margin:0;color:var(--text-3);font-size:10px;font-weight:700;letter-spacing:.18em}
+.setup-card h3{margin:0;color:#fff;font-family:Manrope,"DM Sans",sans-serif;font-size:1.35rem;letter-spacing:-.02em}
+.setup-pitch{margin:0;color:var(--text-2);font-size:.86rem;line-height:1.5;min-height:3.9em}
+.setup-price{display:flex;align-items:baseline;gap:9px}
+.setup-price .price{color:#fff;font-size:2.3rem;font-weight:800;letter-spacing:-.03em}
+.setup-price small{color:var(--text-3);font-size:.72rem}
+.setup-save{margin:-8px 0 0;color:#9fe8fb;font-size:.78rem}
+.setup-list{list-style:none;margin:0;padding:16px 0 4px;border-top:1px solid #ffffff14;display:grid;gap:10px;flex:1;align-content:start}
+.setup-list li{position:relative;padding-left:24px;color:#ececf0;font-size:.85rem;line-height:1.35}
+.setup-list li::before{content:"\2713";position:absolute;left:0;color:#9fe8fb;font-weight:800}
+.setup-list li.n{color:#5d5d64;text-decoration:line-through}
+.setup-list li.n::before{content:"\2014";color:#45454b}
+.setup-card .buy{width:100%;margin-top:6px}
+.setup-card.is-featured .buy{background:#9484fc;color:#0b0b0b}
+.setup-alt{margin:20px 0 0;text-align:center;color:var(--text-3);font-size:.82rem}
+.setup-alt a{color:#c9c1ff}
+@media(max-width:900px){.setup-grid{grid-template-columns:1fr;max-width:470px;margin:0 auto}.setup-card.is-featured{order:-1}.setup-pitch{min-height:0}}
+.setup-daw{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border:1px solid #ffffff1c;border-radius:999px;background:#0b0b0d}
+.setup-daw button{all:unset;cursor:pointer;text-align:center;padding:9px 10px;border-radius:999px;color:#a9a9b0;font:700 11px/1 "DM Sans",sans-serif;letter-spacing:.06em;text-transform:uppercase;transition:background .2s,color .2s}
+.setup-daw button[aria-pressed="true"]{background:#f5f4f1;color:#0b0b0b}
+.setup-card.is-featured .setup-daw button[aria-pressed="true"]{background:#9484fc}
+.setup-daw button:focus-visible{outline:2px solid #9fe8fb;outline-offset:2px}
+.setup-daw.is-both{grid-template-columns:1fr}
+.setup-daw.is-both span{text-align:center;padding:9px 10px;border-radius:999px;background:#9fe8fb;color:#050505;font:700 11px/1 "DM Sans",sans-serif;letter-spacing:.06em;text-transform:uppercase}

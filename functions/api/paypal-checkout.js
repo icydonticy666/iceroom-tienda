@@ -1,4 +1,5 @@
 import { PRODUCTS, directOffer, payhipKey } from "../_lib/catalog.js";
+import { swapProductReady } from '../_lib/swap-commerce.js';
 
 // URL estable de ICEROOM. Los enlaces de Payhip pueden cambiar al reemplazar un
 // plan de precio; el navegador del cliente solo guarda esta ruta.
@@ -10,7 +11,7 @@ export function onRequestGet({ request, env }) {
   const params = new URL(request.url).searchParams;
   const productKey = params.get("product") || "";
   const product = PRODUCTS[productKey];
-  if (!product || product.testOnly) {
+  if (!product || product.testOnly || !swapProductReady(env, product)) {
     return new Response("Producto no disponible", { status: 404 });
   }
 

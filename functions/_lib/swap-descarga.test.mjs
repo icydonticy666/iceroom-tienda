@@ -51,3 +51,28 @@ test('rechaza correos inválidos y no guarda a los bots (campo trampa)', async (
   assert.ok(bot.url);
   assert.equal(e.PAYMENTS_DB.filas.length, 0);
 });
+
+test('la descarga funciona con formulario HTML, sin JavaScript ni correo público en la respuesta', async () => {
+  const e = env();
+  const response = await api({ env: e, request: new Request('https://iceroom.cl/api/swap-descarga', {
+    method: 'POST', body: new URLSearchParams({ email: 'Productor@example.com', os: 'intel' }),
+  }) });
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get('content-type'), /text\/html/);
+  assert.equal(response.headers.get('cache-control'), 'no-store');
+  const html = await response.text();
+  assert.ok(!html.includes('Productor@example.com'));
+  const link = html.match(/href="(\/swap\/intel\?[^\"]+)"/)[1].replaceAll('&amp;', '&');
+  assert.equal((await bajar(e, link, 'intel')).status, 302);
+  assert.deepEqual(e.PAYMENTS_DB.filas[0].slice(0, 2), ['productor@example.com', 'intel']);
+});
+
+test('una falla de registro devuelve un error recuperable y no entrega un enlace sin registro', async () => {
+  const response = await api({ env: { ORDER_SECRET: 's', PAYMENTS_DB: { prepare() { throw Error('private database error'); } } },
+    request: new Request('https://iceroom.cl/api/swap-descarga', { method: 'POST', body: JSON.stringify({ email: 'a@example.com', os: 'mac' }) }) });
+  assert.equal(response.status, 503);
+  const result = await response.json();
+  assert.match(result.error, /soporte@iceroom.cl/);
+  assert.ok(!result.url);
+  assert.ok(!result.error.includes('private database error'));
+});

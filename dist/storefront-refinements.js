@@ -44,7 +44,7 @@
       }
       previewPrice.textContent = card.querySelector('.price').textContent;
       previewBuy.href = buy.href; previewBuy.dataset.mp = buy.dataset.mp;
-      ['addon','addonUsd','addonHref'].forEach(function (key) {
+      ['addon','addonUsd','addonHref','addonDelta','addonTitle','addonDetail','addonSelected'].forEach(function (key) {
         if (buy.dataset[key]) previewBuy.dataset[key] = buy.dataset[key];
         else delete previewBuy.dataset[key];
       });
@@ -90,7 +90,8 @@
     });
   });
 
-  var navLinks = Array.from(menu.querySelectorAll('a'));
+  // Solo enlaces a secciones de esta página (#…); "/swap" es otra página y rompía querySelector.
+  var navLinks = Array.from(menu.querySelectorAll('a')).filter(function (link) { return /^#[\w-]+$/.test(link.getAttribute('href') || '') && document.querySelector(link.getAttribute('href')); });
   var navSections = navLinks.map(function (link) { return document.querySelector(link.getAttribute('href')); });
   var navFrame = null;
   function updateNavigation() {
