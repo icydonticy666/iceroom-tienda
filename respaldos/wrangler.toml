@@ -1,0 +1,25 @@
+name = "iceroom-respaldos"
+main = "src/index.js"
+compatibility_date = "2026-09-24"
+# Sin URL pública: solo corre por el cron. Nadie puede llamarlo desde internet.
+workers_dev = false
+
+[triggers]
+crons = ["30 7 * * *"]   # todos los días 07:30 UTC (04:30 en Chile)
+
+[vars]
+DIAS_GUARDADOS = "60"
+
+[[d1_databases]]
+binding = "PAGOS"
+database_name = "iceroom-pagos"
+database_id = "3f802745-cbb7-4a5c-8aa4-a10285d05906"
+
+[[d1_databases]]
+binding = "LICENCIAS"
+database_name = "swap-licencias"
+database_id = "a18fe550-7b42-4437-9770-c1be0c11987a"
+
+[[r2_buckets]]
+binding = "RESPALDOS"
+bucket_name = "iceroom-respaldos"
