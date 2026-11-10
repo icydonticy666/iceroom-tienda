@@ -362,7 +362,7 @@
   function openSheet(button) {
     current = button;
     var product = button.getAttribute("data-mp");
-    var item = button.closest("article, .bundle-inner, .news-item") || document.body;
+    var item = button.closest("article, .bundle-inner, .news-item, .launch-slide") || document.body;
     var heading = item.querySelector("h3, h2");
     title.textContent = heading ? heading.textContent : "Tu producto";
     var artwork = {
@@ -370,7 +370,7 @@
       '3j8In': ['ableton-logo.svg'], '8Ljoq': ['fl-logo.webp', 'ableton-logo.svg'],
       'QLfl6': ['fl-logo.webp', 'grip-ui.webp'], '95wzC': ['swap-ui.webp', 'grip-ui.webp'], 'G5U1r': ['grip-ui.webp', 'eco-ui.webp'],
       'Vo0Sq': ['grip-ui.webp'], 'SQti3': ['backroom-ui.webp'], 'Nqvbs': ['vocals-ui.webp'],
-      '5JbVN': ['eco-ui.webp'], 'i5fkg': ['riri-ui.webp'], 'a8IWu': ['icycold.webp'], 'IiHTG': ['icycold.webp', 'fl-logo.webp']
+      '5JbVN': ['eco-ui.webp'], 'i5fkg': ['riri-ui.webp'], 'TGd6m': ['fl-logo.webp', 'vocals-ui.webp'], '6Txiw': ['ableton-logo.svg', 'swap-ui.webp'], 'a8IWu': ['icycold.webp'], 'IiHTG': ['icycold.webp', 'fl-logo.webp']
     };
     var images = artwork[product] || [];
     productArt.classList.toggle('pay-art-stack', images.length > 1);

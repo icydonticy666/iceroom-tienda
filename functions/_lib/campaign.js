@@ -27,6 +27,7 @@ export const USD_CENTS = {
   Nqvbs: 399, '5JbVN': 499, G5U1r: 1999, a8IWu: 2999,
   IiHTG: 5999, z6Bgp: 6999, '0xES9': 999, i5fkg: 999, JXKg8: 2999, '8zVP2': 1999, UVYyl: 2999, saPdL: 1999,
   '95wzC': 2499, // Full Pritti Studio: Pack SWAP Pro (US$19.99) + US$5
+  TGd6m: 3999, '6Txiw': 4499, // Plantilla personalizada y su +US$5 (ambos DAWs + SWAP Pro), 10-nov-2026
 };
 
 // Campaña anterior: swap completo gratis con cualquier compra (25-oct-2026).

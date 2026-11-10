@@ -26,7 +26,7 @@ test('la campaña dura 24 horas y respeta ambos límites del servidor', t => {
 
 test('todos los productos reales reciben el porcentaje de la campaña', t => {
   duringCampaign(t);
-  assert.equal(Object.keys(USD_CENTS).length,22); // +h32nW (pack Ableton + plugins, 15-oct), +0xES9 (swap Pro, 28-oct), +8zVP2 y saPdL (pack swap Pro FL y Ableton) y UVYyl (FULL STACK, 31-oct), +95wzC (Full Pritti Studio, 5-nov), +Riri fx (8-nov)
+  assert.equal(Object.keys(USD_CENTS).length,24); // +h32nW (pack Ableton + plugins, 15-oct), +0xES9 (swap Pro, 28-oct), +8zVP2 y saPdL (pack swap Pro FL y Ableton) y UVYyl (FULL STACK, 31-oct), +95wzC (Full Pritti Studio, 5-nov), +Riri fx (8-nov), +TGd6m y 6Txiw (Plantilla personalizada, 10-nov)
   for (const product of Object.values(PRODUCTS).filter(p=>!p.testOnly)) {
     assert.ok(USD_CENTS[product.key]);
     assert.equal(priceOf(product),product.clp-Math.round(product.clp*CYBER.percent/100));

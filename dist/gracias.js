@@ -72,6 +72,14 @@
         steps.hidden = false;
         go.onclick = function () { copyCode(data.coupon); copied.hidden = false; };
       }
+      if (data.proyectoUrl && !document.getElementById("proyecto-go")) {
+        // Bundle con servicio (Plantilla personalizada): descargas con el código + su proyecto para mandar la acapella.
+        copy.textContent += " Después entra a tu proyecto y sube tu acapella para que hagamos tu plantilla.";
+        var pj = document.createElement("a");
+        pj.id = "proyecto-go"; pj.className = "btn alt"; pj.href = data.proyectoUrl; pj.textContent = "Ir a mi proyecto";
+        pj.style.marginTop = "12px";
+        go.insertAdjacentElement("afterend", pj);
+      }
       go.href = data.redeemUrl;
       go.textContent = data.coupon ? "Copiar código e ir a descargar" : "Ir a descargar";
       go.hidden = false;

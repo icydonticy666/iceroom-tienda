@@ -183,11 +183,14 @@ async function addonOffer(env, product, paymentId, origin = "https://iceroom.cl"
 async function sendEmail(env, { to, product, code, url, clp, addon, proyecto }) {
   if (!env.RESEND_API_KEY || !env.EMAIL_FROM || !to) return false;
   if (proyecto?.link) {
-    // Servicio con seguimiento: el correo de la compra es el de bienvenida al proyecto.
+    // Servicio con seguimiento: el correo de la compra es el de bienvenida al proyecto. Si además trae
+    // descargas (bundle Plantilla personalizada: plugins Pritti y SWAP), va primero el código para bajarlas.
+    const descargas = product.kind === "service" ? "" :
+      `Tus descargas (plugins Pritti y SWAP):\n1. Abre ${url}\n2. Toca "Add coupon" y pega el código ${code}. El total queda en US$0.\n3. Escribe tu correo y confirma: la descarga aparece al tiro.\n\n`;
     return enviarCorreo(env, {
       to,
       subject: `Tu proyecto de ${servicioDe(product.key).nombre} está creado`,
-      text: `Pago aprobado por ${formatClp(clp)} CLP.\n\n${textoBienvenida(proyecto.proyecto, proyecto.link)}`,
+      text: `Pago aprobado por ${formatClp(clp)} CLP.\n\n${descargas}${textoBienvenida(proyecto.proyecto, proyecto.link)}`,
     });
   }
   const steps = `1. Abre el enlace.\n2. Toca "Add coupon" y pega el código ${code}. El total queda en US$0.\n3. Escribe tu correo y confirma.`;

@@ -35,6 +35,39 @@ export const SERVICIOS = {
       "Notas sobre lo que buscas: estilo, partes importantes, efectos que quieres conservar.",
     ],
   },
+  // Bundle Plantilla personalizada (10-nov-2026): plantilla a tu voz + presets de voz principal + los 5 Pritti +
+  // SWAP Free (US$39.99). `bundle`: dentro trae JXKg8; si Payhip lo lista en la orden, no se crea un segundo proyecto.
+  TGd6m: {
+    servicio: "plantilla_personalizada",
+    nombre: "Plantilla personalizada",
+    cosa: "tu plantilla personalizada",
+    bundle: true,
+    rondas: 1,
+    plazo: { horas: 72 },
+    plazoAjuste: { horas: 48 },
+    pedido: [
+      "Tu voz seca (acapella) de 30 a 60 segundos, grabada con tu micrófono: WAV de 24 bits, sin efectos.",
+      "Tu programa y versión (FL Studio o Ableton Live).",
+      "Tu micrófono e interfaz.",
+      "1 a 3 canciones de referencia de cómo quieres sonar.",
+    ],
+  },
+  // +US$5 (US$44.99): la plantilla en FL Studio y Ableton, y SWAP Pro en vez de Free.
+  "6Txiw": {
+    servicio: "plantilla_personalizada",
+    nombre: "Plantilla personalizada FL + Ableton",
+    cosa: "tus plantillas personalizadas (FL Studio y Ableton)",
+    bundle: true,
+    rondas: 1,
+    plazo: { horas: 72 },
+    plazoAjuste: { horas: 48 },
+    pedido: [
+      "Tu voz seca (acapella) de 30 a 60 segundos, grabada con tu micrófono: WAV de 24 bits, sin efectos.",
+      "Las versiones de FL Studio y Ableton Live que usas.",
+      "Tu micrófono e interfaz.",
+      "1 a 3 canciones de referencia de cómo quieres sonar.",
+    ],
+  },
 };
 
 export const FINALES = new Set(["completado", "cancelado"]);

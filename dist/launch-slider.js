@@ -56,5 +56,10 @@
   for (const b of document.querySelectorAll("[data-voz-open]")) b.addEventListener("click", () => dialog.showModal());
   dialog.querySelector("[data-voz-close]")?.addEventListener("click", () => dialog.close());
   dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
+  // El botón de la ventana usa el mismo de la tarjeta (checkout de la tienda, o DM mientras no hay compra).
+  dialog.querySelector("[data-voz-buy]")?.addEventListener("click", () => {
+    dialog.close();
+    [...document.querySelectorAll("[data-voz-cta]")].find((a) => !a.hidden)?.click();
+  });
   if (location.hash === "#como-funciona") dialog.showModal();
 })();

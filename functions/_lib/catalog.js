@@ -40,6 +40,12 @@ export const PRODUCTS = {
   // (US$19.99 → US$24.99). Mismo contenido que QLfl6: plantillas FL y Ableton, Vocals, Backroom, Eco, Grip y
   // swap Pro, más los próximos Pritti. Solo se vende con SWAP_UPGRADE_PRODUCT_KEY=95wzC (precio verificado en Payhip).
   "95wzC": { key: "95wzC", name: "Full Pritti Studio — Pack SWAP Pro + toda la familia Pritti", clp: 24990, kind: "download", checkout: "order", swapAccess: "pro", swapPlan: "studio-upgrade" },
+  // Bundle Plantilla personalizada (Payhip TGd6m, 10-nov-2026, pedido del usuario a US$39.99): plantilla a tu voz +
+  // presets de voz principal + Vocals, Backroom, Eco, Grip, Riri fx + SWAP Free. Crea un proyecto de seguimiento.
+  // `readyEnv`: no se vende hasta PERSONALIZADA_READY=1 (se activa cuando el plan de precio está en Payhip).
+  TGd6m: { key: "TGd6m", name: "Plantilla personalizada — a tu voz + Pritti + SWAP", clp: 39990, kind: "download", checkout: "order", readyEnv: "PERSONALIZADA_READY" },
+  // +US$5 (Payhip 6Txiw, US$44.99): la plantilla en FL Studio y Ableton + SWAP Pro en vez de Free.
+  "6Txiw": { key: "6Txiw", name: "Plantilla personalizada FL + Ableton — Pritti + SWAP Pro", clp: 44990, kind: "download", checkout: "order", readyEnv: "PERSONALIZADA_READY", swapAccess: "pro", swapPlan: "personalizada" },
   a8IWu: { key: "a8IWu", name: "Masterclass: Mezcla Pro", clp: 29990, kind: "download", checkout: "b" },
   IiHTG: { key: "IiHTG", name: "The Ultimate Bundle", clp: 59990, kind: "download", checkout: "order" },
   // swap Pro (Payhip 0xES9, unlisted hasta publicar swap 0.12 con login). Se vende solo con
@@ -137,6 +143,7 @@ export const BUNDLE_COLLECTIONS = {
   UVYyl: "PVBrvk0yB8", // "Entrega - FULL STACK", oculta, creada el 31-oct-2026
   saPdL: "lKzyxdvNWX", // "Entrega - Pack swap Pro Ableton", oculta, creada el 31-oct-2026
   "95wzC": "91zwOV2bzL", // "Entrega - Full Pritti Studio", creada el 5-nov-2026 (solo contiene 95wzC)
+  TGd6m: "rdWQ3JgMBj", // "Entrega - Plantilla Personalizada", creada el 10-nov-2026 (solo contiene TGd6m)
 };
 
 /** Colecciones comerciales conocidas; permite respetar cupones de colección en el checkout local. */

@@ -49,7 +49,10 @@ async function esEntregaDeLaTienda(env, email) {
 // Las órdenes de $0 no crean proyecto: son la entrega de un pago en pesos (que ya lo creó) y los
 // regalos se crean a mano desde /estudio.
 export async function procesarServicios(env, body, estado) {
-  const servicios = [...new Set((body.items || []).map((item) => String(item?.product_key || "")).filter((k) => servicioDe(k)))];
+  let servicios = [...new Set((body.items || []).map((item) => String(item?.product_key || "")).filter((k) => servicioDe(k)))];
+  // Un bundle con servicio (Plantilla personalizada) trae dentro Plantilla a tu voz: un solo proyecto, el del bundle.
+  const bundles = servicios.filter((k) => servicioDe(k).bundle);
+  if (bundles.length) servicios = bundles;
   if (!estado || !servicios.length || !env.PAYMENTS_DB) return true;
   const email = String(body.email || "").trim().toLowerCase();
   const origin = env.PUBLIC_ORIGIN || "https://iceroom.cl";

@@ -12,9 +12,13 @@ const PLANS = {
   studio: ['SWAP_STUDIO_PRODUCT_KEY', 2999],
   // studio-upgrade: Full Pritti Studio (95wzC), el upgrade desde el Pack SWAP Pro, US$24.99.
   'studio-upgrade': ['SWAP_UPGRADE_PRODUCT_KEY', 2499],
+  // personalizada: Plantilla personalizada FL + Ableton + SWAP Pro (6Txiw), US$44.99.
+  personalizada: ['SWAP_PERSONALIZADA_PRODUCT_KEY', 4499],
 };
 
 export function swapProductReady(env = {}, product) {
+  // Productos nuevos que esperan su plan de precio en Payhip: no se venden hasta que su variable valga 1.
+  if (product?.readyEnv && String(env[product.readyEnv] || '').trim() !== '1') return false;
   if (!product?.swapAccess) return true;
   const [variable, usd] = PLANS[product.swapPlan] || [];
   // trim(): un secreto cargado por consola puede llegar con salto de línea al final.
