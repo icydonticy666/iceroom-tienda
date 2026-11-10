@@ -149,12 +149,8 @@
   function inicioSinToken() {
     const params = new URLSearchParams(location.search);
     const lista = guardados();
-    if (params.get("compra")) {
-      // Viene de la página de gracias de Payhip (PayPal): el link ya va en camino a su correo.
-      $("recuperar-eyebrow").textContent = "Compra confirmada";
-      $("recuperar-titulo").textContent = "¡Gracias! Tu proyecto ya está creado";
-      $("recuperar-motivo").textContent = "Te mandamos el link de tu proyecto al correo de tu compra (revisa también spam). Ábrelo y quedará guardado aquí. ¿No te llegó en 2 minutos? Escribe tu correo y te lo mandamos de nuevo.";
-    } else if (lista.length === 1 && !params.get("otro")) {
+    const compra = Boolean(params.get("compra"));
+    if (!compra && lista.length === 1 && !params.get("otro")) {
       location.replace("/proyecto?t=" + encodeURIComponent(lista[0].t));
       return;
     }
@@ -164,7 +160,14 @@
           el("div", {}, el("b", { text: `${x.servicio} #${x.id}` }), el("small", { text: x.titulo || "" })),
           el("span", { "aria-hidden": "true", text: "→" })))));
       mostrar("guardados", true);
-      $("recuperar-titulo").textContent = params.get("compra") ? $("recuperar-titulo").textContent : "¿Otro proyecto?";
+      $("recuperar-titulo").textContent = "¿Otro proyecto?";
+    }
+    if (compra) {
+      // Viene de Payhip tras pagar con PayPal: los dos pasos (proyecto por correo + descargas), con cara de iceroom.
+      document.title = "Pago confirmado · iceroom";
+      mostrar("cargando", false);
+      mostrar("compra", true);
+      return;
     }
     sinLink();
   }
@@ -189,7 +192,7 @@
     ev.preventDefault();
     enviar(ev.target, "nota", ev.target.querySelector(".pj-msg"), "Nota enviada.");
   });
-  $("form-recuperar").addEventListener("submit", async (ev) => {
+  for (const f of document.querySelectorAll(".js-enlace")) f.addEventListener("submit", async (ev) => {
     ev.preventDefault();
     const form = ev.target, msg = form.querySelector(".pj-msg"), boton = form.querySelector("button");
     boton.disabled = true; mensaje(msg, "Enviando…");

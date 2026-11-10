@@ -9,12 +9,42 @@
 <link rel="icon" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/proyecto.css?v=20261110a">
+<link rel="stylesheet" href="/proyecto.css?v=20261110c">
 </head>
 <body>
 <header class="pj-top"><a class="pj-logo" href="/"><svg viewBox="0 0 84 81" aria-hidden="true"><path d="M16 0H68L84 26L42 81L0 26Z" fill="currentColor"/></svg>iceroom</a><small>Seguimiento de tu proyecto</small></header>
 <main class="pj-main" id="app" aria-live="polite">
   <section class="pj-card" id="cargando"><p class="pj-sub">Cargando tu proyecto…</p></section>
+
+  <!-- Después de pagar con PayPal (Payhip manda aquí con ?compra=payhip) -->
+  <section class="pj-card pj-compra pj-hidden" id="compra">
+    <p class="pj-eyebrow"><span class="pj-ok-dot" aria-hidden="true"></span> Pago confirmado</p>
+    <h1>¡Gracias! Tu plantilla personalizada ya está en marcha.</h1>
+    <p class="pj-sub">Te quedan dos pasos. Puedes hacerlos ahora o cuando quieras.</p>
+    <ol class="pj-pasos">
+      <li>
+        <span class="pj-num">01</span>
+        <div>
+          <h2>Sube tu acapella</h2>
+          <p>Te mandamos a tu correo el link de <b>tu proyecto</b> (revisa también spam). Ábrelo, pega el enlace a tu acapella y sigue el avance de tu plantilla.</p>
+          <p class="pj-hint">Después vuelves cuando quieras desde <b>iceroom.cl → Mi proyecto</b>.</p>
+          <form class="pj-form pj-inline js-enlace">
+            <label class="pj-sr">Correo de la compra<input type="email" name="email" autocomplete="email" required placeholder="¿No te llegó? Escribe tu correo"></label>
+            <button class="pj-btn ghost" type="submit">Reenviar link</button>
+            <p class="pj-msg" role="status"></p>
+          </form>
+        </div>
+      </li>
+      <li>
+        <span class="pj-num">02</span>
+        <div>
+          <h2>Descarga tus plugins Pritti y SWAP</h2>
+          <p>Están en tu cuenta de descargas, con el mismo correo de tu compra.</p>
+          <a class="pj-btn" href="https://payhip.com/iceroom/users/login" target="_blank" rel="noopener noreferrer">Ir a mis descargas ↗</a>
+        </div>
+      </li>
+    </ol>
+  </section>
 
   <section class="pj-card pj-hidden" id="guardados">
     <p class="pj-eyebrow">En este dispositivo</p>
@@ -27,7 +57,7 @@
     <p class="pj-eyebrow" id="recuperar-eyebrow">Tus proyectos</p>
     <h1 id="recuperar-titulo">Entra a tu proyecto</h1>
     <p class="pj-sub" id="recuperar-motivo">Escribe el correo con el que compraste y te mandamos el link de tu proyecto al tiro.</p>
-    <form class="pj-form" id="form-recuperar" style="margin-top:18px">
+    <form class="pj-form js-enlace" id="form-recuperar" style="margin-top:18px">
       <label>Correo de la compra<input type="email" name="email" autocomplete="email" required placeholder="tu@correo.com"></label>
       <div class="pj-btns"><button class="pj-btn" type="submit">Enviarme el link</button></div>
       <p class="pj-msg" role="status"></p>
@@ -96,6 +126,6 @@
     <p class="pj-hint">¿Dudas? Responde cualquiera de nuestros correos o escribe a <a href="mailto:soporte@iceroom.cl">soporte@iceroom.cl</a>. Guarda este link: es la llave de tu proyecto. <a href="/proyecto?otro=1">¿Tienes otro proyecto?</a></p>
   </div>
 </main>
-<script src="/proyecto.js?v=20261110b" defer></script>
+<script src="/proyecto.js?v=20261110c" defer></script>
 </body>
 </html>
