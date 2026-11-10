@@ -95,26 +95,6 @@
     }
 
     mostrar("bloque-nota", v.acciones.includes("nota") && !pideMaterial);
-
-    // Descargas del bundle (plugins Pritti y SWAP)
-    const d = v.descargas;
-    mostrar("bloque-descargas", Boolean(d));
-    if (d?.payhip) {
-      $("desc-texto").textContent = "Tus plugins Pritti y SWAP te llegaron por correo de Payhip apenas pagaste (busca \"iceroom\" en tu bandeja o en spam). Desde ese correo los descargas cuando quieras.";
-      mostrar("desc-codigo", false);
-    } else if (d?.codigo) {
-      $("desc-texto").textContent = "Abre la descarga, toca \"Add coupon\" y pega tu código: el total queda en US$0 y bajas los plugins Pritti y SWAP al tiro.";
-      const caja = $("desc-codigo"); caja.replaceChildren();
-      caja.append(el("div", {}, el("small", { class: "pj-hint", text: "Tu código" }), el("div", { class: "pj-code", text: d.codigo })));
-      const a = enlace(d.url, "Copiar código y descargar");
-      if (a) {
-        a.className = "pj-btn";
-        a.addEventListener("click", () => { try { navigator.clipboard.writeText(d.codigo); } catch {} });
-        caja.append(a);
-      }
-      mostrar("desc-codigo", true);
-    }
-
     // Historial (más reciente arriba)
     const lista = $("pj-historial"); lista.replaceChildren();
     for (const e of [...v.historial].reverse()) {

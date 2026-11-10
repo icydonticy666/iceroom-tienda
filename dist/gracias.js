@@ -73,10 +73,9 @@
         go.onclick = function () { copyCode(data.coupon); copied.hidden = false; };
       }
       if (data.proyectoUrl && !document.getElementById("proyecto-go")) {
-        // Bundle con servicio (Plantilla personalizada): el proyecto es el centro. Ahí sube su acapella y también
-        // tiene el código de descarga, así que es el botón principal; la descarga directa queda como alternativa.
-        copy.textContent = "Tu proyecto ya está creado. Entra para subir tu acapella (hoy u otro día) y descargar tus plugins Pritti y SWAP." +
-          (data.emailSent ? " También te mandamos el link por correo." : "");
+        // Bundle con servicio (Plantilla personalizada): 1) su proyecto para subir la acapella, 2) la descarga.
+        copy.textContent = "Tu proyecto ya está creado: entra y sube tu acapella hoy u otro día (vuelves cuando quieras desde iceroom.cl → Mi proyecto). Tus plugins Pritti y SWAP los bajas con el código de abajo." +
+          (data.emailSent ? " Todo esto también te llegó por correo." : "");
         var pj = document.createElement("a");
         pj.id = "proyecto-go"; pj.className = "btn"; pj.href = data.proyectoUrl; pj.textContent = "Ir a mi proyecto";
         pj.style.marginBottom = "12px";

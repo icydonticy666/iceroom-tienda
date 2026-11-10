@@ -3,8 +3,6 @@
 // El cliente manda su material por enlace (WeTransfer, Drive…), icycold entrega versiones por enlace y
 // el cliente aprueba o pide ajustes dentro de las rondas incluidas. Cada cambio avisa por correo.
 
-import { PRODUCTS, redeemUrl } from "./catalog.js";
-
 const DIA = 86400000;
 
 /** Servicios con seguimiento, por clave de producto de Payhip. */
@@ -501,24 +499,9 @@ export async function enviarEnlaces(env, email, origin) {
   return true;
 }
 
-/**
- * Descargas del bundle (Plantilla personalizada): así el proyecto es el único lugar al que vuelve el cliente.
- * Pago en pesos → el cupón 100% de Payhip de ese pago. Pago en Payhip (PayPal) → Payhip ya le mandó la descarga.
- */
-async function descargasDe(db, p) {
-  const product = PRODUCTS[p.producto];
-  if (!product || product.kind !== "download") return null;
-  if (p.origen === "payhip") return { payhip: true };
-  if (p.origen !== "mp" && p.origen !== "flow") return null;
-  const f = await db.prepare("SELECT code, state, refunded FROM payment_fulfillments WHERE payment_id = ?").bind(p.pago).first().catch(() => null);
-  if (!f || f.refunded || f.state !== "ready" || !f.code) return null;
-  return { codigo: f.code, url: redeemUrl(product) };
-}
-
 /** Lo que ve el cliente (sin correo completo ni datos internos). */
 export async function vistaCliente(db, p) {
   const s = servicioDe(p.producto);
-  const descargas = p.estado === "cancelado" ? null : await descargasDe(db, p);
   const historial = (await eventos(db, p.id)).filter((e) => e.tipo !== "enlace");
   const acciones = [];
   if (p.estado === "esperando_material") acciones.push("material");
@@ -543,7 +526,6 @@ export async function vistaCliente(db, p) {
     pedido: s?.pedido || [],
     acciones,
     historial,
-    descargas,
     creado: p.creado,
   };
 }
