@@ -233,3 +233,8 @@ footer p a{color:#ccc}footer .footer-discord{background:transparent;border-color
 .art-voz .art-heading{font-size:29cqw}
 .card-voz .by{color:#b3a8ff}
 .ticker .is-voz b{color:#b3a8ff}
+
+/* Servicios con seguimiento online (9-nov) */
+.service-track{font-size:12px;color:#bbb;margin:0}
+.service-mine{display:block;margin-top:10px;text-align:center;font-size:12px;color:#aaa;text-decoration:underline;text-underline-offset:3px}
+.service-mine:hover{color:#fff}

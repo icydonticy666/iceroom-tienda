@@ -3,6 +3,7 @@ import { couponCode } from "./coupon.js";
 import { SWAP_GIFT, swapGiftActive } from "./campaign.js";
 import { bindPayment, getIntent, paymentMatchesIntent } from "./intents.js";
 import { avisarLicencia, daSwapPro, proveedorDe } from "./swap-licencia.js";
+import { cancelarPorPago, enviarCorreo, iniciarProyecto, servicioDe, textoBienvenida } from "./proyectos.js";
 
 const ADDON_BASE_PRODUCT = "0QEeV";
 const ADDON_PRODUCT = PRODUCTS.xNaVU;
@@ -179,8 +180,16 @@ async function addonOffer(env, product, paymentId, origin = "https://iceroom.cl"
   };
 }
 
-async function sendEmail(env, { to, product, code, url, clp, addon }) {
+async function sendEmail(env, { to, product, code, url, clp, addon, proyecto }) {
   if (!env.RESEND_API_KEY || !env.EMAIL_FROM || !to) return false;
+  if (proyecto?.link) {
+    // Servicio con seguimiento: el correo de la compra es el de bienvenida al proyecto.
+    return enviarCorreo(env, {
+      to,
+      subject: `Tu proyecto de ${servicioDe(product.key).nombre} está creado`,
+      text: `Pago aprobado por ${formatClp(clp)} CLP.\n\n${textoBienvenida(proyecto.proyecto, proyecto.link)}`,
+    });
+  }
   const steps = `1. Abre el enlace.\n2. Toca "Add coupon" y pega el código ${code}. El total queda en US$0.\n3. Escribe tu correo y confirma.`;
   const download = product.kind === "service"
     ? `${steps}\n\nPayhip te da un PDF con las instrucciones. Después escríbeme por Instagram @iceroomcl para coordinar tu pedido.`
@@ -394,6 +403,10 @@ async function fulfillWithDb(env, payment, extras, intent, product, ref) {
     if (daSwapPro(product)) {
       await avisarLicencia(env, { email: intent.email || payerEmail(payment), pago: id, proveedor: proveedorDe(id), estado: "cancelado" });
     }
+    if (servicioDe(product.key)) {
+      try { await cancelarPorPago(env, proveedorDe(id), id); }
+      catch (error) { console.error(JSON.stringify({ proyecto_cancelar_error: String(error?.message || error), payment: id })); }
+    }
     return { status: "refunded", name: product.name, kind: product.kind, clp: ref.clp, coupon: "", redeemUrl: "" };
   }
   if (payment.status !== "approved") {
@@ -443,12 +456,16 @@ async function fulfillWithDb(env, payment, extras, intent, product, ref) {
   try { addon = await addonOffer(env, product, id, extras.origin); }
   catch (error) { console.error(JSON.stringify({ addon_coupon_error: String(error?.message || error), payment: id })); }
   const email = payerEmail(payment) || intent.email || "";
+  // Servicios con seguimiento: el proyecto se crea una sola vez por pago y su link va en el correo de la compra.
+  const proyecto = servicioDe(product.key)
+    ? await iniciarProyecto(env, { producto: product.key, email: intent.email || email, origen: proveedorDe(id), pago: id, correo: false }, extras.origin)
+    : null;
   if (daSwapPro(product)) {
     // Idempotente en el servidor de licencias (proveedor + pago): repetir el aviso no duplica nada.
     await avisarLicencia(env, { email: intent.email || email, pago: id, proveedor: proveedorDe(id), estado: "completado" });
   }
   let emailSent = Boolean(fresh.email_sent);
-  if (!emailSent && await sendEmail(env, { to: email, product, code, url: redeemUrl(product, code), clp: ref.clp, addon })) {
+  if (!emailSent && await sendEmail(env, { to: email, product, code, url: redeemUrl(product, code), clp: ref.clp, addon, proyecto })) {
     await db.prepare("UPDATE payment_fulfillments SET email_sent = 1 WHERE payment_id = ?").bind(id).run();
     emailSent = true;
   }
@@ -461,6 +478,6 @@ async function fulfillWithDb(env, payment, extras, intent, product, ref) {
   // eventId = el mismo event_id que manda sendCapi: Meta deduplica el Purchase del navegador.
   return { status: "approved", name: product.name, kind: product.kind, clp: ref.clp,
     productKey: product.key, eventId: `mp-${id}`,
-    coupon: code, redeemUrl: redeemUrl(product, code), emailSent,
+    coupon: code, redeemUrl: redeemUrl(product, code), emailSent, proyectoUrl: proyecto?.link || "",
     addonCoupon: addon?.code || "", addonUrl: addon?.url || "", addonPrice: addon?.price || "" };
 }

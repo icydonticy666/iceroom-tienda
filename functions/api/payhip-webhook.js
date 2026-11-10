@@ -1,5 +1,6 @@
 import { PRODUCTS, payhipKey } from "../_lib/catalog.js";
 import { avisarLicencia, daSwapPro } from "../_lib/swap-licencia.js";
+import { cancelarPorPago, iniciarProyecto, servicioDe } from "../_lib/proyectos.js";
 
 // Webhook de Payhip (Settings → Developer → Webhooks), para lo que se cobra dentro de Payhip
 // (PayPal y tarjeta). URL: https://iceroom.cl/api/payhip-webhook?k=<PAYHIP_WEBHOOK_KEY>
@@ -44,6 +45,33 @@ async function esEntregaDeLaTienda(env, email) {
   return Boolean(fila);
 }
 
+// Crea (o cancela, si se reembolsa entero) el proyecto de cada servicio de la orden.
+// Las órdenes de $0 no crean proyecto: son la entrega de un pago en pesos (que ya lo creó) y los
+// regalos se crean a mano desde /estudio.
+export async function procesarServicios(env, body, estado) {
+  const servicios = [...new Set((body.items || []).map((item) => String(item?.product_key || "")).filter((k) => servicioDe(k)))];
+  if (!estado || !servicios.length || !env.PAYMENTS_DB) return true;
+  const email = String(body.email || "").trim().toLowerCase();
+  const origin = env.PUBLIC_ORIGIN || "https://iceroom.cl";
+  let ok = true;
+  for (const key of servicios) {
+    const pago = `${body.id}:${key}`;
+    try {
+      if (estado === "cancelado") {
+        if (Number(body.amount_refunded) >= Number(body.price)) await cancelarPorPago(env, "payhip", pago);
+        continue;
+      }
+      if (!(Number(body.price) > 0)) continue;
+      const r = await iniciarProyecto(env, { producto: key, email, nombre: body.first_name || "", origen: "payhip", pago }, origin);
+      if (!r) ok = false;
+    } catch (error) {
+      console.error(JSON.stringify({ payhip_servicio_error: String(error?.message || error), orden: body.id }));
+      ok = false;
+    }
+  }
+  return ok;
+}
+
 export async function onRequestPost({ request, env }) {
   if (!env.PAYHIP_API_KEY || !env.PAYHIP_WEBHOOK_KEY) return new Response(null, { status: 503 });
   const k = new URL(request.url).searchParams.get("k") || "";
@@ -53,6 +81,10 @@ export async function onRequestPost({ request, env }) {
     return new Response(null, { status: 401 });
   }
   const estado = body.type === "paid" ? "completado" : body.type === "refunded" ? "cancelado" : "";
+  // Servicios con seguimiento (Plantilla a tu voz, Mezcla + Master). Si falla, 500 y Payhip reintenta:
+  // crear el proyecto es idempotente por (payhip, id de la orden).
+  const serviciosOk = await procesarServicios(env, body, estado);
+  if (!serviciosOk) return new Response(null, { status: 500 });
   const claves = clavesSwapPro();
   const llaves = (body.items || []).map((item) => String(item?.product_key || ""));
   const invitacion = estado === "completado" && llaves.some((k) => INVITACIONES.has(k));

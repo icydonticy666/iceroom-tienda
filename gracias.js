@@ -51,6 +51,17 @@
     if (data.status === "approved" && data.redeemUrl) {
       trackPurchase(data);
       title.textContent = "Pago confirmado";
+      if (data.kind === "service" && data.proyectoUrl) {
+        // Servicios con seguimiento: el siguiente paso es mandar el material desde su proyecto.
+        copy.textContent = "Tu proyecto ya está creado. Entra, pega el enlace a tu material y sigue el avance desde ahí." +
+          (data.emailSent ? " También te mandamos el link por correo: guárdalo." : " Guarda el link de tu proyecto.");
+        go.href = data.proyectoUrl;
+        go.removeAttribute("target");
+        go.textContent = "Ir a mi proyecto";
+        go.onclick = null;
+        go.hidden = false;
+        return true;
+      }
       copy.textContent = data.kind === "service"
         ? "Último paso: confirma tu pedido en Payhip con este código. Luego escríbeme por Instagram @iceroomcl."
         : "Último paso: canjea este código en Payhip y descargas al tiro." +

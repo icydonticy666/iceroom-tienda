@@ -35,3 +35,25 @@
 
 /pritti.html
   Cache-Control: no-store, max-age=0
+
+# Seguimiento de proyectos (cliente) y panel de icycold: nunca en caché ni en buscadores.
+# En /proyecto el link lleva la llave del cliente: no se manda como referer a otros sitios.
+/proyecto
+  Cache-Control: no-store, max-age=0
+  X-Robots-Tag: noindex, nofollow
+  Referrer-Policy: no-referrer
+
+/proyecto.html
+  Cache-Control: no-store, max-age=0
+  X-Robots-Tag: noindex, nofollow
+  Referrer-Policy: no-referrer
+
+/estudio
+  Cache-Control: no-store, max-age=0
+  X-Robots-Tag: noindex, nofollow
+  Referrer-Policy: no-referrer
+
+/estudio.html
+  Cache-Control: no-store, max-age=0
+  X-Robots-Tag: noindex, nofollow
+  Referrer-Policy: no-referrer
