@@ -144,6 +144,7 @@ export const BUNDLE_COLLECTIONS = {
   saPdL: "lKzyxdvNWX", // "Entrega - Pack swap Pro Ableton", oculta, creada el 31-oct-2026
   "95wzC": "91zwOV2bzL", // "Entrega - Full Pritti Studio", creada el 5-nov-2026 (solo contiene 95wzC)
   TGd6m: "rdWQ3JgMBj", // "Entrega - Plantilla Personalizada", creada el 10-nov-2026 (solo contiene TGd6m)
+  "6Txiw": "rKBPObg7zN", // "Entrega - Plantilla Personalizada FL + Ableton", creada el 10-nov-2026 (solo contiene 6Txiw)
 };
 
 /** Colecciones comerciales conocidas; permite respetar cupones de colección en el checkout local. */
