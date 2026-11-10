@@ -9,17 +9,24 @@
 <link rel="icon" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/proyecto.css?v=20261109a">
+<link rel="stylesheet" href="/proyecto.css?v=20261110a">
 </head>
 <body>
 <header class="pj-top"><a class="pj-logo" href="/"><svg viewBox="0 0 84 81" aria-hidden="true"><path d="M16 0H68L84 26L42 81L0 26Z" fill="currentColor"/></svg>iceroom</a><small>Seguimiento de tu proyecto</small></header>
 <main class="pj-main" id="app" aria-live="polite">
   <section class="pj-card" id="cargando"><p class="pj-sub">Cargando tu proyecto…</p></section>
 
+  <section class="pj-card pj-hidden" id="guardados">
+    <p class="pj-eyebrow">En este dispositivo</p>
+    <h1>Tus proyectos</h1>
+    <p class="pj-sub">Toca tu proyecto para seguir donde quedaste.</p>
+    <ul class="pj-saved" id="lista-guardados"></ul>
+  </section>
+
   <section class="pj-card pj-hidden" id="recuperar">
-    <p class="pj-eyebrow">Tus proyectos</p>
-    <h1>¿Perdiste el link de tu proyecto?</h1>
-    <p class="pj-sub" id="recuperar-motivo">Escribe el correo con el que compraste y te mandamos el link.</p>
+    <p class="pj-eyebrow" id="recuperar-eyebrow">Tus proyectos</p>
+    <h1 id="recuperar-titulo">Entra a tu proyecto</h1>
+    <p class="pj-sub" id="recuperar-motivo">Escribe el correo con el que compraste y te mandamos el link de tu proyecto al tiro.</p>
     <form class="pj-form" id="form-recuperar" style="margin-top:18px">
       <label>Correo de la compra<input type="email" name="email" autocomplete="email" required placeholder="tu@correo.com"></label>
       <div class="pj-btns"><button class="pj-btn" type="submit">Enviarme el link</button></div>
@@ -36,6 +43,13 @@
       <div class="pj-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="pj-bar"><span></span></div>
       <ol class="pj-steps" id="pj-steps"></ol>
       <p class="pj-msg" role="status" id="pj-aviso"></p>
+      <p class="pj-hint pj-hidden" id="pj-guardado" style="margin-top:14px">✓ Guardado en este dispositivo: para volver, entra a iceroom.cl y toca <b>Mi proyecto</b>. En otro equipo, usa el link de tu correo.</p>
+    </section>
+
+    <section class="pj-card pj-hidden" id="bloque-descargas">
+      <h2>Tus descargas</h2>
+      <p class="pj-sub" id="desc-texto"></p>
+      <div class="pj-delivery pj-hidden" id="desc-codigo" style="margin-top:14px"></div>
     </section>
 
     <section class="pj-card pj-hidden" id="bloque-material">
@@ -86,9 +100,9 @@
       <h2>Historial</h2>
       <ol class="pj-history" id="pj-historial"></ol>
     </section>
-    <p class="pj-hint">¿Dudas? Responde cualquiera de nuestros correos o escribe a <a href="mailto:soporte@iceroom.cl">soporte@iceroom.cl</a>. Guarda este link: es la llave de tu proyecto.</p>
+    <p class="pj-hint">¿Dudas? Responde cualquiera de nuestros correos o escribe a <a href="mailto:soporte@iceroom.cl">soporte@iceroom.cl</a>. Guarda este link: es la llave de tu proyecto. <a href="/proyecto?otro=1">¿Tienes otro proyecto?</a></p>
   </div>
 </main>
-<script src="/proyecto.js?v=20261109a" defer></script>
+<script src="/proyecto.js?v=20261110a" defer></script>
 </body>
 </html>

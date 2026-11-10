@@ -73,12 +73,15 @@
         go.onclick = function () { copyCode(data.coupon); copied.hidden = false; };
       }
       if (data.proyectoUrl && !document.getElementById("proyecto-go")) {
-        // Bundle con servicio (Plantilla personalizada): descargas con el código + su proyecto para mandar la acapella.
-        copy.textContent += " Después entra a tu proyecto y sube tu acapella para que hagamos tu plantilla.";
+        // Bundle con servicio (Plantilla personalizada): el proyecto es el centro. Ahí sube su acapella y también
+        // tiene el código de descarga, así que es el botón principal; la descarga directa queda como alternativa.
+        copy.textContent = "Tu proyecto ya está creado. Entra para subir tu acapella (hoy u otro día) y descargar tus plugins Pritti y SWAP." +
+          (data.emailSent ? " También te mandamos el link por correo." : "");
         var pj = document.createElement("a");
-        pj.id = "proyecto-go"; pj.className = "btn alt"; pj.href = data.proyectoUrl; pj.textContent = "Ir a mi proyecto";
-        pj.style.marginTop = "12px";
-        go.insertAdjacentElement("afterend", pj);
+        pj.id = "proyecto-go"; pj.className = "btn"; pj.href = data.proyectoUrl; pj.textContent = "Ir a mi proyecto";
+        pj.style.marginBottom = "12px";
+        go.insertAdjacentElement("beforebegin", pj);
+        go.classList.add("alt");
       }
       go.href = data.redeemUrl;
       go.textContent = data.coupon ? "Copiar código e ir a descargar" : "Ir a descargar";

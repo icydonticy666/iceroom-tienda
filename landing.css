@@ -326,3 +326,5 @@ footer p a{color:#ccc}footer .footer-discord{background:transparent;border-color
   .voz-compare{font-size:11px}.voz-compare span{padding:9px 8px}
 }
 @media(prefers-reduced-motion:reduce){.voz-dialog[open]{animation:none}}
+.voz-mine{display:block;width:fit-content;margin-top:10px;font-size:12px;color:#a29bbd;text-decoration:underline;text-underline-offset:3px}.voz-mine:hover{color:#fff}
+.hnav a.hnav-mine{color:#cfc7ff}

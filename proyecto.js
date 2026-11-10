@@ -96,6 +96,25 @@
 
     mostrar("bloque-nota", v.acciones.includes("nota") && !pideMaterial);
 
+    // Descargas del bundle (plugins Pritti y SWAP)
+    const d = v.descargas;
+    mostrar("bloque-descargas", Boolean(d));
+    if (d?.payhip) {
+      $("desc-texto").textContent = "Tus plugins Pritti y SWAP te llegaron por correo de Payhip apenas pagaste (busca \"iceroom\" en tu bandeja o en spam). Desde ese correo los descargas cuando quieras.";
+      mostrar("desc-codigo", false);
+    } else if (d?.codigo) {
+      $("desc-texto").textContent = "Abre la descarga, toca \"Add coupon\" y pega tu código: el total queda en US$0 y bajas los plugins Pritti y SWAP al tiro.";
+      const caja = $("desc-codigo"); caja.replaceChildren();
+      caja.append(el("div", {}, el("small", { class: "pj-hint", text: "Tu código" }), el("div", { class: "pj-code", text: d.codigo })));
+      const a = enlace(d.url, "Copiar código y descargar");
+      if (a) {
+        a.className = "pj-btn";
+        a.addEventListener("click", () => { try { navigator.clipboard.writeText(d.codigo); } catch {} });
+        caja.append(a);
+      }
+      mostrar("desc-codigo", true);
+    }
+
     // Historial (más reciente arriba)
     const lista = $("pj-historial"); lista.replaceChildren();
     for (const e of [...v.historial].reverse()) {
@@ -128,6 +147,46 @@
   function sinLink(motivo) {
     mostrar("cargando", false); mostrar("proyecto", false); mostrar("recuperar", true);
     if (motivo) $("recuperar-motivo").textContent = motivo;
+  }
+
+  // Proyectos recordados en este dispositivo: volver es entrar a iceroom.cl → Mi proyecto.
+  const GUARDA = "iceroom-proyectos";
+  function guardados() {
+    try { const l = JSON.parse(localStorage.getItem(GUARDA) || "[]"); return Array.isArray(l) ? l.filter((x) => x && x.t) : []; }
+    catch { return []; }
+  }
+  function guardar(v) {
+    try {
+      const l = guardados().filter((x) => x.t !== token);
+      l.unshift({ t: token, id: v.id, servicio: v.servicio, titulo: v.titulo, visto: new Date().toISOString() });
+      localStorage.setItem(GUARDA, JSON.stringify(l.slice(0, 10)));
+      mostrar("pj-guardado", true);
+    } catch { /* sin almacenamiento: queda el link del correo */ }
+  }
+  function olvidar(t) {
+    try { localStorage.setItem(GUARDA, JSON.stringify(guardados().filter((x) => x.t !== t))); } catch {}
+  }
+  function inicioSinToken() {
+    const params = new URLSearchParams(location.search);
+    const lista = guardados();
+    if (params.get("compra")) {
+      // Viene de la página de gracias de Payhip (PayPal): el link ya va en camino a su correo.
+      $("recuperar-eyebrow").textContent = "Compra confirmada";
+      $("recuperar-titulo").textContent = "¡Gracias! Tu proyecto ya está creado";
+      $("recuperar-motivo").textContent = "Te mandamos el link de tu proyecto al correo de tu compra (revisa también spam). Ábrelo y quedará guardado aquí. ¿No te llegó en 2 minutos? Escribe tu correo y te lo mandamos de nuevo.";
+    } else if (lista.length === 1 && !params.get("otro")) {
+      location.replace("/proyecto?t=" + encodeURIComponent(lista[0].t));
+      return;
+    }
+    if (lista.length) {
+      $("lista-guardados").replaceChildren(...lista.map((x) => el("li", {},
+        el("a", { href: "/proyecto?t=" + encodeURIComponent(x.t) },
+          el("div", {}, el("b", { text: `${x.servicio} #${x.id}` }), el("small", { text: x.titulo || "" })),
+          el("span", { "aria-hidden": "true", text: "→" })))));
+      mostrar("guardados", true);
+      $("recuperar-titulo").textContent = params.get("compra") ? $("recuperar-titulo").textContent : "¿Otro proyecto?";
+    }
+    sinLink();
   }
 
   $("form-material").addEventListener("submit", (ev) => {
@@ -163,9 +222,9 @@
     finally { boton.disabled = false; }
   });
 
-  if (!token) return sinLink();
-  api("GET").then(pintar).catch((error) => {
-    if (error.status === 404) return sinLink(error.message);
+  if (!token) return inicioSinToken();
+  api("GET").then((v) => { pintar(v); guardar(v); }).catch((error) => {
+    if (error.status === 404) { olvidar(token); return sinLink(error.message); }
     $("cargando").firstElementChild.textContent = error.message || "No pudimos cargar tu proyecto. Recarga la página.";
   });
 })();
