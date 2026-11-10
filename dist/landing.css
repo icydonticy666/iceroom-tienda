@@ -261,18 +261,6 @@ footer p a{color:#ccc}footer .footer-discord{background:transparent;border-color
 .wrap .voz-launch a.buy.riri-cta,.voz-launch a.buy.riri-cta{color:#0d0a1c;box-shadow:0 12px 32px -14px #6f5cff}
 .wrap .voz-launch a.buy.riri-cta:hover,.voz-launch a.buy.riri-cta:hover{background:#b6abff}
 .voz-launch .riri-beta{background:var(--lambo);border-color:var(--lambo);color:#0d0a1c;font-weight:700}
-.voz-upgrade{margin:14px 0 0;padding:10px 14px;border:1px dashed #a092ff66;border-radius:12px;font-size:12px;color:#d9d4f2;display:inline-block}
-.voz-upgrade b{color:#fff}
-.voz-launch .riri-included{color:#9a93b5}.voz-launch .riri-included a{color:#cfc7ff}
-.voz-art{position:relative;align-self:stretch;margin:20px 24px 20px 0;padding:24px;border:1px solid #a092ff33;border-radius:16px;
-  background:radial-gradient(90% 70% at 70% 30%,#6f5cff33,transparent 70%),#0c0b12;display:flex;flex-direction:column;gap:18px;overflow:hidden;min-width:0}
-.voz-art-top{display:flex;justify-content:space-between;font-size:9px;letter-spacing:.16em;color:#a29bbd}
-.voz-art-heading{display:flex;flex-direction:column;font-family:Manrope,var(--font-display);font-weight:800;line-height:.86;letter-spacing:-.07em;font-size:clamp(56px,7.5vw,112px);color:#f3f1ff}
-.voz-art-heading span:last-child{color:var(--lambo)}
-.voz-art-plugins{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:auto}
-.voz-art-plugins img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;border:1px solid #ffffff1a;background:#000;display:block}
-.voz-art-tags{display:flex;flex-wrap:wrap;gap:6px}
-.voz-art-tags span{padding:5px 10px;border:1px solid #a092ff4d;border-radius:999px;font-size:10px;color:#d9d4f2;letter-spacing:.02em}
 .launch-track .riri-live .riri-points{margin-top:22px}
 @media(max-width:760px){
   .launch-slider{width:calc(100% - 40px);margin:40px auto 55px}
@@ -281,3 +269,60 @@ footer p a{color:#ccc}footer .footer-discord{background:transparent;border-color
   .voz-upgrade{display:block}
 }
 @media(prefers-reduced-motion:reduce){.launch-track{scroll-behavior:auto}.launch-dots button{transition:none}}
+/* Bundle Plantilla personalizada v2 (10-nov): título legible, "lo que recibes" con nombres y ventana "cómo funciona" */
+.riri-copy h2.voz-title{font-size:clamp(40px,4.4vw,60px);line-height:.98;letter-spacing:-.055em;margin:0 0 18px}
+.riri-copy .voz-lead{font-size:20px;line-height:1.35;max-width:420px}
+.voz-steps{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding:0}
+.voz-steps li{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #a092ff40;border-radius:999px;font-size:12px;color:#ecebf7;background:#a092ff0f}
+.voz-steps b{font-size:10px;color:var(--lambo);letter-spacing:.06em}
+.voz-upgrade{margin:16px 0 0;padding:11px 14px;border:1px dashed #a092ff73;border-radius:12px;font-size:12px;line-height:1.5;color:#d9d4f2;max-width:440px}
+.voz-upgrade b{color:#fff}
+.voz-more{display:inline-flex;gap:8px;align-items:center;margin-top:16px;padding:0;border:0;background:none;color:#cfc7ff;font:inherit;font-size:13px;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.voz-more:hover{color:#fff}.voz-more:focus-visible{outline:2px solid #cfc7ff;outline-offset:4px;border-radius:4px}
+.voz-art{align-self:stretch;margin:20px 24px 20px 0;padding:22px;border:1px solid #a092ff33;border-radius:16px;
+  background:radial-gradient(90% 60% at 80% 0%,#6f5cff2b,transparent 70%),#0c0b12;display:flex;flex-direction:column;gap:10px;min-width:0}
+.voz-art-top{display:flex;justify-content:space-between;margin:0 0 4px;font-size:9px;letter-spacing:.16em;color:#a29bbd}
+.voz-item{display:flex;align-items:center;gap:14px;padding:13px 14px;border:1px solid #ffffff14;border-radius:12px;background:#ffffff06}
+.voz-item b{display:block;font-size:14px;color:#f3f1ff;letter-spacing:-.01em}
+.voz-item span{display:block;font-size:11px;line-height:1.45;color:#a29bbd}
+.voz-item-main{border-color:#a092ff66;background:#a092ff14;padding:16px 14px}
+.voz-item-main b{font-size:17px}
+.voz-daws{display:flex;gap:6px;flex:none}
+.voz-daws img{width:38px;height:38px;object-fit:contain;padding:6px;border-radius:10px;background:#000;border:1px solid #ffffff1f}
+.voz-icon{flex:none;width:38px;height:38px;display:grid;place-items:center;border-radius:10px;background:#a092ff26;color:var(--lambo);font-style:normal;font-size:14px}
+.voz-swap{flex:none;width:38px;height:38px;border-radius:10px}
+.voz-item-plugins{flex-direction:column;align-items:stretch}
+.voz-plugins{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0;padding:0}
+.voz-plugins img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;border:1px solid #ffffff1a;background:#000;display:block}
+.voz-plugins span{margin-top:5px;text-align:center;font-size:10px;color:#d9d4f2}
+/* Ventana "cómo funciona" */
+.voz-dialog{color:#f5f4f1;background:#111;border:1px solid #a092ff59;border-radius:22px;width:min(760px,calc(100% - 28px));max-height:calc(100dvh - 28px);margin:auto;padding:32px;overflow-y:auto;box-shadow:0 25px 100px #0009}
+.voz-dialog::backdrop{background:#000c;backdrop-filter:blur(14px)}
+.voz-dialog[open]{animation:kit-appear .38s cubic-bezier(.16,1,.3,1) both}
+.voz-dialog h2{font-family:var(--font-display);font-weight:800;font-size:clamp(26px,4vw,38px);letter-spacing:-.04em;line-height:1.1;margin:0 40px 12px 0}
+.voz-dialog h3{margin:28px 0 12px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#cfc7ff}
+.voz-dialog-intro{color:#c4c0d4;font-size:14px;line-height:1.7;margin:0}
+.voz-flow{counter-reset:paso;list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.voz-flow li{counter-increment:paso;position:relative;padding:12px 14px 12px 52px;border:1px solid #ffffff17;border-radius:12px;background:#181818;font-size:13px;line-height:1.6;color:#c9c6d4}
+.voz-flow li::before{content:"0" counter(paso);position:absolute;left:14px;top:12px;font-weight:800;font-size:13px;color:#a092ff}
+.voz-flow b{color:#fff}
+.voz-list{margin:0;padding-left:18px;display:grid;gap:6px;font-size:13px;line-height:1.6;color:#c9c6d4}
+.voz-note{margin:12px 0 0;font-size:12px;line-height:1.6;color:#a29bbd}.voz-note b{color:#e6e3f5}
+.voz-compare{border:1px solid #ffffff1a;border-radius:12px;overflow:hidden;font-size:12px}
+.voz-compare>div{display:grid;grid-template-columns:1.6fr 1fr 1fr;border-top:1px solid #ffffff12}
+.voz-compare>div:first-child{border-top:0}
+.voz-compare span{padding:10px 12px;color:#c9c6d4}
+.voz-compare span[role=rowheader]{color:#f3f1ff}
+.voz-compare-head span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#a29bbd}
+.voz-compare-head b{display:block;margin-top:2px;font-size:15px;letter-spacing:0;text-transform:none;color:#fff}
+.voz-compare>div span:last-child{background:#a092ff12}
+.voz-dialog .kit-footer{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:26px;padding-top:20px;border-top:1px solid #ffffff1a}
+.voz-dialog .kit-price{font-weight:800;font-size:16px}
+@media(max-width:760px){
+  .voz-dialog{padding:24px 18px}
+  .voz-art{margin:20px}
+  .voz-item-main{flex-direction:column;align-items:flex-start}
+  .voz-plugins{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px}
+  .voz-compare{font-size:11px}.voz-compare span{padding:9px 8px}
+}
+@media(prefers-reduced-motion:reduce){.voz-dialog[open]{animation:none}}

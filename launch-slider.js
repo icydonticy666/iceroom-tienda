@@ -48,3 +48,13 @@
   nav.hidden = false;
   marcar();
 })();
+
+// Ventana "cómo funciona" del bundle Plantilla personalizada.
+(() => {
+  const dialog = document.getElementById("voz-dialog");
+  if (!dialog || typeof dialog.showModal !== "function") return;
+  for (const b of document.querySelectorAll("[data-voz-open]")) b.addEventListener("click", () => dialog.showModal());
+  dialog.querySelector("[data-voz-close]")?.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
+  if (location.hash === "#como-funciona") dialog.showModal();
+})();
