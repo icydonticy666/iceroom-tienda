@@ -345,9 +345,8 @@ footer p a{color:#ccc}footer .footer-discord{background:transparent;border-color
 }
 
 /* Cabecera: se compacta y oscurece al bajar */
-.wrap>header{transition:padding .35s cubic-bezier(.2,.8,.2,1),background-color .35s,border-color .35s,box-shadow .35s}
+.wrap>header{transition:background-color .35s,border-color .35s,box-shadow .35s}
 .wrap>header.is-scrolled{background:#101010f2;border-color:#ffffff24;box-shadow:0 14px 40px #0009,inset 0 1px #ffffff12}
-@media(min-width:681px){.wrap>header.is-scrolled{padding-top:.55rem;padding-bottom:.55rem}}
 
 /* Entradas escalonadas */
 .motion-ok [data-stagger]:not(.is-in) [data-si]{opacity:0}
