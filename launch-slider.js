@@ -45,6 +45,33 @@
   let espera = 0;
   track.addEventListener("scroll", () => { cancelAnimationFrame(espera); espera = requestAnimationFrame(marcar); }, { passive: true });
   window.addEventListener("resize", marcar);
+  // Arrastre con el mouse (en pantallas táctiles ya se desliza solo). No parte sobre botones ni enlaces.
+  let arrastre = null;
+  track.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('a, button, input, textarea, select')) return;
+    arrastre = { x: e.clientX, left: track.scrollLeft, movido: false };
+  });
+  addEventListener('pointermove', (e) => {
+    if (!arrastre) return;
+    const dx = e.clientX - arrastre.x;
+    if (!arrastre.movido && Math.abs(dx) < 8) return;
+    arrastre.movido = true;
+    track.classList.add('is-dragging');
+    track.scrollLeft = arrastre.left - dx;
+  }, { passive: true });
+  addEventListener('pointerup', () => {
+    if (!arrastre) return;
+    const movido = arrastre.movido, desde = arrastre.left;
+    arrastre = null;
+    if (!movido) return;
+    const paso = slides[1].offsetLeft - slides[0].offsetLeft || 1;
+    const delta = track.scrollLeft - desde;
+    const base = Math.round(desde / paso);
+    track.classList.remove('is-dragging');
+    ir(Math.abs(delta) > 60 ? base + Math.sign(delta) : base);
+    setTimeout(() => track.dispatchEvent(new Event('scroll')), 400);
+  });
+  track.addEventListener('dragstart', (e) => e.preventDefault());
   nav.hidden = false;
   marcar();
 })();

@@ -144,3 +144,7 @@
 /* Riri fx disponible (8-nov-2026): naranja del plugin */
 .p-announce-tag{background:#ff9f0a}
 .p-status-beta{--accent:#ff9f0a;--accent-ink:#ffb84d}
+
+/* Transición suave entre páginas del sitio (11-nov-2026) */
+@media(prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.26s}

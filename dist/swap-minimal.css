@@ -35,3 +35,7 @@ body:before{background:#080808}.noise,.orbit,.scan{display:none}
 @media(max-width:650px){.hero-subtitle{font-size:30px}.hero-free-offer{padding:16px 14px;gap:12px}.hero-free-offer b{font-size:12px}.hero-free-offer strong{font-size:25px}.hero-free-note{font-size:8px}.quick-purchase .purchase-row strong{font-size:20px}.quick-purchase .purchase-row small{font-size:9px}.free-feature-pair{gap:13px;margin-top:20px}.free-feature-pair>div+div{padding-left:13px}.free-feature-pair b{font-size:11px}.free-feature-pair p{font-size:10px}.free-launch-copy h2{font-size:33px}.free-launch{margin-top:25px}.app-switcher button{font-size:9px}}
 @media(max-width:350px){.hero-free-offer b{font-size:11px}.hero-free-offer strong{font-size:22px}.hero-free-offer{gap:9px}.hero-free-offer small{font-size:7px}}
 @media(prefers-reduced-motion:reduce){.hero-free-offer{transition:none}}
+
+/* Transición suave entre páginas del sitio (11-nov-2026) */
+@media(prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.26s}

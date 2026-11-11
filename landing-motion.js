@@ -100,7 +100,7 @@
       observer.unobserve(entry.target);
     });
   }, {threshold: .12});
-  document.querySelectorAll('.setup-head, .setup-card, .pack-inventory, .riri-launch, .home-faq, .spotlight-main').forEach(el => observer.observe(el));
+  document.querySelectorAll('.setup-head, .setup-card, .riri-launch, .home-faq, .spotlight-main').forEach(el => observer.observe(el));
   reduced.addEventListener('change', () => {
     if (!reduced.matches) return;
     observer.disconnect();

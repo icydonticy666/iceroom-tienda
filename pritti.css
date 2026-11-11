@@ -141,3 +141,6 @@
 .p-riri-studio:hover{background:#ff8f3d;transform:translateY(-2px)}
 .p-riri-studio-note{margin:16px 0 0;font-size:12px;line-height:1.7;color:#d8b9a3;max-width:620px}
 @media(max-width:600px){.p-riri-actions{width:100%;flex-direction:column}.p-riri-actions .p-button{width:100%}}
+/* Transición suave entre páginas del sitio (11-nov-2026) */
+@media(prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.26s}

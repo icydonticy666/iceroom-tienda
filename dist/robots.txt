@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /estudio
+Disallow: /proyecto
+Disallow: /gracias
+Disallow: /debito
+
+Sitemap: https://iceroom.cl/sitemap.xml

@@ -96,3 +96,7 @@ button,input,textarea,select{font:inherit;color:inherit}
 .pj-sr input{width:100%;font-size:15px;min-height:46px}
 .pj-sr{font-size:0!important;gap:0!important}
 @media(max-width:640px){.pj-inline{grid-template-columns:1fr}.pj-pasos>li{grid-template-columns:1fr;gap:8px}}
+
+/* Transición suave entre páginas del sitio (11-nov-2026) */
+@media(prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.26s}
