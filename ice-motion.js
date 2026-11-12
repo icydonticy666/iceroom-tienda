@@ -98,15 +98,5 @@
     paneles.forEach((p) => mo.observe(p, { attributes: true, attributeFilter: ['hidden'] }));
   }
 
-  // La flecha del slider avisa una vez que hay otro lanzamiento.
-  const siguiente = document.querySelector('[data-launch-next]');
-  const slider = document.querySelector('[data-launch-slider]');
-  if (siguiente && slider) {
-    new IntersectionObserver((entries, obs) => {
-      if (!entries[0].isIntersecting) return;
-      obs.disconnect(); siguiente.classList.add('nudge');
-    }, { threshold: 0.9 }).observe(slider.querySelector('.launch-nav') || slider);
-  }
-
   reduced.addEventListener('change', () => { if (reduced.matches) root.classList.remove('motion-ok'); });
 })();

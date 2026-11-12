@@ -25,6 +25,12 @@
   function ir(i) {
     const n = Math.max(0, Math.min(slides.length - 1, i));
     track.scrollTo({ left: slides[n].offsetLeft - slides[0].offsetLeft });
+    // Los puntos cambian al tiro; el scroll (suave) los confirma al terminar.
+    actual = n;
+    botones.forEach((b, j) => b.setAttribute("aria-current", String(j === n)));
+    nav.style.setProperty("--dot", acentos[n] || "#eee");
+    prev.disabled = n === 0;
+    next.disabled = n === slides.length - 1;
   }
   function marcar() {
     const paso = slides[1].offsetLeft - slides[0].offsetLeft || 1;
@@ -72,8 +78,75 @@
     setTimeout(() => track.dispatchEvent(new Event('scroll')), 400);
   });
   track.addEventListener('dragstart', (e) => e.preventDefault());
+
+  // Avance automático (11-nov-2026, para vender más): cada 7 s pasa al siguiente lanzamiento y al final vuelve
+  // al primero. Se pausa con el cursor o el foco encima, fuera de pantalla, con la pestaña oculta o con una
+  // ventana abierta (checkout, "cómo funciona"); se detiene del todo cuando el visitante usa flechas, puntos,
+  // arrastra o desliza. Con "reducir movimiento" no avanza solo. El botón de pausa cumple WCAG 2.2.2.
+  const DURA = 7000;
+  const play = nav.querySelector('[data-launch-play]');
+  const reducido = matchMedia('(prefers-reduced-motion: reduce)');
+  let detenido = reducido.matches, encima = false, foco = false, enPantalla = false;
+  let transcurrido = 0, ultimo = 0, reloj = 0;
+  const bloqueado = () => encima || foco || document.hidden || Boolean(document.querySelector('dialog[open]'));
+  function pintarAvance() {
+    nav.dataset.auto = detenido ? 'off' : 'on';
+    nav.style.setProperty('--avance', (transcurrido / DURA).toFixed(3));
+    if (play) {
+      play.dataset.estado = detenido ? 'pausado' : 'corriendo';
+      play.setAttribute('aria-label', detenido ? 'Reanudar el carrusel' : 'Pausar el carrusel');
+    }
+  }
+  // Reloj de 80 ms (no requestAnimationFrame: así también avanza donde el navegador frena los cuadros).
+  function tic() {
+    if (detenido || !enPantalla) { clearInterval(reloj); reloj = 0; ultimo = 0; return; }
+    const t = performance.now();
+    if (bloqueado()) { ultimo = 0; return; }
+    if (ultimo) transcurrido += Math.min(t - ultimo, 250);
+    ultimo = t;
+    if (transcurrido >= DURA) {
+      transcurrido = 0;
+      marcar();
+      ir(actual + 1 >= slides.length ? 0 : actual + 1);
+    }
+    pintarAvance();
+  }
+  function arrancar() { if (!reloj && !detenido && enPantalla) reloj = setInterval(tic, 80); }
+  function detener() {
+    if (detenido) return;
+    detenido = true; transcurrido = 0;
+    clearInterval(reloj); reloj = 0;
+    pintarAvance();
+  }
+  [prev, next, ...botones].forEach((b) => b.addEventListener('click', detener));
+  track.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') detener(); });
+  track.addEventListener('touchstart', detener, { passive: true });
+  track.addEventListener('wheel', (e) => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) detener(); }, { passive: true });
+  addEventListener('pointerup', () => { if (track.classList.contains('is-dragging')) detener(); }, { capture: true });
+  slider.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') encima = true; });
+  slider.addEventListener('pointerleave', () => { encima = false; });
+  slider.addEventListener('focusin', () => { foco = true; });
+  slider.addEventListener('focusout', (e) => { if (!slider.contains(e.relatedTarget)) foco = false; });
+  if (play) {
+    play.removeAttribute('aria-pressed');
+    play.hidden = reducido.matches;
+    play.addEventListener('click', () => {
+      if (detenido) { detenido = false; transcurrido = 0; pintarAvance(); arrancar(); }
+      else detener();
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      enPantalla = entries[0].isIntersecting;
+      if (enPantalla) arrancar();
+    }, { threshold: 0.5 }).observe(track);
+  } else enPantalla = true;
+  reducido.addEventListener('change', () => { if (reducido.matches) { detener(); if (play) play.hidden = true; } });
+
   nav.hidden = false;
   marcar();
+  pintarAvance();
+  arrancar();
 })();
 
 // Ventana "cómo funciona" del bundle Plantilla personalizada.
