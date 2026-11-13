@@ -20,3 +20,8 @@ INTL_STUDIO_PAYPAL_URL = "https://payhip.com/order?link=NXRwS"
 binding = "PAYMENTS_DB"
 database_name = "iceroom-pagos"
 database_id = "3f802745-cbb7-4a5c-8aa4-a10285d05906"
+
+# Archivos de regalos con descarga directa (/regalo/<token>), bucket privado. 12-nov-2026.
+[[r2_buckets]]
+binding = "ENTREGAS"
+bucket_name = "iceroom-entregas"
