@@ -15,6 +15,8 @@ export const ARCHIVOS = {
   "riri-mac": { r2: "pack-swap-pro/Pritti-Riri-fx-Mac.zip", nombre: "Pritti Riri fx", so: "Mac" },
   "grip-win": { r2: "pritti-grip/Pritti-Grip-WIN.rar", nombre: "Pritti Grip (beta)", so: "Windows" },
   "grip-mac": { r2: "pritti-grip/Pritti-Grip-Mac.zip", nombre: "Pritti Grip (beta)", so: "Mac" },
+  "eco-win": { r2: "pritti-eco-delay/Pritti-Eco-Delay-WIN.rar", nombre: "Pritti Eco Delay", so: "Windows" },
+  "eco-mac": { r2: "pritti-eco-delay/Pritti-Eco-Delay-Mac.zip", nombre: "Pritti Eco Delay", so: "Mac" },
 };
 
 const PACK_SWAP_PRO_FL = ["plantilla-fl", "vocals-win", "vocals-mac", "backroom-win", "backroom-mac", "riri-win", "riri-mac"];
@@ -32,6 +34,13 @@ export const REGALOS = {
     titulo: "Pritti Grip",
     detalle: "Compresor vocal de la familia Pritti (beta), VST3 / AU para Windows y Mac.",
     archivos: ["grip-win", "grip-mac"],
+    swapPro: false,
+  },
+  // Pritti Eco Delay suelto (12-nov-2026, pedido del usuario): solo descarga, sin SWAP.
+  "5a9e11ce277b4d75845b86e810dfd4541bf027b6af419bc719cacf3985e51dc5": {
+    titulo: "Pritti Eco Delay",
+    detalle: "El delay de la familia Pritti, VST3 / AU para Windows y Mac.",
+    archivos: ["eco-win", "eco-mac"],
     swapPro: false,
   },
 };
