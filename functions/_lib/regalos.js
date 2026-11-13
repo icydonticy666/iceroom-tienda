@@ -13,6 +13,8 @@ export const ARCHIVOS = {
   "backroom-mac": { r2: "pack-swap-pro/Pritti-Backroom-Mac.zip", nombre: "Pritti Backroom", so: "Mac" },
   "riri-win": { r2: "pack-swap-pro/Pritti-Riri-fx-WIN.zip", nombre: "Pritti Riri fx", so: "Windows" },
   "riri-mac": { r2: "pack-swap-pro/Pritti-Riri-fx-Mac.zip", nombre: "Pritti Riri fx", so: "Mac" },
+  "grip-win": { r2: "pritti-grip/Pritti-Grip-WIN.rar", nombre: "Pritti Grip (beta)", so: "Windows" },
+  "grip-mac": { r2: "pritti-grip/Pritti-Grip-Mac.zip", nombre: "Pritti Grip (beta)", so: "Mac" },
 };
 
 const PACK_SWAP_PRO_FL = ["plantilla-fl", "vocals-win", "vocals-mac", "backroom-win", "backroom-mac", "riri-win", "riri-mac"];
@@ -24,6 +26,13 @@ export const REGALOS = {
     detalle: "Plantilla de Grabación FL Studio + SWAP Pro + Pritti Vocals, Backroom y Riri fx.",
     archivos: PACK_SWAP_PRO_FL,
     swapPro: true,
+  },
+  // Pritti Grip suelto (12-nov-2026, pedido del usuario): solo descarga, sin SWAP.
+  "2d7c9318017c6884e4057fae52d5048416e436858109b7e73ab338be53f4eead": {
+    titulo: "Pritti Grip",
+    detalle: "Compresor vocal de la familia Pritti (beta), VST3 / AU para Windows y Mac.",
+    archivos: ["grip-win", "grip-mac"],
+    swapPro: false,
   },
 };
 
