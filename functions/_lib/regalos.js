@@ -19,13 +19,13 @@ export const ARCHIVOS = {
   "eco-mac": { r2: "pritti-eco-delay/Pritti-Eco-Delay-Mac.zip", nombre: "Pritti Eco Delay", so: "Mac" },
 };
 
-const PACK_SWAP_PRO_FL = ["plantilla-fl", "vocals-win", "vocals-mac", "backroom-win", "backroom-mac", "riri-win", "riri-mac"];
+const PACK_SWAP_PRO_FL = ["plantilla-fl", "vocals-win", "vocals-mac", "backroom-win", "backroom-mac", "riri-win", "riri-mac", "grip-win", "grip-mac"];
 
 export const REGALOS = {
   // THEWIZARD (12-nov-2026, pedido del usuario): Pack SWAP Pro versión FL Studio, 1 activación de SWAP Pro.
   "4b53f12f631206f7e563442c18be2a2c436fb138d66cd5d0444f8bb1e1a972f3": {
     titulo: "Pack SWAP Pro",
-    detalle: "Plantilla de Grabación FL Studio + SWAP Pro + Pritti Vocals, Backroom y Riri fx.",
+    detalle: "Plantilla de Grabación FL Studio + SWAP Pro + Pritti Vocals, Backroom, Grip (beta) y Riri fx.",
     archivos: PACK_SWAP_PRO_FL,
     swapPro: true,
   },

@@ -52,14 +52,14 @@ export const PRODUCTS = {
   // SWAP_PRO_DELIVERY_READY=1 y SWAP_PRO_PRODUCT_KEY=0xES9; la compra activa Pro (swap-licencia.js).
   "0xES9": { key: "0xES9", name: "swap Pro", clp: 9990, kind: "download", checkout: "b", swapAccess: "pro", swapPlan: "pro" },
   // Pack swap Pro (bundle Payhip 8zVP2, 31-oct-2026, pedido por el usuario a US$19.99): Plantilla de
-  // Grabación FL + swap Pro + Pritti Vocals y Backroom. Se vende con SWAP_PACK_PRODUCT_KEY=8zVP2.
-  "8zVP2": { key: "8zVP2", name: "Pack swap Pro — Plantilla FL + swap Pro + Pritti Vocals y Backroom", clp: 19990, kind: "download", checkout: "order", swapAccess: "pro", swapPlan: "bundle" },
+  // Grabación FL + swap Pro + Pritti Vocals, Backroom, Grip y Riri fx. Se vende con SWAP_PACK_PRODUCT_KEY=8zVP2.
+  "8zVP2": { key: "8zVP2", name: "Pack SWAP Pro — Plantilla FL + Vocals, Backroom, Grip y Riri fx", clp: 19990, kind: "download", checkout: "order", swapAccess: "pro", swapPlan: "bundle" },
   // FULL STACK (bundle Payhip UVYyl, 31-oct-2026, pedido por el usuario a US$29.99): swap Pro + Plantillas de
   // Grabación FL y Ableton + Pritti Vocals, Backroom, Eco y Grip. Se vende con SWAP_FULLSTACK_PRODUCT_KEY=UVYyl.
   UVYyl: { key: "UVYyl", name: "Full Stack — SWAP Pro + Plantillas FL y Ableton + 5 plugins Pritti", clp: 29990, kind: "download", checkout: "order", swapAccess: "pro", swapPlan: "fullstack" },
   // Pack swap Pro, versión Ableton (bundle Payhip saPdL, 31-oct-2026, mismo precio que el de FL): Plantilla de
-  // Grabación Ableton + swap Pro + Pritti Vocals y Backroom. Se vende con SWAP_PACK_ABLETON_PRODUCT_KEY=saPdL.
-  saPdL: { key: "saPdL", name: "Pack swap Pro — Plantilla Ableton + swap Pro + Pritti Vocals y Backroom", clp: 19990, kind: "download", checkout: "order", swapAccess: "pro", swapPlan: "bundle-ableton" },
+  // Grabación Ableton + swap Pro + Pritti Vocals, Backroom, Grip y Riri fx. Se vende con SWAP_PACK_ABLETON_PRODUCT_KEY=saPdL.
+  saPdL: { key: "saPdL", name: "Pack SWAP Pro — Plantilla Ableton + Vocals, Backroom, Grip y Riri fx", clp: 19990, kind: "download", checkout: "order", swapAccess: "pro", swapPlan: "bundle-ableton" },
   // Solo para compras de prueba con la clave TEST_KEY; entrega la Plantilla FL — Plugins Nativos.
   PRUEBA350: { key: "PRUEBA350", payhip: "34vZU", name: "Prueba de pago (Plantilla FL)", clp: 350, kind: "download", testOnly: true },
 };
