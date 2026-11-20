@@ -1,0 +1,7 @@
+{
+  "vocals":   { "version": "0.2.0", "fecha": "20-nov-2026", "url": "https://iceroom.cl/actualizar#vocals",   "notas": "Rediseño: acento ultraviolet, knobs nuevos y EQ con nodos arrastrables." },
+  "grip":     { "version": "0.9.1", "fecha": "20-nov-2026", "url": "https://iceroom.cl/actualizar#grip",     "notas": "Aviso de versiones nuevas dentro del plugin." },
+  "backroom": { "version": "0.9.2", "fecha": "20-nov-2026", "url": "https://iceroom.cl/actualizar#backroom", "notas": "Look nuevo: neutros y knobs de la familia Pritti." },
+  "eco":      { "version": "1.0.2", "fecha": "20-nov-2026", "url": "https://iceroom.cl/actualizar#eco",      "notas": "Look nuevo: neutros y knobs de la familia Pritti." },
+  "riri":     { "version": "0.3.1", "fecha": "20-nov-2026", "url": "https://iceroom.cl/actualizar#riri",     "notas": "Aviso de versiones nuevas dentro del plugin." }
+}

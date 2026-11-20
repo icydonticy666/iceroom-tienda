@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Actualizar plugins Pritti · iceroom</title>
+<meta name="description" content="Cómo bajar la versión nueva de tus plugins Pritti: Vocals, Grip, Backroom, Eco Delay y Riri fx.">
+<link rel="canonical" href="https://iceroom.cl/actualizar"><link rel="icon" href="/favicon.png">
+<style>
+:root{color-scheme:dark;font-family:Helvetica,Arial,sans-serif;background:#111;color:#f1f0ed}*{box-sizing:border-box}body{margin:0;background:#111}header,main,footer{max-width:960px;margin:auto;padding:28px}header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ffffff20}a{color:#d1b9ee;text-underline-offset:4px}header a:first-child{font-size:25px;font-weight:700;letter-spacing:-1px;color:#fff;text-decoration:none}h1{font-size:clamp(40px,7vw,72px);letter-spacing:-.06em;line-height:1.04;margin:30px 0}h2{font-size:27px;letter-spacing:-.04em;margin:0 0 10px}p,li{line-height:1.7;color:#bababa}strong{color:#f1f0ed}.eyebrow{font-size:11px;letter-spacing:.17em;color:#d1b9ee}section{border-top:1px solid #ffffff20;padding:24px 0;scroll-margin-top:20px}.links{display:flex;gap:10px;flex-wrap:wrap}.links a{display:block;padding:13px 20px;border:1px solid #ffffff30;border-radius:10px;text-decoration:none;font-size:14px}.links a:hover,.links a:focus-visible{background:#d1b9ee;color:#111}.note{border-left:2px solid #d1b9ee;padding-left:18px}
+.plugins{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-top:14px}.plugin{border:1px solid #ffffff20;border-radius:12px;padding:14px 16px;scroll-margin-top:20px}.plugin:target{border-color:var(--c)}.plugin b{display:flex;align-items:center;gap:8px;color:#fff;font-size:15px}.plugin b i{width:8px;height:8px;transform:rotate(45deg);background:var(--c)}.plugin span{display:block;font:600 22px/1.2 "Space Mono",ui-monospace,monospace;color:#fff;margin-top:8px}.plugin small{display:block;color:#9a9a9a;font-size:12px;line-height:1.5;margin-top:6px}
+footer{font-size:13px;border-top:1px solid #ffffff20}@media(max-width:500px){header,main,footer{padding:22px 16px}header a:first-child{font-size:22px}.links a{flex:1 1 160px;text-align:center}}
+</style>
+</head>
+<body>
+<header><a href="/">iceroom</a><a href="/pritti">Pritti ↗</a></header>
+<main>
+<p class="eyebrow">PLUGINS PRITTI</p>
+<h1>Actualiza tus plugins.</h1>
+<p>Las versiones nuevas son gratis para quien ya compró el plugin. Cuando hay una, el plugin te avisa con <strong>“nueva versión · descargar”</strong> debajo de la cabecera y te trae a esta página.</p>
+
+<section aria-labelledby="ultimas"><h2 id="ultimas">Últimas versiones</h2>
+<div class="plugins" id="lista">
+  <div class="plugin" id="vocals" style="--c:#9383ff"><b><i></i>Pritti Vocals</b><span data-v="vocals">—</span><small data-n="vocals"></small></div>
+  <div class="plugin" id="grip" style="--c:#8e7fe8"><b><i></i>Pritti Grip</b><span data-v="grip">—</span><small data-n="grip"></small></div>
+  <div class="plugin" id="backroom" style="--c:#c86ce1"><b><i></i>Pritti Backroom</b><span data-v="backroom">—</span><small data-n="backroom"></small></div>
+  <div class="plugin" id="eco" style="--c:#e667c4"><b><i></i>Pritti Eco Delay</b><span data-v="eco">—</span><small data-n="eco"></small></div>
+  <div class="plugin" id="riri" style="--c:#ff9f0a"><b><i></i>Pritti Riri fx</b><span data-v="riri">—</span><small data-n="riri"></small></div>
+</div></section>
+
+<section aria-labelledby="como"><h2 id="como">Cómo bajar la versión nueva</h2>
+<ol>
+<li>Busca en tu correo el mensaje de <strong>Payhip</strong> de tu compra (asunto parecido a “Your purchase from iceroom”). Si pagaste en pesos, es el correo que llegó al canjear tu código.</li>
+<li>Abre el link de descarga de ese correo. Payhip siempre entrega el archivo más nuevo: no tienes que comprar nada otra vez.</li>
+<li>Si compraste un pack o bundle, entra con el mismo correo de la compra y descarga el plugin desde la lista.</li>
+<li>Instala encima: en Windows corre el instalador nuevo; en Mac abre el .pkg o reemplaza el plugin. Tus presets y proyectos se mantienen.</li>
+<li>Cierra y vuelve a abrir tu DAW.</li>
+</ol>
+<p class="note">¿No encuentras el correo? Escríbenos a <a href="mailto:soporte@iceroom.cl">soporte@iceroom.cl</a> con el correo con el que compraste y el plugin, y te reenviamos el acceso. No envíes contraseñas.</p>
+</section>
+
+<section aria-labelledby="privacidad"><h2 id="privacidad">Qué revisa el plugin</h2>
+<p>Al abrirlo, el plugin descarga un archivo pequeño con el número de la última versión (<a href="/plugins/versiones.json">versiones.json</a>). No envía tu nombre, tu correo, tu proyecto ni ningún otro dato. Si no hay internet, no pasa nada: el plugin funciona igual y no muestra el aviso.</p>
+<div class="links"><a href="/pritti">Explorar Pritti ↗</a><a href="/">Volver a la tienda ↗</a></div>
+</section>
+</main>
+<footer>Pritti by iceroom · Soporte: <a href="mailto:soporte@iceroom.cl">soporte@iceroom.cl</a></footer>
+<script>
+fetch('/plugins/versiones.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+  Object.keys(d).forEach(function(k){
+    var v=document.querySelector('[data-v="'+k+'"]'),n=document.querySelector('[data-n="'+k+'"]');
+    if(v&&d[k].version)v.textContent=d[k].version;
+    if(n&&d[k].notas)n.textContent=d[k].notas+(d[k].fecha?' · '+d[k].fecha:'');
+  });
+}).catch(function(){});
+</script>
+</body></html>

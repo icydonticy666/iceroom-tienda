@@ -57,3 +57,11 @@
   Cache-Control: no-store, max-age=0
   X-Robots-Tag: noindex, nofollow
   Referrer-Policy: no-referrer
+
+# Versiones de plugins Pritti (20-nov-2026): los plugins lo leen al abrirse; cache corta.
+/plugins/versiones.json
+  Cache-Control: public, max-age=300
+  Access-Control-Allow-Origin: *
+
+/actualizar
+  Cache-Control: no-store, max-age=0

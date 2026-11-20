@@ -56,7 +56,7 @@
     panel.classList.remove('is-changing');void panel.offsetWidth;panel.classList.add('is-changing');
     if(p.key&&window.fbq)window.fbq('track','ViewContent',{content_ids:[p.key],content_type:'product',content_name:'Pritti '+p.name});
   }
-  fetch('/pritti-products.json?v=20261108a').then(function(r){if(!r.ok)throw Error('catalog');return r.json();}).then(function(data){catalog=data;}).catch(function(){tabs.forEach(function(tab){tab.addEventListener('click',function(){location.hash=tab.dataset.plugin;});});});
+  fetch('/pritti-products.json?v=20261120a').then(function(r){if(!r.ok)throw Error('catalog');return r.json();}).then(function(data){catalog=data;}).catch(function(){tabs.forEach(function(tab){tab.addEventListener('click',function(){location.hash=tab.dataset.plugin;});});});
   tabs.forEach(function(tab,index){
     tab.addEventListener('click',function(){render(tab.dataset.plugin);});
     tab.addEventListener('keydown',function(event){
