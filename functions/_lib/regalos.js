@@ -5,19 +5,23 @@
 // SWAP Pro se activa con una invitación de 1 cupo cuyo código se deriva del token (ver codigoSwap):
 // la fila de swap_invitaciones existe en D1, pero el código no aparece en el repo.
 
+// Plugins Pritti: versiones del 20-nov-2026 (pritti-20261120/, mismas que Payhip). Al sacar versión nueva,
+// subirlas a R2 con otro prefijo y cambiar estas rutas: todos los regalos y alianzas quedan al día.
 export const ARCHIVOS = {
   "plantilla-fl": { r2: "pack-swap-pro/Plantilla-FL-Studio.rar", nombre: "Plantilla de Grabación — FL Studio", so: "FL Studio 20+" },
-  "vocals-win": { r2: "pack-swap-pro/Pritti-Vocals-WIN.rar", nombre: "Pritti Vocals", so: "Windows" },
-  "vocals-mac": { r2: "pack-swap-pro/Pritti-Vocals-Mac.zip", nombre: "Pritti Vocals", so: "Mac" },
-  "backroom-win": { r2: "pack-swap-pro/Pritti-Backroom-WIN.rar", nombre: "Pritti Backroom", so: "Windows" },
-  "backroom-mac": { r2: "pack-swap-pro/Pritti-Backroom-Mac.zip", nombre: "Pritti Backroom", so: "Mac" },
-  "riri-win": { r2: "pack-swap-pro/Pritti-Riri-fx-WIN.zip", nombre: "Pritti Riri fx", so: "Windows" },
-  "riri-mac": { r2: "pack-swap-pro/Pritti-Riri-fx-Mac.zip", nombre: "Pritti Riri fx", so: "Mac" },
-  "grip-win": { r2: "pritti-grip/Pritti-Grip-WIN.rar", nombre: "Pritti Grip (beta)", so: "Windows" },
-  "grip-mac": { r2: "pritti-grip/Pritti-Grip-Mac.zip", nombre: "Pritti Grip (beta)", so: "Mac" },
-  "eco-win": { r2: "pritti-eco-delay/Pritti-Eco-Delay-WIN.rar", nombre: "Pritti Eco Delay", so: "Windows" },
-  "eco-mac": { r2: "pritti-eco-delay/Pritti-Eco-Delay-Mac.zip", nombre: "Pritti Eco Delay", so: "Mac" },
+  "vocals-win": { r2: "pritti-20261120/Pritti-Vocals-WIN.rar", nombre: "Pritti Vocals", so: "Windows" },
+  "vocals-mac": { r2: "pritti-20261120/Pritti-Vocals-Mac.zip", nombre: "Pritti Vocals", so: "Mac" },
+  "backroom-win": { r2: "pritti-20261120/Pritti-Backroom-WIN.rar", nombre: "Pritti Backroom", so: "Windows" },
+  "backroom-mac": { r2: "pritti-20261120/Pritti-Backroom-Mac.zip", nombre: "Pritti Backroom", so: "Mac" },
+  "riri-win": { r2: "pritti-20261120/Pritti-Riri-fx-WIN.zip", nombre: "Pritti Riri fx", so: "Windows" },
+  "riri-mac": { r2: "pritti-20261120/Pritti-Riri-fx-Mac.zip", nombre: "Pritti Riri fx", so: "Mac" },
+  "grip-win": { r2: "pritti-20261120/Pritti-Grip-WIN.rar", nombre: "Pritti Grip (beta)", so: "Windows" },
+  "grip-mac": { r2: "pritti-20261120/Pritti-Grip-Mac.zip", nombre: "Pritti Grip (beta)", so: "Mac" },
+  "eco-win": { r2: "pritti-20261120/Pritti-Eco-Delay-WIN.rar", nombre: "Pritti Eco Delay", so: "Windows" },
+  "eco-mac": { r2: "pritti-20261120/Pritti-Eco-Delay-Mac.zip", nombre: "Pritti Eco Delay", so: "Mac" },
 };
+
+const PRITTI_FULL = ["vocals-win", "vocals-mac", "backroom-win", "backroom-mac", "eco-win", "eco-mac", "grip-win", "grip-mac", "riri-win", "riri-mac"];
 
 const PACK_SWAP_PRO_FL = ["plantilla-fl", "vocals-win", "vocals-mac", "backroom-win", "backroom-mac", "riri-win", "riri-mac", "grip-win", "grip-mac"];
 
@@ -50,14 +54,48 @@ async function sha256(texto) {
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-export async function regaloDe(token) {
+// Alianza con productores (23-nov-2026): cada productor recibe su propio link con estos paquetes.
+// Se crean desde /estudio y viven en D1 (tabla alianzas), no en el repo.
+export const PAQUETES = {
+  "pritti-full-swap": {
+    titulo: "Full Pritti + SWAP Pro",
+    detalle: "Los 5 plugins Pritti (Vocals, Backroom, Eco Delay, Grip y Riri fx) y SWAP Pro, para Windows y Mac.",
+    archivos: PRITTI_FULL,
+    swapPro: true,
+  },
+};
+
+export async function tablaAlianzas(db) {
+  await db.prepare(
+    "CREATE TABLE IF NOT EXISTS alianzas (id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT NOT NULL UNIQUE, token TEXT NOT NULL, " +
+    "nombre TEXT NOT NULL, contacto TEXT, cupon TEXT, descuento INTEGER, paquete TEXT NOT NULL DEFAULT 'pritti-full-swap', " +
+    "activa INTEGER NOT NULL DEFAULT 1, visitas INTEGER NOT NULL DEFAULT 0, descargas INTEGER NOT NULL DEFAULT 0, " +
+    "creado TEXT NOT NULL, ultima TEXT)"
+  ).run();
+}
+
+/** Regalo del token: primero los fijos del código, después las alianzas de D1 (si hay env). */
+export async function regaloDe(token, env) {
   const t = String(token || "");
   if (!/^[A-Za-z0-9_-]{20,64}$/.test(t)) return null;
-  const regalo = REGALOS[await sha256(t)];
-  if (!regalo) return null;
-  if (regalo.vence && Date.now() > Date.parse(regalo.vence)) return null;
-  return regalo;
+  const hash = await sha256(t);
+  const fijo = REGALOS[hash];
+  if (fijo) return fijo.vence && Date.now() > Date.parse(fijo.vence) ? null : fijo;
+  if (!env?.PAYMENTS_DB) return null;
+  const fila = await env.PAYMENTS_DB.prepare("SELECT id, nombre, paquete, activa FROM alianzas WHERE hash = ?1")
+    .bind(hash).first().catch(() => null);
+  if (!fila || !fila.activa || !PAQUETES[fila.paquete]) return null;
+  return { ...PAQUETES[fila.paquete], alianzaId: fila.id, para: fila.nombre };
 }
+
+/** Cuenta visitas y descargas de un link de alianza (no falla la página si D1 falla). */
+export async function contarAlianza(env, regalo, campo) {
+  if (!regalo?.alianzaId || !env?.PAYMENTS_DB || !["visitas", "descargas"].includes(campo)) return;
+  await env.PAYMENTS_DB.prepare(`UPDATE alianzas SET ${campo} = ${campo} + 1, ultima = ?1 WHERE id = ?2`)
+    .bind(new Date().toISOString(), regalo.alianzaId).run().catch(() => {});
+}
+
+export { sha256 };
 
 /** Código de la invitación de SWAP Pro de este regalo (fila en D1 swap_invitaciones, 1 cupo). */
 export async function codigoSwap(token) {

@@ -1,4 +1,4 @@
-import { ARCHIVOS, regaloDe } from "../../_lib/regalos.js";
+import { ARCHIVOS, contarAlianza, regaloDe } from "../../_lib/regalos.js";
 
 // /regalo/<token>: página del regalo con descargas directas (sin cuenta) y activación de SWAP Pro.
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -28,11 +28,12 @@ function pagina(titulo, cuerpo) {
 <main class="pj-main">${cuerpo}</main></body></html>`;
 }
 
-export async function onRequestGet({ params }) {
-  const regalo = await regaloDe(params.token);
+export async function onRequestGet({ params, env }) {
+  const regalo = await regaloDe(params.token, env);
   if (!regalo) {
     return new Response(pagina("Enlace no válido", `<section class="pj-card"><h1>Este enlace no es válido.</h1><p class="pj-sub">Revisa que lo copiaste completo o escríbenos a <a href="mailto:soporte@iceroom.cl">soporte@iceroom.cl</a>.</p></section>`), { status: 404, headers: CABECERAS });
   }
+  await contarAlianza(env, regalo, "visitas");
   const base = `/regalo/${encodeURIComponent(params.token)}`;
   const filas = regalo.archivos.map((clave) => {
     const a = ARCHIVOS[clave];
@@ -65,7 +66,7 @@ export async function onRequestGet({ params }) {
   </script>` : "";
   const cuerpo = `
   <section class="pj-card pj-compra">
-    <p class="pj-eyebrow"><span class="pj-ok-dot" aria-hidden="true"></span> Regalo de iceroom</p>
+    <p class="pj-eyebrow"><span class="pj-ok-dot" aria-hidden="true"></span> ${regalo.alianzaId ? `Alianza iceroom × ${esc(regalo.para)}` : "Regalo de iceroom"}</p>
     <h1>${esc(regalo.titulo)}</h1>
     <p class="pj-sub">${esc(regalo.detalle)} Descarga directa, sin crear cuenta.</p>
     <ul class="rg-files">${filas}</ul>

@@ -44,6 +44,32 @@
       <p class="pj-empty pj-hidden" id="vacio" style="margin-top:14px">No hay proyectos aquí.</p>
     </section>
 
+    <section class="pj-card pj-hidden" id="vista-alianzas">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+        <h2 style="margin:0">Alianzas con productores</h2>
+        <button class="pj-btn ghost" type="button" id="al-recargar" style="min-height:34px;padding:6px 14px">Actualizar</button>
+      </div>
+      <p class="pj-sub" style="margin-bottom:14px">Cada productor recibe su link privado con Full Pritti + SWAP Pro (1 activación) y, si quieres, un código de descuento propio para su audiencia: así ves cuántas ventas trae cada uno.</p>
+      <form class="pj-form" id="al-form">
+        <div class="pj-row">
+          <label>Nombre o @ del productor<input name="nombre" required maxlength="80" placeholder="@productor"></label>
+          <label>Contacto (opcional)<input name="contacto" maxlength="160" placeholder="IG, correo o WhatsApp"></label>
+        </div>
+        <div class="pj-row">
+          <label>Descuento para su audiencia (%)<input name="descuento" type="number" min="0" max="50" value="15"></label>
+          <label>Código (opcional)<input name="cupon" maxlength="30" placeholder="Se arma con su nombre + %"></label>
+        </div>
+        <div class="pj-btns"><button class="pj-btn" type="submit">Crear acceso de alianza</button></div>
+        <p class="pj-msg" role="status"></p>
+      </form>
+      <div class="pj-delivery pj-hidden" id="al-nuevo" style="margin-top:16px"></div>
+      <table class="es-table" style="margin-top:18px">
+        <thead><tr><th>Productor</th><th class="es-hide">Código</th><th>Uso</th><th>Link</th></tr></thead>
+        <tbody id="al-filas"></tbody>
+      </table>
+      <p class="pj-empty pj-hidden" id="al-vacio" style="margin-top:14px">Aún no hay alianzas.</p>
+    </section>
+
     <section class="pj-card pj-hidden" id="vista-nuevo">
       <h2>Nuevo proyecto</h2>
       <p class="pj-sub" style="margin-bottom:14px">Para ventas por DM, regalos o pruebas. Le llega al cliente el mismo correo de bienvenida con su link.</p>
@@ -111,5 +137,6 @@
   </div>
 </main>
 <script src="/estudio.js?v=20261109a" defer></script>
+<script src="/estudio-alianzas.js?v=20261123a" defer></script>
 </body>
 </html>
