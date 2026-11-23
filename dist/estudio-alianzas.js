@@ -1,4 +1,4 @@
-// Panel /estudio: alianzas con productores (23-nov-2026). Usa la misma clave de la pestaña.
+// Panel /estudio: acceso para productores a lo último de Pritti + SWAP Pro (23-nov-2026). Usa la misma clave de la pestaña.
 (() => {
   const $ = (id) => document.getElementById(id);
   const seccion = $('vista-alianzas'), lista = $('vista-lista'), panel = $('panel');
@@ -63,7 +63,7 @@
       const boton = el('button', { type: 'button', class: 'pj-btn accent', text: 'Copiar link' });
       boton.addEventListener('click', () => copiar(a.link, boton));
       caja.append(el('div', {}, el('b', { text: `Acceso listo para ${a.nombre}` }),
-        el('small', { class: 'pj-hint', text: a.cupon ? `Código para su audiencia: ${a.cupon} (${a.descuento}% en toda la tienda)` : 'Sin código de descuento.' }),
+        el('small', { class: 'pj-hint', text: a.cupon ? `Código para su gente: ${a.cupon} (${a.descuento}% en toda la tienda)` : 'Sin código de descuento.' }),
         el('div', { class: 'pj-hint', style: 'word-break:break-all;margin-top:4px', text: a.link })), boton);
       caja.classList.remove('pj-hidden');
       cargar();

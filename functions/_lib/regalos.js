@@ -54,12 +54,13 @@ async function sha256(texto) {
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-// Alianza con productores (23-nov-2026): cada productor recibe su propio link con estos paquetes.
+// Acceso para productores (23-nov-2026): cada productor recibe su propio link con estos paquetes, sin
+// compromisos (pedido del usuario: "no tan asociar, sino darles acceso a lo último de los plugins y a swap").
 // Se crean desde /estudio y viven en D1 (tabla alianzas), no en el repo.
 export const PAQUETES = {
   "pritti-full-swap": {
-    titulo: "Full Pritti + SWAP Pro",
-    detalle: "Los 5 plugins Pritti (Vocals, Backroom, Eco Delay, Grip y Riri fx) y SWAP Pro, para Windows y Mac.",
+    titulo: "Lo último de Pritti + SWAP Pro",
+    detalle: "Los 5 plugins Pritti en su versión más nueva (Vocals, Backroom, Eco Delay, Grip y Riri fx) y SWAP Pro, para Windows y Mac. Cuando salga una versión nueva, el plugin te avisa y la bajas desde este mismo link.",
     archivos: PRITTI_FULL,
     swapPro: true,
   },

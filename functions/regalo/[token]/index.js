@@ -66,7 +66,7 @@ export async function onRequestGet({ params, env }) {
   </script>` : "";
   const cuerpo = `
   <section class="pj-card pj-compra">
-    <p class="pj-eyebrow"><span class="pj-ok-dot" aria-hidden="true"></span> ${regalo.alianzaId ? `Alianza iceroom × ${esc(regalo.para)}` : "Regalo de iceroom"}</p>
+    <p class="pj-eyebrow"><span class="pj-ok-dot" aria-hidden="true"></span> ${regalo.alianzaId ? `Acceso productor · ${esc(regalo.para)}` : "Regalo de iceroom"}</p>
     <h1>${esc(regalo.titulo)}</h1>
     <p class="pj-sub">${esc(regalo.detalle)} Descarga directa, sin crear cuenta.</p>
     <ul class="rg-files">${filas}</ul>
