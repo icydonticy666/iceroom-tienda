@@ -19,6 +19,10 @@ export const ARCHIVOS = {
   "grip-mac": { r2: "pritti-20261120/Pritti-Grip-Mac.zip", nombre: "Pritti Grip (beta)", so: "Mac" },
   "eco-win": { r2: "pritti-20261120/Pritti-Eco-Delay-WIN.rar", nombre: "Pritti Eco Delay", so: "Windows" },
   "eco-mac": { r2: "pritti-20261120/Pritti-Eco-Delay-Mac.zip", nombre: "Pritti Eco Delay", so: "Mac" },
+  // Todo en un archivo (24-nov-2026): SWAP 0.12.1 + los 5 Pritti del 20-nov + LEEME. Un solo .zip evita los
+  // bloqueos de Chrome con instaladores sueltos. Rehacer el .zip al sacar versiones nuevas.
+  "pack-win": { r2: "acceso-productor/iceroom-acceso-productor-Windows.zip", nombre: "Todo para Windows", so: "SWAP + 5 plugins Pritti · .zip · 39 MB" },
+  "pack-mac": { r2: "acceso-productor/iceroom-acceso-productor-Mac.zip", nombre: "Todo para Mac", so: "SWAP (Apple Silicon e Intel) + 5 plugins Pritti · .zip · 90 MB" },
 };
 
 const PRITTI_FULL = ["vocals-win", "vocals-mac", "backroom-win", "backroom-mac", "eco-win", "eco-mac", "grip-win", "grip-mac", "riri-win", "riri-mac"];
@@ -61,7 +65,8 @@ export const PAQUETES = {
   "pritti-full-swap": {
     titulo: "Lo último de Pritti + SWAP Pro",
     detalle: "Los 5 plugins Pritti en su versión más nueva (Vocals, Backroom, Eco Delay, Grip y Riri fx) y SWAP Pro, para Windows y Mac. Cuando salga una versión nueva, el plugin te avisa y la bajas desde este mismo link.",
-    archivos: PRITTI_FULL,
+    packs: ["pack-win", "pack-mac"],
+    archivos: ["pack-win", "pack-mac", ...PRITTI_FULL],
     swapPro: true,
   },
 };
@@ -73,6 +78,7 @@ export async function tablaAlianzas(db) {
     "activa INTEGER NOT NULL DEFAULT 1, visitas INTEGER NOT NULL DEFAULT 0, descargas INTEGER NOT NULL DEFAULT 0, " +
     "creado TEXT NOT NULL, ultima TEXT)"
   ).run();
+  await db.prepare("CREATE TABLE IF NOT EXISTS alianza_descargas (alianza_id INTEGER NOT NULL, archivo TEXT NOT NULL, creado TEXT NOT NULL)").run();
 }
 
 /** Regalo del token: primero los fijos del código, después las alianzas de D1 (si hay env). */
@@ -90,10 +96,16 @@ export async function regaloDe(token, env) {
 }
 
 /** Cuenta visitas y descargas de un link de alianza (no falla la página si D1 falla). */
-export async function contarAlianza(env, regalo, campo) {
+export async function contarAlianza(env, regalo, campo, archivo = "") {
   if (!regalo?.alianzaId || !env?.PAYMENTS_DB || !["visitas", "descargas"].includes(campo)) return;
+  const ahora = new Date().toISOString();
   await env.PAYMENTS_DB.prepare(`UPDATE alianzas SET ${campo} = ${campo} + 1, ultima = ?1 WHERE id = ?2`)
-    .bind(new Date().toISOString(), regalo.alianzaId).run().catch(() => {});
+    .bind(ahora, regalo.alianzaId).run().catch(() => {});
+  // Qué bajó cada productor (Windows, Mac o un plugin suelto), para el seguimiento en /estudio.
+  if (campo === "descargas" && archivo) {
+    await env.PAYMENTS_DB.prepare("INSERT INTO alianza_descargas (alianza_id, archivo, creado) VALUES (?1, ?2, ?3)")
+      .bind(regalo.alianzaId, archivo, ahora).run().catch(() => {});
+  }
 }
 
 export { sha256 };

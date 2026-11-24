@@ -36,7 +36,8 @@
         if (a.activa && !confirm(`¿Desactivar el link de ${a.nombre}? Deja de descargar y su SWAP Pro sin usar se cierra.`)) return;
         try { await api('POST', { accion: 'activa', id: a.id, activa: !a.activa }); cargar(); } catch (err) { alert(err.message); }
       });
-      const uso = `${a.visitas} visitas · ${a.descargas} descargas · SWAP Pro: ${a.swapActivado.length ? a.swapActivado.join(', ') : 'sin activar'}`;
+      const bajo = (a.bajo || []).map((b) => b.archivo + (b.veces > 1 ? ` ×${b.veces}` : '')).join(', ');
+      const uso = `${a.visitas} visitas · bajó: ${bajo || 'nada aún'} · SWAP Pro: ${a.swapActivado.length ? a.swapActivado.join(', ') : 'sin activar'}`;
       tbody.append(el('tr', {},
         el('td', {}, el('b', { text: a.nombre }), el('br'),
           el('small', { class: 'pj-hint', text: (a.contacto ? a.contacto + ' · ' : '') + 'creado ' + fecha(a.creado) + (a.activa ? '' : ' · DESACTIVADO') })),

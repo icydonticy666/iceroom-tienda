@@ -22,6 +22,10 @@ function pagina(titulo, cuerpo) {
 .rg-files .pj-btn{min-height:40px;padding:9px 16px;flex:none}
 .rg-os{display:flex;gap:8px;flex-wrap:wrap}.rg-os label{display:flex!important;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--line-2);border-radius:999px;cursor:pointer;color:var(--text)!important}
 .rg-os input{width:auto!important}
+.rg-files li.rg-pack{border-color:#9484fc66;background:#9484fc12;padding:18px}
+.rg-files li.rg-pack b{font-size:17px}
+.rg-sueltos{margin-top:16px}.rg-sueltos summary{cursor:pointer;color:var(--text-2);font-size:13px}
+.rg-sueltos[open] summary{margin-bottom:6px}
 @media(max-width:560px){.rg-files li{flex-direction:column;align-items:stretch}.rg-files .pj-btn{width:100%}}
 </style></head><body>
 <header class="pj-top"><a class="pj-logo" href="/"><svg viewBox="0 0 84 81" aria-hidden="true"><path d="M16 0H68L84 26L42 81L0 26Z" fill="currentColor"/></svg>iceroom</a><small>Tu regalo</small></header>
@@ -35,11 +39,41 @@ export async function onRequestGet({ params, env }) {
   }
   await contarAlianza(env, regalo, "visitas");
   const base = `/regalo/${encodeURIComponent(params.token)}`;
-  const filas = regalo.archivos.map((clave) => {
+  const fila = (clave, principal = false) => {
     const a = ARCHIVOS[clave];
-    return `<li><div><b>${esc(a.nombre)}</b><small>${esc(a.so)}</small></div><a class="pj-btn ghost" href="${base}/d/${encodeURIComponent(clave)}" download>Descargar ↓</a></li>`;
-  }).join("");
-  const swap = regalo.swapPro ? `
+    return `<li${principal ? ' class="rg-pack"' : ""}><div><b>${esc(a.nombre)}</b><small>${esc(a.so)}</small></div><a class="pj-btn${principal ? " accent" : " ghost"}" href="${base}/d/${encodeURIComponent(clave)}" download>Descargar ↓</a></li>`;
+  };
+  // Con paquetes (acceso productor): todo en un .zip por sistema arriba, archivos sueltos plegados abajo.
+  const packs = regalo.packs || [];
+  const sueltos = regalo.archivos.filter((c) => !packs.includes(c));
+  const filas = packs.length
+    ? packs.map((c) => fila(c, true)).join("")
+    : sueltos.map((c) => fila(c)).join("");
+  const extra = packs.length && sueltos.length
+    ? `<details class="rg-sueltos"><summary>¿Prefieres bajar los plugins uno por uno?</summary><ul class="rg-files">${sueltos.map((c) => fila(c)).join("")}</ul></details>`
+    : "";
+  // Si el .zip ya trae SWAP, el formulario solo activa Pro (no vuelve a descargar).
+  const soloActivar = packs.length > 0;
+  const swap = regalo.swapPro && soloActivar ? `
+  <section class="pj-card">
+    <h2>Activa tu SWAP Pro</h2>
+    <p class="pj-sub">SWAP viene en tu descarga. Escribe tu correo para activar Pro; después abre SWAP y entra con ese mismo correo (te llega un código).</p>
+    <form class="pj-form" id="rg-swap" style="margin-top:16px">
+      <label>Tu correo<input type="email" name="email" autocomplete="email" required placeholder="tu@correo.com"></label>
+      <input type="hidden" name="os" value="windows">
+      <input type="text" name="web" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
+      <div class="pj-btns"><button class="pj-btn accent" type="submit">Activar SWAP Pro</button></div>
+      <p class="pj-msg" role="status"></p>
+    </form>
+  </section>
+  <script>
+  (function(){var f=document.getElementById('rg-swap');if(!f)return;if(/Mac/i.test(navigator.platform||navigator.userAgent))f.elements.os.value='mac';f.addEventListener('submit',function(e){e.preventDefault();var m=f.querySelector('.pj-msg'),b=f.querySelector('button');b.disabled=true;m.className='pj-msg';m.textContent='Activando tu SWAP Pro…';
+  fetch('${base}/swap',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:f.elements.email.value,os:f.elements.os.value,web:f.elements.web.value})})
+  .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'No se pudo activar.');return j})})
+  .then(function(j){m.className='pj-msg ok';m.textContent='¡Listo! SWAP Pro quedó activo para '+j.email+'. Abre SWAP y entra con ese correo.'})
+  .catch(function(err){m.className='pj-msg error';m.textContent=err.message})
+  .finally(function(){b.disabled=false})})})();
+  </script>` : regalo.swapPro ? `
   <section class="pj-card">
     <h2>SWAP Pro</h2>
     <p class="pj-sub">Escribe tu correo y elige tu sistema: activamos SWAP Pro para ese correo y empieza la descarga. Después, en SWAP, entra con ese mismo correo (te llega un código) y Pro queda activo.</p>
@@ -69,7 +103,7 @@ export async function onRequestGet({ params, env }) {
     <p class="pj-eyebrow"><span class="pj-ok-dot" aria-hidden="true"></span> ${regalo.alianzaId ? `Acceso productor · ${esc(regalo.para)}` : "Regalo de iceroom"}</p>
     <h1>${esc(regalo.titulo)}</h1>
     <p class="pj-sub">${esc(regalo.detalle)} Descarga directa, sin crear cuenta.</p>
-    <ul class="rg-files">${filas}</ul>
+    <ul class="rg-files">${filas}</ul>${extra}
   </section>${swap}
   <p class="pj-hint">¿Problemas para instalar? Mira la <a href="/swap-ayuda">ayuda de instalación</a> o escribe a <a href="mailto:soporte@iceroom.cl">soporte@iceroom.cl</a>. Guarda este link: puedes volver a descargar cuando quieras.</p>`;
   return new Response(pagina(regalo.titulo, cuerpo), { headers: CABECERAS });

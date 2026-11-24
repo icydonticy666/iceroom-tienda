@@ -1,5 +1,5 @@
 import { json, siteOrigin } from "../_lib/http.js";
-import { PAQUETES, codigoSwap, sha256, tablaAlianzas } from "../_lib/regalos.js";
+import { ARCHIVOS, PAQUETES, codigoSwap, sha256, tablaAlianzas } from "../_lib/regalos.js";
 
 // Alianza con productores (23-nov-2026), desde el panel /estudio (Bearer ESTUDIO_TOKEN).
 // Cada alianza = link privado /regalo/<token> con el paquete (Full Pritti + SWAP Pro, 1 activación de
@@ -44,11 +44,14 @@ async function crearCupon(env, codigo, descuento, nombre) {
 async function vista(env, fila, origin) {
   const codigo = await codigoSwap(fila.token);
   const usos = await env.PAYMENTS_DB.prepare("SELECT email, creado FROM swap_invitacion_usos WHERE codigo = ?1").bind(codigo).all().catch(() => ({ results: [] }));
+  const bajadas = await env.PAYMENTS_DB.prepare("SELECT archivo, COUNT(*) AS n, MAX(creado) AS ultima FROM alianza_descargas WHERE alianza_id = ?1 GROUP BY archivo")
+    .bind(fila.id).all().catch(() => ({ results: [] }));
   return {
     id: fila.id, nombre: fila.nombre, contacto: fila.contacto || "", cupon: fila.cupon || "", descuento: fila.descuento || 0,
     paquete: PAQUETES[fila.paquete]?.titulo || fila.paquete, activa: Boolean(fila.activa),
     visitas: fila.visitas, descargas: fila.descargas, creado: fila.creado, ultima: fila.ultima,
     link: `${origin}/regalo/${fila.token}`, swapActivado: (usos.results || []).map((u) => u.email),
+    bajo: (bajadas.results || []).map((b) => ({ archivo: ARCHIVOS[b.archivo]?.nombre ? `${ARCHIVOS[b.archivo].nombre}${b.archivo.startsWith("pack-") ? "" : " " + ARCHIVOS[b.archivo].so}` : b.archivo, veces: b.n, ultima: b.ultima })),
   };
 }
 

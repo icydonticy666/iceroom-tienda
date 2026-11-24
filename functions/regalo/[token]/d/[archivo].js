@@ -8,11 +8,11 @@ export async function onRequestGet({ params, env }) {
   if (!env.ENTREGAS) return new Response("Descarga no disponible ahora.", { status: 503 });
   const objeto = await env.ENTREGAS.get(ARCHIVOS[clave].r2);
   if (!objeto) return new Response("Archivo no encontrado. Escribe a soporte@iceroom.cl.", { status: 404 });
-  await contarAlianza(env, regalo, "descargas");
+  await contarAlianza(env, regalo, "descargas", clave);
   const nombre = ARCHIVOS[clave].r2.split("/").pop();
   return new Response(objeto.body, {
     headers: {
-      "content-type": "application/octet-stream",
+      "content-type": nombre.endsWith(".zip") ? "application/zip" : "application/octet-stream",
       "content-length": String(objeto.size),
       "content-disposition": `attachment; filename="${nombre}"`,
       "cache-control": "private, no-store",
