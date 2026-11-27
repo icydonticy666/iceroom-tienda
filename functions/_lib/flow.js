@@ -17,7 +17,7 @@ export async function flowSign(secret, params) {
   return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-async function flowRequest(env, path, params, method) {
+export async function flowRequest(env, path, params, method) {
   const signed = { ...params, s: await flowSign(env.FLOW_SECRET_KEY, params) };
   const body = new URLSearchParams(signed);
   const url = method === "GET"

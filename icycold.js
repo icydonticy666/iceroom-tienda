@@ -18,6 +18,7 @@
   };
   const PRECIO = { cl: { "mix-master": 89990, "recording-mix": 119990, "full-remoto": 119990, "full-presencial": 149990, "artist-dev": 189990 }, int: { "mix-master": 65, "full-remoto": 99, "artist-dev": 149 } };
   const clp = (n) => "$" + n.toLocaleString("es-CL");
+  let pagoDirecto = false; // se abre cuando /api/icycold-suscribir confirma que los planes existen en Flow
   const form = $("#ic-form"), select = $("#ic-plan"), resumen = $("#ic-sum");
   let region = "cl";
 
@@ -30,6 +31,9 @@
   function pintarResumen() {
     const nombre = select.selectedOptions[0]?.text.split(" · ")[0] || "";
     const base = PRECIO[region][select.value];
+    const pagar = $("#ic-pagar");
+    if (pagar) pagar.textContent = region === "cl" && pagoDirecto && base ? `Pagar ${clp(base - 10000)} y empezar` : "Reservar mi membresía";
+    for (const el of $$("[data-modo]")) el.hidden = el.dataset.modo !== (region === "cl" && pagoDirecto ? "pago" : "reserva") || !(el.dataset.region || region).includes(region);
     if (!base) { resumen.replaceChildren(); return; }
     const b = document.createElement("b"); b.textContent = nombre;
     if (region === "int") { resumen.replaceChildren(b, `Desde US$${base} al mes · remoto`); return; }
@@ -91,31 +95,65 @@
     revisar();
   }
 
-  // Reserva (postulación)
+  fetch("/api/icycold-suscribir", { cache: "no-store" }).then((r) => r.json()).then((j) => {
+    pagoDirecto = Boolean(j.directo); pintarResumen();
+  }).catch(() => {});
+
+  // Vuelta del pago con Flow (/api/icycold-flow-tarjeta redirige con ?pago=…)
+  const listo = $("#ic-done");
+  function mostrarListo(indice, titulo, texto) {
+    form.hidden = true;
+    listo.querySelector(".ic-index").textContent = indice;
+    listo.querySelector("h2").textContent = titulo;
+    listo.querySelector(".ic-sub").textContent = texto;
+    listo.hidden = false;
+  }
+  const pago = new URLSearchParams(location.search).get("pago");
+  if (pago) {
+    const msg = $(".ic-msg", form);
+    if (pago === "ok") mostrarListo("Pago aprobado", "Bienvenido a ICYCOLD.", "Tu membresía está activa. Te llegó un correo con el comprobante y te escribo por ahí para partir con tu primera canción.");
+    else if (pago === "pendiente") mostrarListo("Pago en revisión", "Tu pago se está procesando.", "Flow lo está confirmando. Apenas se apruebe te escribo por correo; no hace falta que pagues de nuevo.");
+    else {
+      msg.className = "ic-msg error";
+      msg.textContent = pago === "rechazado" ? "Tu banco rechazó el cobro. Prueba con otra tarjeta."
+        : pago === "sin-tarjeta" ? "No se registró la tarjeta. Inténtalo de nuevo."
+        : "No pudimos completar el pago. Inténtalo de nuevo o escríbenos a soporte@iceroom.cl.";
+    }
+    history.replaceState(null, "", location.pathname + "#postular");
+  }
+
+  // Pago directo (Chile, Flow) o reserva (internacional)
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const msg = $(".ic-msg", form), boton = $("button[type=submit]", form);
     const datos = Object.fromEntries(new FormData(form).entries());
     msg.className = "ic-msg";
     $$("[aria-invalid]", form).forEach((el) => el.removeAttribute("aria-invalid"));
-    const faltan = ["nombre", "email", "musica"].map((n) => form.elements[n]).filter((el) => !el.value.trim() || !el.checkValidity());
+    const directo = region === "cl" && pagoDirecto;
+    const campos = directo ? ["nombre", "email"] : ["nombre", "email", "musica"];
+    const faltan = campos.map((n) => form.elements[n]).filter((el) => !el.value.trim() || !el.checkValidity());
     if (faltan.length) {
       faltan.forEach((el) => el.setAttribute("aria-invalid", "true"));
       msg.className = "ic-msg error";
-      msg.textContent = "Completa tu nombre, un correo válido y un link a tu música.";
+      msg.textContent = directo ? "Completa tu nombre y un correo válido." : "Completa tu nombre, un correo válido y un link a tu música.";
       faltan[0].focus();
       return;
     }
-    boton.disabled = true; msg.textContent = "Enviando…";
+    boton.disabled = true; msg.textContent = directo ? "Conectando con Flow…" : "Enviando…";
+    let seVa = false;
     try {
-      const r = await fetch("/api/icycold-postulacion", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(datos) });
+      const r = await fetch(directo ? "/api/icycold-suscribir" : "/api/icycold-postulacion", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(datos) });
       const j = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(j.error || "No se pudo enviar. Intenta de nuevo.");
+      if (directo) {
+        if (!/^https:\/\/(www|sandbox)\.flow\.cl\//.test(j.url || "")) throw new Error("No se pudo abrir el pago. Intenta de nuevo.");
+        seVa = true; location.href = j.url; return;
+      }
       form.hidden = true;
-      const listo = $("#ic-done"); listo.hidden = false; listo.focus();
+      listo.hidden = false; listo.focus();
     } catch (err) {
       msg.className = "ic-msg error"; msg.textContent = err.message;
-    } finally { boton.disabled = false; }
+    } finally { if (!seVa) boton.disabled = false; }
   });
 
   // Animaciones de entrada

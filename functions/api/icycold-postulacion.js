@@ -2,17 +2,12 @@ import { json } from "../_lib/http.js";
 import { correoAvisos, enviarCorreo } from "../_lib/proyectos.js";
 
 // Postulación a las membresías ICYCOLD (iceroom.cl/icycold, 27-nov-2026).
-// Fase 1: no cobra. Guarda la postulación, avisa a soporte@ y le confirma al artista;
+// Desde el 27-nov-2026 solo para planes internacionales (Chile paga directo con Flow: icycold-suscribir.js).
+// No cobra. Guarda la postulación, avisa a soporte@ y le confirma al artista;
 // si icycold acepta, se le manda el link de pago del primer mes (Chile: $10.000 menos).
 
-export const PLANES = {
-  "mix-master":      { nombre: "Mix & Master",          cl: 89990,  usd: 65 },
-  "recording-mix":   { nombre: "Recording + Mix",       cl: 119990, usd: null },
-  "full-remoto":     { nombre: "Full Prod Remoto",      cl: 119990, usd: 99, nombreInt: "Full Production" },
-  "full-presencial": { nombre: "Full Prod Presencial",  cl: 149990, usd: null },
-  "artist-dev":      { nombre: "Artist Development",    cl: 189990, usd: 149 },
-};
-export const DESCUENTO_PRIMER_MES = 10000;
+import { DESCUENTO_PRIMER_MES, PLANES } from "../_lib/icycold.js";
+export { DESCUENTO_PRIMER_MES, PLANES };
 
 const limpio = (v, max) => String(v || "").replace(/[\u0000-\u0008\u000b-\u001f]/g, " ").trim().slice(0, max);
 const clp = (n) => "$" + n.toLocaleString("es-CL");

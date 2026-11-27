@@ -44,12 +44,29 @@
       <p class="pj-empty pj-hidden" id="vacio" style="margin-top:14px">No hay proyectos aquí.</p>
     </section>
 
+    <section class="pj-card pj-hidden" id="vista-icycold-pagas">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+        <h2 style="margin:0">Membresías ICYCOLD · pagadas (Chile, Flow)</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="pj-btn ghost" type="button" id="icm-planes" style="min-height:34px;padding:6px 14px">Crear planes en Flow</button>
+          <button class="pj-btn ghost" type="button" id="icm-recargar" style="min-height:34px;padding:6px 14px">Actualizar</button>
+        </div>
+      </div>
+      <p class="pj-sub" style="margin-bottom:14px">El artista paga el primer mes con $10.000 menos y Flow cobra el precio normal cada mes desde el siguiente. "Crear planes en Flow" se usa una sola vez, antes de la primera venta. Garantía de 48 h: devuelve el pago en el panel de Flow y cancela aquí de inmediato.</p>
+      <p class="pj-hint" id="icm-msg" role="status" aria-live="polite"></p>
+      <table class="es-table">
+        <thead><tr><th>Artista</th><th>Membresía</th><th class="es-hide">Estado</th><th></th></tr></thead>
+        <tbody id="icm-filas"></tbody>
+      </table>
+      <p class="pj-empty pj-hidden" id="icm-vacio" style="margin-top:14px">Todavía no hay membresías pagadas.</p>
+    </section>
+
     <section class="pj-card pj-hidden" id="vista-icycold">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
-        <h2 style="margin:0">Membresías ICYCOLD · postulaciones</h2>
+        <h2 style="margin:0">Membresías ICYCOLD · reservas internacionales</h2>
         <button class="pj-btn ghost" type="button" id="ic-recargar" style="min-height:34px;padding:6px 14px">Actualizar</button>
       </div>
-      <p class="pj-sub" style="margin-bottom:14px">Llegan desde iceroom.cl/icycold (también por correo a soporte@). Responde por correo; si aceptas, mándale el link de pago del primer mes.</p>
+      <p class="pj-sub" style="margin-bottom:14px">Artistas fuera de Chile que reservan desde iceroom.cl/icycold (también llegan por correo a soporte@). Respóndeles con el link de PayPal.</p>
       <div class="es-filters" role="group" aria-label="Filtro de postulaciones">
         <button type="button" data-ic-filtro="nueva" aria-pressed="true">Nuevas</button>
         <button type="button" data-ic-filtro="aceptada" aria-pressed="false">Aceptadas</button>
@@ -156,6 +173,6 @@
 </main>
 <script src="/estudio.js?v=20261109a" defer></script>
 <script src="/estudio-alianzas.js?v=20261124a" defer></script>
-<script src="/estudio-icycold.js?v=20261127a" defer></script>
+<script src="/estudio-icycold.js?v=20261127b" defer></script>
 </body>
 </html>
