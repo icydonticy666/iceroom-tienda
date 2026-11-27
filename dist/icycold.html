@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/icycold.css?v=20261127a">
+<link rel="stylesheet" href="/icycold.css?v=20261127b">
 </head>
 <body>
 <a href="#contenido" class="ic-skip">Ir al contenido</a>
@@ -36,7 +36,7 @@
     <a href="#membresias">Membresías</a>
     <a href="#como">Cómo funciona</a>
   </nav>
-  <a class="ic-btn ic-btn-sm" href="#postular">Postular</a>
+  <a class="ic-btn ic-btn-sm" href="#postular">Reservar</a>
 </header>
 
 <main id="contenido">
@@ -45,10 +45,12 @@
       <p class="ic-kicker">Artista · productor musical — Santiago, Chile</p>
       <h1 class="ic-word" aria-label="ICYCOLD"><span>ICY</span><span>COLD</span></h1>
       <p class="ic-lead">Hagamos tu próximo disco.</p>
-      <p class="ic-sub">Membresías mensuales de producción, grabación y mezcla. Una canción al mes, trabajada directo conmigo.</p>
+      <p class="ic-sub">Membresías mensuales de producción, grabación y mezcla. Cada mes, una canción nueva trabajada directo conmigo.</p>
+      <p class="ic-offer" data-nota="cl">Primer mes desde <b>$79.990</b> <span>· $10.000 menos</span></p>
+      <p class="ic-offer" data-nota="int" hidden>Planes remotos desde <b>US$65</b> <span>al mes</span></p>
       <div class="ic-cta">
-        <a class="ic-btn" href="#membresias">Ver membresías</a>
-        <a class="ic-link" href="#postular">Postular <span aria-hidden="true">→</span></a>
+        <a class="ic-btn" href="#membresias">Elegir mi membresía</a>
+        <a class="ic-link" href="#como">Cómo funciona <span aria-hidden="true">→</span></a>
       </div>
     </div>
     <figure class="ic-hero-photo">
@@ -100,8 +102,8 @@
     <header class="ic-head ic-head-row">
       <div>
         <p class="ic-index">02 — Membresías</p>
-        <h2>Haz música todos los meses.</h2>
-        <p class="ic-sub">Una canción al mes. Eliges cuánto quieres que hagamos juntos.</p>
+        <h2>Elige tu plan y empieza este mes.</h2>
+        <p class="ic-sub">Cada mes, una canción nueva trabajada directo conmigo. Eliges cuánto hacemos juntos.</p>
       </div>
       <div class="ic-switch" role="radiogroup" aria-label="Dónde estás">
         <button type="button" role="radio" aria-checked="true" data-region="cl">Chile</button>
@@ -113,37 +115,37 @@
       <article class="ic-plan" data-plan="mix-master">
         <p class="ic-tag">Remoto</p>
         <h3>Mix &amp; Master</h3>
-        <p class="ic-desc">Mezcla, masterización y edición vocal.</p>
-        <div class="ic-price"><span class="ic-first">Primer mes</span><b>$79.990</b><small>luego $89.990 CLP / mes</small></div>
-        <button type="button" class="ic-btn ic-btn-line" data-elegir="mix-master">Postular</button>
+        <ul class="ic-inc"><li>1 canción al mes</li><li>Mezcla y masterización</li><li>Edición vocal</li></ul>
+        <div class="ic-price"><span class="ic-first">Primer mes −$10.000</span><span class="ic-was">$89.990</span><b>$79.990</b><small>luego $89.990 CLP / mes</small></div>
+        <button type="button" class="ic-btn ic-btn-line" data-elegir="mix-master">Quiero este plan</button>
       </article>
       <article class="ic-plan" data-plan="recording-mix">
         <p class="ic-tag">Estudio · Santiago</p>
         <h3>Recording + Mix</h3>
-        <p class="ic-desc">Grabación, dirección vocal y mezcla. 2 h de estudio al mes.</p>
-        <div class="ic-price"><span class="ic-first">Primer mes</span><b>$109.990</b><small>luego $119.990 CLP / mes</small></div>
-        <button type="button" class="ic-btn ic-btn-line" data-elegir="recording-mix">Postular</button>
+        <ul class="ic-inc"><li>1 canción al mes</li><li>2 h de estudio al mes</li><li>Grabación y dirección vocal</li><li>Mezcla</li></ul>
+        <div class="ic-price"><span class="ic-first">Primer mes −$10.000</span><span class="ic-was">$119.990</span><b>$109.990</b><small>luego $119.990 CLP / mes</small></div>
+        <button type="button" class="ic-btn ic-btn-line" data-elegir="recording-mix">Quiero este plan</button>
       </article>
       <article class="ic-plan" data-plan="full-remoto">
         <p class="ic-tag">Remoto</p>
         <h3>Full Prod Remoto</h3>
-        <p class="ic-desc">Instrumental, composición y Mix &amp; Master.</p>
-        <div class="ic-price"><span class="ic-first">Primer mes</span><b>$109.990</b><small>luego $119.990 CLP / mes</small></div>
-        <button type="button" class="ic-btn ic-btn-line" data-elegir="full-remoto">Postular</button>
+        <ul class="ic-inc"><li>1 canción al mes</li><li>Instrumental y composición</li><li>Mix &amp; Master</li></ul>
+        <div class="ic-price"><span class="ic-first">Primer mes −$10.000</span><span class="ic-was">$119.990</span><b>$109.990</b><small>luego $119.990 CLP / mes</small></div>
+        <button type="button" class="ic-btn ic-btn-line" data-elegir="full-remoto">Quiero este plan</button>
       </article>
       <article class="ic-plan" data-plan="full-presencial">
         <p class="ic-tag">Estudio · Santiago</p>
         <h3>Full Prod Presencial</h3>
-        <p class="ic-desc">Instrumental, grabación, dirección artística y mezcla. 2 h de estudio al mes.</p>
-        <div class="ic-price"><span class="ic-first">Primer mes</span><b>$139.990</b><small>luego $149.990 CLP / mes</small></div>
-        <button type="button" class="ic-btn ic-btn-line" data-elegir="full-presencial">Postular</button>
+        <ul class="ic-inc"><li>1 canción al mes</li><li>2 h de estudio al mes</li><li>Instrumental y grabación</li><li>Dirección artística</li><li>Mezcla</li></ul>
+        <div class="ic-price"><span class="ic-first">Primer mes −$10.000</span><span class="ic-was">$149.990</span><b>$139.990</b><small>luego $149.990 CLP / mes</small></div>
+        <button type="button" class="ic-btn ic-btn-line" data-elegir="full-presencial">Quiero este plan</button>
       </article>
       <article class="ic-plan ic-plan-top" data-plan="artist-dev">
         <p class="ic-tag">Estudio · Santiago</p>
         <h3>Artist Development</h3>
-        <p class="ic-desc">Producción personalizada y desarrollo artístico. 2 h de estudio por canción.</p>
-        <div class="ic-price"><span class="ic-first">Primer mes</span><b>$179.990</b><small>luego $189.990 CLP / mes</small></div>
-        <button type="button" class="ic-btn" data-elegir="artist-dev">Postular</button>
+        <ul class="ic-inc"><li>1 canción al mes</li><li>2 h de estudio por canción</li><li>Producción personalizada</li><li>Desarrollo artístico</li></ul>
+        <div class="ic-price"><span class="ic-first">Primer mes −$10.000</span><span class="ic-was">$189.990</span><b>$179.990</b><small>luego $189.990 CLP / mes</small></div>
+        <button type="button" class="ic-btn" data-elegir="artist-dev">Quiero este plan</button>
       </article>
     </div>
 
@@ -151,25 +153,30 @@
       <article class="ic-plan" data-plan="mix-master">
         <p class="ic-tag">Remoto</p>
         <h3>Mix &amp; Master</h3>
-        <p class="ic-desc">Mezcla, masterización y edición vocal.</p>
+        <ul class="ic-inc"><li>1 canción al mes</li><li>Mezcla y masterización</li><li>Edición vocal</li></ul>
         <div class="ic-price"><span class="ic-first">Desde</span><b>US$65</b><small>al mes</small></div>
-        <button type="button" class="ic-btn ic-btn-line" data-elegir="mix-master">Postular</button>
+        <button type="button" class="ic-btn ic-btn-line" data-elegir="mix-master">Quiero este plan</button>
       </article>
       <article class="ic-plan" data-plan="full-remoto">
         <p class="ic-tag">Remoto</p>
         <h3>Full Production</h3>
-        <p class="ic-desc">Instrumental, composición y Mix &amp; Master.</p>
+        <ul class="ic-inc"><li>1 canción al mes</li><li>Instrumental y composición</li><li>Mix &amp; Master</li></ul>
         <div class="ic-price"><span class="ic-first">Desde</span><b>US$99</b><small>al mes</small></div>
-        <button type="button" class="ic-btn ic-btn-line" data-elegir="full-remoto">Postular</button>
+        <button type="button" class="ic-btn ic-btn-line" data-elegir="full-remoto">Quiero este plan</button>
       </article>
       <article class="ic-plan ic-plan-top" data-plan="artist-dev">
         <p class="ic-tag">Remoto</p>
         <h3>Artist Development</h3>
-        <p class="ic-desc">Producción personalizada y desarrollo artístico, a distancia.</p>
+        <ul class="ic-inc"><li>1 canción al mes</li><li>Producción personalizada</li><li>Desarrollo artístico, a distancia</li></ul>
         <div class="ic-price"><span class="ic-first">Desde</span><b>US$149</b><small>al mes</small></div>
-        <button type="button" class="ic-btn" data-elegir="artist-dev">Postular</button>
+        <button type="button" class="ic-btn" data-elegir="artist-dev">Quiero este plan</button>
       </article>
     </div>
+    <ul class="ic-perks">
+      <li><b>Directo con icycold</b><span>Cada canción la trabajo yo, contigo.</span></li>
+      <li><b>Una canción nueva al mes</b><span>Un lanzamiento tras otro, con ritmo constante.</span></li>
+      <li><b>Hoy no pagas nada</b><span>Reservas tu cupo y pagas el primer mes cuando te lo confirme.</span></li>
+    </ul>
     <p class="ic-note" data-nota="cl">Precios en pesos chilenos. El descuento de $10.000 aplica solo al primer mes.</p>
     <p class="ic-note" data-nota="int" hidden>Planes remotos en dólares, para artistas fuera de Chile.</p>
   </section>
@@ -177,21 +184,21 @@
   <section class="ic-section" id="como">
     <header class="ic-head">
       <p class="ic-index">03 — Cómo funciona</p>
-      <h2>De un DM a una canción por mes.</h2>
+      <h2>De elegir tu plan a tu canción del mes.</h2>
     </header>
     <ol class="ic-steps">
-      <li><b>01</b><h3>Postulas</h3><p>Eliges tu membresía y me mandas un link a tu música. Postular no cuesta nada.</p></li>
-      <li><b>02</b><h3>Escucho tu música</h3><p>Si hacemos match, te respondo por correo con los siguientes pasos.</p></li>
-      <li><b>03</b><h3>Pagas el primer mes</h3><p>Te llega el link de pago. En Chile, el primer mes va con $10.000 de descuento.</p></li>
+      <li><b>01</b><h3>Eliges tu plan</h3><p>Reservas tu membresía con tu nombre, tu correo y un link a tu música. Reservar es gratis.</p></li>
+      <li><b>02</b><h3>Confirmo tu cupo</h3><p>Escucho tu música y te confirmo por correo, con el link para pagar.</p></li>
+      <li><b>03</b><h3>Pagas el primer mes</h3><p>En Chile, el primer mes va con $10.000 de descuento.</p></li>
       <li><b>04</b><h3>Una canción al mes</h3><p>Grabamos, producimos y mezclamos tu canción del mes. Al siguiente, la que viene.</p></li>
     </ol>
   </section>
 
   <section class="ic-section ic-apply" id="postular">
     <div class="ic-apply-side">
-      <p class="ic-index">04 — Postular</p>
-      <h2>Cuéntame qué estás haciendo.</h2>
-      <p class="ic-sub">Te respondo por correo en los próximos días.</p>
+      <p class="ic-index">04 — Empezar</p>
+      <h2>Reserva tu membresía.</h2>
+      <p class="ic-sub">Elige tu plan y déjame tus datos. Te confirmo el cupo por correo y te mando el link para pagar el primer mes.</p>
       <figure><img src="/img/icycold/estudio.webp" width="1000" height="1500" alt="icycold produciendo en el estudio" loading="lazy"></figure>
     </div>
     <form class="ic-form" id="ic-form" novalidate>
@@ -200,7 +207,8 @@
         <label><input type="radio" name="region" value="cl" checked> Chile</label>
         <label><input type="radio" name="region" value="int"> Fuera de Chile</label>
       </fieldset>
-      <label>Membresía<select name="plan" id="ic-plan" required></select></label>
+      <label>Tu membresía<select name="plan" id="ic-plan" required></select></label>
+      <div class="ic-sum" id="ic-sum" aria-live="polite"></div>
       <div class="ic-row">
         <label>Tu nombre<input name="nombre" required maxlength="80" autocomplete="name"></label>
         <label>Correo<input name="email" type="email" required maxlength="160" autocomplete="email"></label>
@@ -209,30 +217,43 @@
       <label>Link a tu música<input name="musica" required maxlength="600" placeholder="Spotify, YouTube, SoundCloud o Drive"></label>
       <label><span>¿Qué quieres lograr? <small>(opcional)</small></span><textarea name="objetivo" maxlength="2000" rows="4" placeholder="Tu próximo single, un EP, encontrar tu sonido…"></textarea></label>
       <label class="ic-trap" aria-hidden="true">Web<input name="web" tabindex="-1" autocomplete="off"></label>
-      <button class="ic-btn ic-btn-wide" type="submit">Enviar postulación</button>
+      <button class="ic-btn ic-btn-wide" type="submit">Reservar mi membresía</button>
       <p class="ic-msg" role="status" aria-live="polite"></p>
-      <p class="ic-fine">No se cobra nada al postular.</p>
+      <p class="ic-fine">Hoy no se cobra nada. Pagas el primer mes cuando confirme tu cupo.</p>
     </form>
     <div class="ic-done" id="ic-done" hidden tabindex="-1">
-      <p class="ic-index">Postulación enviada</p>
-      <h2>Listo. Ya la tengo.</h2>
-      <p class="ic-sub">Te mandé una copia a tu correo. Escucho tu música y te respondo por ahí.</p>
+      <p class="ic-index">Reserva recibida</p>
+      <h2>Listo, ya tengo tu reserva.</h2>
+      <p class="ic-sub">Te mandé una copia a tu correo. Escucho tu música y te confirmo el cupo por ahí, con el link para pagar el primer mes.</p>
     </div>
   </section>
 
   <section class="ic-section ic-faq" aria-label="Preguntas frecuentes">
     <details><summary>¿Tengo que estar en Santiago?</summary><p>Solo para los planes con horas de estudio: Recording + Mix, Full Prod Presencial y Artist Development. Mix &amp; Master y Full Prod Remoto se trabajan a distancia.</p></details>
-    <details><summary>¿Cuándo pago?</summary><p>Después de que te responda. Postular es gratis; si hacemos match te mando el link del primer mes por correo.</p></details>
+    <details><summary>¿Cuándo pago?</summary><p>Cuando confirmo tu cupo te mando por correo el link para pagar el primer mes. Reservar es gratis.</p></details>
+    <details><summary>¿Por qué reservar y no pagar altiro?</summary><p>Porque cada canción la trabajo yo, directo. Antes de cobrarte escucho tu música y me aseguro de que el plan te sirva.</p></details>
     <details><summary>Vivo fuera de Chile, ¿puedo?</summary><p>Sí. Elige “Internacional”: son planes remotos con precio en dólares.</p></details>
     <details><summary>¿Y si solo necesito una mezcla o una plantilla?</summary><p>Para trabajos puntuales están la mezcla y la plantilla a tu voz en la <a href="/#servicios">tienda de iceroom</a>.</p></details>
   </section>
+  <section class="ic-final">
+    <h2>Tu próxima canción parte este mes.</h2>
+    <p class="ic-sub" data-nota="cl">Primer mes desde $79.990 en Chile. Reservar es gratis.</p>
+    <p class="ic-sub" data-nota="int" hidden>Planes remotos desde US$65 al mes. Reservar es gratis.</p>
+    <a class="ic-btn" href="#membresias">Elegir mi membresía</a>
+  </section>
 </main>
+
+<div class="ic-bar" aria-hidden="true">
+  <p data-nota="cl">Primer mes desde <b>$79.990</b></p>
+  <p data-nota="int" hidden>Desde <b>US$65</b> al mes</p>
+  <a class="ic-btn ic-btn-sm" href="#membresias" tabindex="-1">Elegir plan</a>
+</div>
 
 <footer class="ic-foot">
   <p><b>ICYCOLD<sup>®</sup></b> es parte de iceroom, estudio creativo digital.</p>
   <nav aria-label="Enlaces"><a href="/">Tienda iceroom</a><a href="https://www.instagram.com/icycoldcl/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="mailto:soporte@iceroom.cl">soporte@iceroom.cl</a></nav>
 </footer>
 
-<script src="/icycold.js?v=20261127a" defer></script>
+<script src="/icycold.js?v=20261127b" defer></script>
 </body>
 </html>

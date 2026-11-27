@@ -213,3 +213,40 @@ h1,h2,h3{margin:0;font-weight:700}
   .ic-switch button{flex:1}
 }
 .ic-tracks em:empty{display:none}
+
+/* Venta (27-nov b): oferta, qué incluye, resumen del plan, cierre y barra fija */
+[data-nota][hidden]{display:none!important}
+.ic-offer{display:inline-flex;align-items:baseline;gap:6px;margin:22px 0 0;padding:10px 16px;border:1px solid #cfe0f540;border-radius:999px;font-size:14px;color:var(--text-2)}
+.ic-offer b{font:800 22px/1 var(--display);letter-spacing:.02em;color:var(--text)}
+.ic-offer span{color:var(--ice)}
+.ic-inc{list-style:none;margin:0;padding:0;flex:1;display:flex;flex-direction:column;gap:7px;font-size:13.5px;line-height:1.35;color:var(--text-2)}
+.ic-inc li{display:flex;gap:9px}
+.ic-inc li::before{content:"";flex:none;width:12px;height:7px;margin-top:4px;border-left:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);color:var(--ice)}
+.ic-inc li:first-child{color:var(--text);font-weight:600}
+.ic-plan-top .ic-inc{color:#333}
+.ic-plan-top .ic-inc li:first-child{color:#0b0b0b}
+.ic-plan-top .ic-inc li::before{color:#0b0b0b}
+.ic-was{display:block;margin-top:10px;font-size:13px;color:var(--text-3);text-decoration:line-through}
+.ic-plan-top .ic-was{color:#777}
+.ic-price .ic-was+b{margin-top:2px}
+.ic-perks{list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:var(--r)}
+.ic-perks li{padding:18px 20px}
+.ic-perks li+li{border-left:1px solid var(--line)}
+.ic-perks b{display:block;font-size:14px}
+.ic-perks span{display:block;margin-top:4px;font-size:13px;color:var(--text-3)}
+.ic-sum{margin-top:-6px;padding:14px 16px;border:1px solid #cfe0f540;border-radius:12px;background:#cfe0f50a;font-size:13px;color:var(--text-2)}
+.ic-sum:empty{display:none}
+.ic-sum b{display:block;font:800 26px/1.05 var(--display);letter-spacing:.02em;color:var(--text)}
+.ic-sum s{color:var(--text-3);margin-right:6px}
+.ic-final{width:min(var(--w),calc(100% - 2*var(--gut)));margin:clamp(64px,8vw,110px) auto 0;padding:clamp(40px,6vw,72px) clamp(20px,4vw,56px);border-radius:24px;background:var(--text);color:#0b0b0b;text-align:center;display:flex;flex-direction:column;align-items:center}
+.ic-final h2{font:800 clamp(40px,6vw,80px)/.92 var(--display);text-transform:uppercase;letter-spacing:.005em;max-width:16ch}
+.ic-final .ic-sub{color:#444;margin:16px auto 26px}
+.ic-final .ic-btn{background:#0b0b0b;color:var(--text);border-color:#0b0b0b}
+.ic-final .ic-btn:hover{background:#000}
+.ic-bar{position:fixed;left:50%;bottom:14px;z-index:30;display:flex;align-items:center;gap:16px;padding:8px 8px 8px 20px;border-radius:999px;background:#151515e6;border:1px solid var(--line-2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transform:translate(-50%,140%);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .35s}
+.ic-bar p{margin:0;font-size:13px;color:var(--text-2);white-space:nowrap}
+.ic-bar b{font:800 19px/1 var(--display);letter-spacing:.02em;color:var(--text)}
+.ic-bar.is-on{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+@media (max-width:860px){.ic-perks{grid-template-columns:1fr}.ic-perks li+li{border-left:0;border-top:1px solid var(--line)}}
+@media (max-width:560px){.ic-bar{left:16px;right:16px;justify-content:space-between;transform:translateY(140%)}.ic-bar.is-on{transform:none}.ic-foot{padding-bottom:96px}}
+@media (prefers-reduced-motion:reduce){.ic-bar{transition:none}}

@@ -47,7 +47,7 @@ export async function onRequestPost({ request, env }) {
   await tabla(db);
   const hace = new Date(Date.now() - 3600e3).toISOString();
   const previas = await db.prepare("SELECT COUNT(*) AS n FROM membresia_postulaciones WHERE email = ?1 AND creado > ?2").bind(email, hace).first();
-  if ((previas?.n || 0) >= 3) return json({ error: "Ya recibimos tu postulación. Te respondemos pronto." }, 429);
+  if ((previas?.n || 0) >= 3) return json({ error: "Ya recibimos tu reserva. Te respondemos pronto." }, 429);
 
   const pais = limpio(request.cf?.country, 4);
   const creado = new Date().toISOString();
@@ -62,7 +62,7 @@ export async function onRequestPost({ request, env }) {
 
   await enviarCorreo(env, {
     to: correoAvisos(env),
-    subject: `Nueva postulación ICYCOLD #${id}: ${plan.nombre} · ${nombre}`,
+    subject: `Nueva reserva ICYCOLD #${id}: ${plan.nombre} · ${nombre}`,
     text: [
       `Membresía: ${plan.nombre} (${region === "cl" ? "Chile" : "Internacional"}) · ${precio}`,
       `Nombre: ${nombre}`,
@@ -76,11 +76,11 @@ export async function onRequestPost({ request, env }) {
 
   await enviarCorreo(env, {
     to: email,
-    subject: `Recibimos tu postulación a ${plan.nombre} · ICYCOLD`,
+    subject: `Recibimos tu reserva de ${plan.nombre} · ICYCOLD`,
     text: `Hola ${nombre}!\n\n` +
-      `Recibimos tu postulación a la membresía ${plan.nombre} (${precio}).\n\n` +
-      "Escucho tu música y te respondo a este correo en los próximos días. Si hacemos match, te mando el link para pagar " +
-      "el primer mes y partimos con tu primera canción.\n\n" +
+      `Recibimos tu reserva de la membresía ${plan.nombre} (${precio}).\n\n` +
+      "Escucho tu música y te confirmo el cupo a este correo en los próximos días, con el link para pagar " +
+      "el primer mes. Apenas pagas, partimos con tu primera canción.\n\n" +
       "No se ha cobrado nada todavía." +
       "\n\n— icycold · iceroom\nResponde este correo si tienes cualquier duda.",
   });

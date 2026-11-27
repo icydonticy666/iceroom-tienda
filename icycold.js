@@ -16,14 +16,27 @@
       ["artist-dev", "Artist Development · desde US$149 / mes"],
     ],
   };
-  const form = $("#ic-form"), select = $("#ic-plan");
+  const PRECIO = { cl: { "mix-master": 89990, "recording-mix": 119990, "full-remoto": 119990, "full-presencial": 149990, "artist-dev": 189990 }, int: { "mix-master": 65, "full-remoto": 99, "artist-dev": 149 } };
+  const clp = (n) => "$" + n.toLocaleString("es-CL");
+  const form = $("#ic-form"), select = $("#ic-plan"), resumen = $("#ic-sum");
   let region = "cl";
 
   function llenarPlanes(elegido) {
     const actual = elegido || select.value;
     select.replaceChildren(...PLANES[region].map(([v, t]) => new Option(t, v)));
     if (PLANES[region].some(([v]) => v === actual)) select.value = actual;
+    pintarResumen();
   }
+  function pintarResumen() {
+    const nombre = select.selectedOptions[0]?.text.split(" · ")[0] || "";
+    const base = PRECIO[region][select.value];
+    if (!base) { resumen.replaceChildren(); return; }
+    const b = document.createElement("b"); b.textContent = nombre;
+    if (region === "int") { resumen.replaceChildren(b, `Desde US$${base} al mes · remoto`); return; }
+    const s = document.createElement("s"); s.textContent = clp(base);
+    resumen.replaceChildren(b, s, `${clp(base - 10000)} el primer mes · luego ${clp(base)} / mes`);
+  }
+  select.addEventListener("change", pintarResumen);
   function ponerRegion(r, { plan } = {}) {
     region = r === "int" ? "int" : "cl";
     for (const b of $$(".ic-switch [data-region]")) b.setAttribute("aria-checked", String(b.dataset.region === region));
@@ -57,7 +70,28 @@
     }).catch(() => {});
   }
 
-  // Postulación
+  // Barra fija con el precio: aparece pasado el inicio y se esconde en membresías, el formulario, el cierre y el pie.
+  const barra = $(".ic-bar");
+  if (barra) {
+    const zonas = [".ic-hero", "#membresias .ic-plans", "#postular", ".ic-final", ".ic-foot"];
+    let pendiente = false;
+    const revisar = () => {
+      pendiente = false;
+      const alto = innerHeight;
+      const tapada = zonas.some((sel) => $$(sel).some((el) => {
+        if (el.hidden) return false;
+        const r = el.getBoundingClientRect();
+        return r.bottom > 0 && r.top < alto;
+      }));
+      barra.classList.toggle("is-on", !tapada);
+    };
+    const pedir = () => { if (!pendiente) { pendiente = true; requestAnimationFrame(revisar); } };
+    addEventListener("scroll", pedir, { passive: true });
+    addEventListener("resize", pedir);
+    revisar();
+  }
+
+  // Reserva (postulación)
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const msg = $(".ic-msg", form), boton = $("button[type=submit]", form);
