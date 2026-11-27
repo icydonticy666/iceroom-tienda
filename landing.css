@@ -328,6 +328,7 @@ footer p a{color:#ccc}footer .footer-discord{background:transparent;border-color
 @media(prefers-reduced-motion:reduce){.voz-dialog[open]{animation:none}}
 .voz-mine{display:block;width:fit-content;margin-top:10px;font-size:12px;color:#a29bbd;text-decoration:underline;text-underline-offset:3px}.voz-mine:hover{color:#fff}
 .hnav a.hnav-mine{color:#cfc7ff}
+.hnav a.hnav-icycold{font-family:"Barlow Condensed",Impact,sans-serif;font-weight:800;font-size:.84rem;letter-spacing:.12em;color:#fff}
 
 /* ═══ Capa de movimiento (11-nov-2026) ═══
    Mejora progresiva: `motion-ok` lo pone ice-motion.js solo si hay JS y el visitante no pidió

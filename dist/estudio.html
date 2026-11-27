@@ -44,6 +44,24 @@
       <p class="pj-empty pj-hidden" id="vacio" style="margin-top:14px">No hay proyectos aquí.</p>
     </section>
 
+    <section class="pj-card pj-hidden" id="vista-icycold">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+        <h2 style="margin:0">Membresías ICYCOLD · postulaciones</h2>
+        <button class="pj-btn ghost" type="button" id="ic-recargar" style="min-height:34px;padding:6px 14px">Actualizar</button>
+      </div>
+      <p class="pj-sub" style="margin-bottom:14px">Llegan desde iceroom.cl/icycold (también por correo a soporte@). Responde por correo; si aceptas, mándale el link de pago del primer mes.</p>
+      <div class="es-filters" role="group" aria-label="Filtro de postulaciones">
+        <button type="button" data-ic-filtro="nueva" aria-pressed="true">Nuevas</button>
+        <button type="button" data-ic-filtro="aceptada" aria-pressed="false">Aceptadas</button>
+        <button type="button" data-ic-filtro="descartada" aria-pressed="false">Descartadas</button>
+      </div>
+      <table class="es-table">
+        <thead><tr><th>Artista</th><th>Membresía</th><th class="es-hide">Música</th><th></th></tr></thead>
+        <tbody id="ic-filas"></tbody>
+      </table>
+      <p class="pj-empty pj-hidden" id="ic-vacio" style="margin-top:14px">No hay postulaciones aquí.</p>
+    </section>
+
     <section class="pj-card pj-hidden" id="vista-alianzas">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
         <h2 style="margin:0">Acceso para productores</h2>
@@ -138,5 +156,6 @@
 </main>
 <script src="/estudio.js?v=20261109a" defer></script>
 <script src="/estudio-alianzas.js?v=20261124a" defer></script>
+<script src="/estudio-icycold.js?v=20261127a" defer></script>
 </body>
 </html>
